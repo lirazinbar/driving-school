@@ -14,6 +14,7 @@ public class CarRotator : MonoBehaviour
 
     void Update()
     {
+        Debug.Log("rotation: " + transform.rotation.eulerAngles);
         // // Calculate the rotation difference
         // Quaternion rotationDifference = Quaternion.Inverse(initialRotation) * transform.rotation;
         //

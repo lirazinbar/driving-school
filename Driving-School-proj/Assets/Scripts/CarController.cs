@@ -65,10 +65,10 @@ public class CarController : MonoBehaviour
         _horizontalInput = Input.GetAxis("Horizontal");
 
         // Acceleration Input
-        _verticalInput = Input.GetAxis("Vertical");
-
+        _verticalInput = OVRInput.Get(OVRInput.RawButton.RIndexTrigger) ? 1 : 0 ;
         // Breaking Input
-        _isBreaking = Input.GetKey(KeyCode.Space);
+        _isBreaking = OVRInput.Get(OVRInput.RawButton.LIndexTrigger);
+        
     }
 
     private void HandleMotor()
@@ -95,7 +95,8 @@ public class CarController : MonoBehaviour
 
     private void HandleSteering()
     {
-        _currentSteerAngle = maxSteerAngle * _horizontalInput;
+        _currentSteerAngle = maxSteerAngle * _horizontalInput; // TODO - Liraz
+        // _currentSteerAngle = maxSteerAngle * _horizontalInput;
         frontLeftWheelCollider.steerAngle = _currentSteerAngle;
         frontRightWheelCollider.steerAngle = _currentSteerAngle;
     }
