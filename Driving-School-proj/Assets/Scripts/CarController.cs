@@ -65,10 +65,10 @@ public class CarController : MonoBehaviour
         _horizontalInput = Input.GetAxis("Horizontal");
 
         // Acceleration Input
-        _verticalInput = Input.GetAxis("Vertical");
-
+        _verticalInput = OVRInput.Get(OVRInput.RawButton.RIndexTrigger) ? 1 : 0 ;
         // Breaking Input
-        _isBreaking = Input.GetKey(KeyCode.Space);
+        _isBreaking = OVRInput.Get(OVRInput.RawButton.LIndexTrigger);
+        
     }
 
     private void HandleMotor()
@@ -95,7 +95,8 @@ public class CarController : MonoBehaviour
 
     private void HandleSteering()
     {
-        _currentSteerAngle = maxSteerAngle * _horizontalInput;
+        _currentSteerAngle = maxSteerAngle * _horizontalInput; // TODO - Liraz
+        // _currentSteerAngle = maxSteerAngle * _horizontalInput;
         frontLeftWheelCollider.steerAngle = _currentSteerAngle;
         frontRightWheelCollider.steerAngle = _currentSteerAngle;
     }
@@ -137,3 +138,46 @@ public enum GearState
     Drive = 1,
     Reverse = -1
 }
+
+
+
+// Liraz functions: 
+
+
+//    public GameObject Wheel;
+//     private float initialWheelRotationZ; // Initial rotation around Z-axis
+//     public float speed = 10f;
+//     private Quaternion initialRotation;
+
+
+//    void Start()
+//     {
+//         // initialWheelRotationZ = Wheel.transform.rotation.eulerAngles.z;
+//         initialRotation = Wheel.transform.rotation;
+//     }
+
+
+
+//  void Update()
+//     {
+//         // Get the wheel rotation around the Z-axis
+//         // float wheelRotationZ = Wheel.transform.rotation.eulerAngles.z - initialWheelRotationZ;
+        
+        
+        
+//         // transform.Rotate(transform.rotation.x, wheelRotationZ, transform.rotation.z);
+//         transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        
+        
+//         // TODO -  here
+//         // Calculate the rotation difference
+//         Quaternion rotationDifference = Quaternion.Inverse(initialRotation) * Wheel.transform.rotation;
+
+//         // Extract the rotation angle around the Z-axis
+//         float zRotation = rotationDifference.eulerAngles.z;
+
+//         // Apply the Y rotation to the car's rotation
+//         Vector3 currentRotation = transform.rotation.eulerAngles;
+//         // transform.rotation = Quaternion.Euler(currentRotation.x, currentRotation.y + zRotation, currentRotation.z);
+//         transform.Rotate(transform.rotation.x, rotationDifference.eulerAngles.z, transform.rotation.z);
+//     }
