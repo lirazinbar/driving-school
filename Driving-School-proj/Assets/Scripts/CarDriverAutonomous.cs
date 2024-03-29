@@ -69,10 +69,13 @@ public class CarDriverAutonomous : MonoBehaviour
     {
         RaycastHit hit;
         bool isHit = false;
+        
         Vector3 position = transform.position;
-        Vector3 frontCenterSensorPos = position + new Vector3(0, sensorsHight, frontSensorsStartPoint);
-        Vector3 frontRightSensorPos = position + new Vector3(frontSideSensorsPosition, sensorsHight, frontSensorsStartPoint);
-        Vector3 frontLeftSensorPos = position + new Vector3(-frontSideSensorsPosition, sensorsHight, frontSensorsStartPoint);
+        Quaternion rotation = transform.rotation;
+        
+        Vector3 frontCenterSensorPos = position + rotation * new Vector3(0, sensorsHight, frontSensorsStartPoint);
+        Vector3 frontRightSensorPos = position + rotation * new Vector3(frontSideSensorsPosition, sensorsHight, frontSensorsStartPoint);
+        Vector3 frontLeftSensorPos = position + rotation * new Vector3(-frontSideSensorsPosition, sensorsHight, frontSensorsStartPoint);
         
         // Front center sensor
         if (Physics.Raycast(frontCenterSensorPos, transform.forward, out hit, sensorsLength))
@@ -119,7 +122,6 @@ public class CarDriverAutonomous : MonoBehaviour
     private void MoveToPoint(HitState hitState)
     {
         float distanceToTarget = Vector3.Distance(transform.position, _targetPosition);
-        Debug.Log("Speed KM/H: " + _carController.GetSpeed());
         
         // The car reached the target position - stop
         if (distanceToTarget < StopDistance || hitState == HitState.Stop)
