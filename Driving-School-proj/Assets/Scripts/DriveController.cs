@@ -11,8 +11,8 @@ public class DriveController : MonoBehaviour
         
     }
 
-    void Update()
-    {
+    // void Update()
+    // {
         // OVRInput.Get(OVRInput.RawAxis1D.LIndexTrigger);
 
         // if (OVRInput.Get(OVRInput.RawButton.RIndexTrigger))
@@ -21,5 +21,5 @@ public class DriveController : MonoBehaviour
             // (transform.forward * forwardForce * Time.deltaTime);
         // }
 
-    }
+    // }
 }

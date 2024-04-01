@@ -9,6 +9,8 @@ public class CarController : MonoBehaviour
 
     [SerializeField] private Rigidbody rb;
 
+    [SerializeField] private GameObject SteeringWheel;
+
     // Settings
     [SerializeField] private float motorForce, breakForce, maxSteerAngle, acceleration;
     [SerializeField] private bool isAutonomous;
@@ -21,7 +23,24 @@ public class CarController : MonoBehaviour
     [SerializeField] private Transform frontLeftWheelTransform, frontRightWheelTransform;
     [SerializeField] private Transform rearLeftWheelTransform, rearRightWheelTransform;
 
-    private void Update()
+    // private void Update()
+    // {
+    //     if (isAutonomous) return;
+    //     if (Input.GetKeyDown(KeyCode.P))
+    //     {
+    //         ChangeGear(GearState.Park);
+    //     }
+    //     else if (Input.GetKeyDown(KeyCode.G))
+    //     {
+    //         ChangeGear(GearState.Drive);
+    //     }
+    //     else if (Input.GetKeyDown(KeyCode.R))
+    //     {
+    //         ChangeGear(GearState.Reverse);
+    //     }
+    // }
+
+    private void FixedUpdate()
     {
         if (isAutonomous) return;
         if (Input.GetKeyDown(KeyCode.P))
@@ -36,10 +55,7 @@ public class CarController : MonoBehaviour
         {
             ChangeGear(GearState.Reverse);
         }
-    }
-
-    private void FixedUpdate()
-    {
+        
         if (!isAutonomous)
         { 
             GetInput();
@@ -95,7 +111,8 @@ public class CarController : MonoBehaviour
 
     private void HandleSteering()
     {
-        _currentSteerAngle = maxSteerAngle * _horizontalInput; // TODO - Liraz
+        _currentSteerAngle = SteeringWheel.transform.rotation.eulerAngles.z - 180;
+        // _currentSteerAngle += 180f;
         // _currentSteerAngle = maxSteerAngle * _horizontalInput;
         frontLeftWheelCollider.steerAngle = _currentSteerAngle;
         frontRightWheelCollider.steerAngle = _currentSteerAngle;
