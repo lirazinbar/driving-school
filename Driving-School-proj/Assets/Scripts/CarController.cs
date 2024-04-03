@@ -10,6 +10,8 @@ public class CarController : MonoBehaviour
     [SerializeField] private Rigidbody rb;
 
     [SerializeField] private GameObject SteeringWheel;
+    
+    [SerializeField] private GameObject GearStick;
 
     // Settings
     [SerializeField] private float motorForce, breakForce, maxSteerAngle, acceleration;
@@ -43,17 +45,28 @@ public class CarController : MonoBehaviour
     private void FixedUpdate()
     {
         if (isAutonomous) return;
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            ChangeGear(GearState.Park);
-        }
-        else if (Input.GetKeyDown(KeyCode.G))
+        // if (Input.GetKeyDown(KeyCode.P))
+        // {
+        //     ChangeGear(GearState.Park);
+        // }
+        // else if (Input.GetKeyDown(KeyCode.G))
+        // {
+        //     ChangeGear(GearState.Drive);
+        // }
+        // else if (Input.GetKeyDown(KeyCode.R))
+        // {
+        //     ChangeGear(GearState.Reverse);
+        // }
+
+        if (GearStick.transform.rotation.eulerAngles.x < 60)
         {
             ChangeGear(GearState.Drive);
+            Debug.Log("DDD");
         }
-        else if (Input.GetKeyDown(KeyCode.R))
+        else
         {
             ChangeGear(GearState.Reverse);
+            Debug.Log("RRR");
         }
         
         if (!isAutonomous)
