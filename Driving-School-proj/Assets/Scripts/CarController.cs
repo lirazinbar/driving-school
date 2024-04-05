@@ -9,6 +9,10 @@ public class CarController : MonoBehaviour
 
     [SerializeField] private Rigidbody rb;
 
+    [SerializeField] private GameObject SteeringWheel;
+    
+    [SerializeField] private GameObject GearStick;
+
     // Settings
     [SerializeField] private float motorForce, breakForce, maxSteerAngle, acceleration;
     [SerializeField] private bool isAutonomous;
@@ -21,25 +25,50 @@ public class CarController : MonoBehaviour
     [SerializeField] private Transform frontLeftWheelTransform, frontRightWheelTransform;
     [SerializeField] private Transform rearLeftWheelTransform, rearRightWheelTransform;
 
-    private void Update()
-    {
-        if (isAutonomous) return;
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            ChangeGear(GearState.Park);
-        }
-        else if (Input.GetKeyDown(KeyCode.G))
-        {
-            ChangeGear(GearState.Drive);
-        }
-        else if (Input.GetKeyDown(KeyCode.R))
-        {
-            ChangeGear(GearState.Reverse);
-        }
-    }
+    // private void Update()
+    // {
+    //     if (isAutonomous) return;
+    //     if (Input.GetKeyDown(KeyCode.P))
+    //     {
+    //         ChangeGear(GearState.Park);
+    //     }
+    //     else if (Input.GetKeyDown(KeyCode.G))
+    //     {
+    //         ChangeGear(GearState.Drive);
+    //     }
+    //     else if (Input.GetKeyDown(KeyCode.R))
+    //     {
+    //         ChangeGear(GearState.Reverse);
+    //     }
+    // }
 
     private void FixedUpdate()
     {
+        if (isAutonomous) return;
+        // if (Input.GetKeyDown(KeyCode.P))
+        // {
+        //     ChangeGear(GearState.Park);
+        // }
+        // else if (Input.GetKeyDown(KeyCode.G))
+        // {
+        //     ChangeGear(GearState.Drive);
+        // }
+        // else if (Input.GetKeyDown(KeyCode.R))
+        // {
+        //     ChangeGear(GearState.Reverse);
+        // }
+
+        if (GearStick.transform.rotation.eulerAngles.x < 60)
+        {
+            ChangeGear(GearState.Drive);
+            Debug.Log("DDD");
+        }
+        else
+        {
+            ChangeGear(GearState.Reverse);
+            Debug.Log("RRR");
+        }
+        
         if (!isAutonomous)
         { 
             GetInput();
@@ -95,7 +124,8 @@ public class CarController : MonoBehaviour
 
     private void HandleSteering()
     {
-        _currentSteerAngle = maxSteerAngle * _horizontalInput; // TODO - Liraz
+        _currentSteerAngle = SteeringWheel.transform.rotation.eulerAngles.z - 180;
+        // _currentSteerAngle += 180f;
         // _currentSteerAngle = maxSteerAngle * _horizontalInput;
         frontLeftWheelCollider.steerAngle = _currentSteerAngle;
         frontRightWheelCollider.steerAngle = _currentSteerAngle;

@@ -12,9 +12,9 @@ public class CarRotator : MonoBehaviour
         initialRotation = transform.rotation;
     }
 
-    void Update()
-    {
-        Debug.Log("rotation: " + transform.rotation.eulerAngles);
+    // void Update()
+    // {
+    //     Debug.Log("rotation: " + transform.rotation.eulerAngles);
         // // Calculate the rotation difference
         // Quaternion rotationDifference = Quaternion.Inverse(initialRotation) * transform.rotation;
         //
@@ -24,5 +24,5 @@ public class CarRotator : MonoBehaviour
         // // Apply the Y rotation to the car's rotation
         // Vector3 currentRotation = Car.transform.rotation.eulerAngles;
         // Car.transform.rotation = Quaternion.Euler(currentRotation.x, currentRotation.y + yRotation, currentRotation.z);
-    }
+    // }
 }
