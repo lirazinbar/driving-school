@@ -120,11 +120,16 @@ public class CarController : MonoBehaviour
 
     private void ShowCurrentSpeed()
     {
-        Debug.Log("Speed KM/H: " + rb.velocity.magnitude * 3.6f);
+        Debug.Log("Speed KM/H: " + GetSpeed());
     }
     
     public float GetSpeed() {
         return rb.velocity.magnitude * 3.6f;
+    }
+    
+    public bool IsStopped()
+    {
+        return GetSpeed() < 1f;
     }
 
     private void ChangeGear(GearState newGearState)

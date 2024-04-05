@@ -1,10 +1,7 @@
 using System.Collections.Generic;
-using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.Splines;
-using UnityEngine.UIElements;
 
 public class CarDriverAutonomous : MonoBehaviour
 {
@@ -21,7 +18,7 @@ public class CarDriverAutonomous : MonoBehaviour
     private bool _isBreaking;
 
     private const float SlowDownDistance = 25f;
-    private const float StopDistance = 5f;
+    private const float StopDistance = 3f;
     
     [Header("Sensors")]
     [SerializeField] private float frontSensorsStartPoint = 3f;
@@ -30,6 +27,7 @@ public class CarDriverAutonomous : MonoBehaviour
     [SerializeField] private float sensorsHight = 1f;
     [SerializeField] private float sensorSlowDownLength = 15f;
     [SerializeField] private float sensorStopLength = StopDistance;
+    bool detectStopLine = true;
 
     private void Awake()
     {
@@ -53,39 +51,59 @@ public class CarDriverAutonomous : MonoBehaviour
 
     private HitState Sensors()
     {
-        if (CreateRaycasts(sensorStopLength, Color.red))
+        HitState generalHit = GeneralRayCast();
+
+        return generalHit;
+
+    }
+    
+    private HitState GeneralRayCast()
+    {
+        int stopBitmask = detectStopLine ? ~(1 << LayerMask.NameToLayer("StopSurfaceDetector"))
+                                        : ~(1 << LayerMask.NameToLayer("StopSurfaceDetector")) & ~(1 << LayerMask.NameToLayer("StopLine"));
+        
+        // Detect all layers
+        const int slowDownBitmask = ~0;
+        
+        if (CreateRaycasts(sensorStopLength, Color.red, stopBitmask))
         {
             return HitState.Stop;
         }
-        if (CreateRaycasts(sensorSlowDownLength, Color.yellow))
+        if (CreateRaycasts(sensorSlowDownLength, Color.yellow, slowDownBitmask))
         {
             return HitState.SlowDown;
         }
-        
         return HitState.None;
     }
+    
+    public void SetDetectStopLine(bool detect)
+    {
+        detectStopLine = detect;
+    }
 
-    private bool CreateRaycasts(float sensorsLength, Color color)
+    private bool CreateRaycasts(float sensorsLength, Color color, int bitmask)
     {
         RaycastHit hit;
         bool isHit = false;
         
         Vector3 position = transform.position;
         Quaternion rotation = transform.rotation;
-        
+         
         Vector3 frontCenterSensorPos = position + rotation * new Vector3(0, sensorsHight, frontSensorsStartPoint);
         Vector3 frontRightSensorPos = position + rotation * new Vector3(frontSideSensorsPosition, sensorsHight, frontSensorsStartPoint);
         Vector3 frontLeftSensorPos = position + rotation * new Vector3(-frontSideSensorsPosition, sensorsHight, frontSensorsStartPoint);
         
+
+        
         // Front center sensor
-        if (Physics.Raycast(frontCenterSensorPos, transform.forward, out hit, sensorsLength))
+        if (Physics.Raycast(frontCenterSensorPos, transform.forward, out hit, sensorsLength, bitmask))
         {
             Debug.DrawLine(frontCenterSensorPos, hit.point, color);
             isHit = true;
         }
         
         // Front right sensor
-        if (Physics.Raycast(frontRightSensorPos, transform.forward, out hit, sensorsLength))
+        if (Physics.Raycast(frontRightSensorPos, transform.forward, out hit, sensorsLength,bitmask))
         {
             Debug.DrawLine(frontRightSensorPos, hit.point, color);
             isHit = true;
@@ -94,23 +112,23 @@ public class CarDriverAutonomous : MonoBehaviour
         // Front right angle sensor
         if (Physics.Raycast(frontRightSensorPos, 
                 Quaternion.AngleAxis(frontSideSensorsAngle, transform.up) * transform.forward,
-                out hit, sensorsLength / 5f))
+                out hit, sensorsLength / 5f, bitmask))
         {
             Debug.DrawLine(frontRightSensorPos, hit.point, color);
             isHit = true;
         }
         
         // Front left sensor
-        if (Physics.Raycast(frontLeftSensorPos, transform.forward, out hit, sensorsLength))
+        if (Physics.Raycast(frontLeftSensorPos, transform.forward, out hit, sensorsLength, bitmask))
         {
             Debug.DrawLine(frontLeftSensorPos, hit.point, color);
             isHit = true;
         }
-        
+
         // Front left angle sensor
         if (Physics.Raycast(frontLeftSensorPos, 
                 Quaternion.AngleAxis(-frontSideSensorsAngle, transform.up) * transform.forward,
-                out hit, sensorsLength / 5f))
+                out hit, sensorsLength / 5f, bitmask))
         {
             Debug.DrawLine(frontLeftSensorPos, hit.point, color);
             isHit = true;
@@ -126,7 +144,7 @@ public class CarDriverAutonomous : MonoBehaviour
         // The car reached the target position - stop
         if (distanceToTarget < StopDistance || hitState == HitState.Stop)
         {
-            if (_currentKnotIndex < _knotsPositions.Count - 1)
+            if (_currentKnotIndex < _knotsPositions.Count - 1 && distanceToTarget < StopDistance)
             {
                 _currentKnotIndex++;
                 SetTargetPosition(_knotsPositions[_currentKnotIndex]);
@@ -182,6 +200,7 @@ public class CarDriverAutonomous : MonoBehaviour
         Transform transform1 = transform;
         Vector3 dirToMovePosition = (_targetPosition - transform1.position).normalized;
         float angleToDir = Vector3.SignedAngle(transform1.forward, dirToMovePosition, Vector3.up);
+        // Debug.Log("Angle to dir: " + angleToDir);
 
         if (angleToDir > 10 && angleToDir < 45 || angleToDir < 170 && angleToDir > 45)
         {
