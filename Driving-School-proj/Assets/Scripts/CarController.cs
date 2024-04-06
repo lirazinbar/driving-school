@@ -156,6 +156,11 @@ public class CarController : MonoBehaviour
     public float GetSpeed() {
         return rb.velocity.magnitude * 3.6f;
     }
+    
+    public GearState GetGearState()
+    {
+        return _currentGearState;
+    }
 
     private void ChangeGear(GearState newGearState)
     {
