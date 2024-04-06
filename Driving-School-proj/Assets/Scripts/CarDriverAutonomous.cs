@@ -24,10 +24,10 @@ public class CarDriverAutonomous : MonoBehaviour
     [SerializeField] private float frontSensorsStartPoint = 3f;
     [SerializeField] private float frontSideSensorsPosition = 1.2f;
     [SerializeField] private float frontSideSensorsAngle = 20f;
-    [SerializeField] private float sensorsHight = 1f;
     [SerializeField] private float sensorSlowDownLength = 15f;
     [SerializeField] private float sensorStopLength = StopDistance;
-    bool detectStopLine = true;
+    [SerializeField] private float sensorsHight = 1f;
+    private Dictionary<RaycastType, int> _bitmasks = new Dictionary<RaycastType, int>( );
 
     private void Awake()
     {
@@ -41,6 +41,12 @@ public class CarDriverAutonomous : MonoBehaviour
             _knotsPositions.Add(knotWorldPosition);
         }
         SetTargetPosition(_knotsPositions[0]);
+        
+        
+        _bitmasks.Add(RaycastType.Stop, ~0);
+        _bitmasks.Add(RaycastType.SlowDown, ~0);
+        IgnoreRaycastLayers(_bitmasks[RaycastType.Stop], new[] {"StopSurfaceDetector", "TrafficLightSurfaceDetector"});
+        IgnoreRaycastLayers(_bitmasks[RaycastType.SlowDown], new[] {"TrafficLightSurfaceDetector"});
     }
     
     private void FixedUpdate()
@@ -51,49 +57,52 @@ public class CarDriverAutonomous : MonoBehaviour
 
     private HitState Sensors()
     {
-        HitState generalHit = GeneralRayCast();
+        HitState generalHit = GeneralRaycast();
 
         return generalHit;
 
     }
     
-    private HitState GeneralRayCast()
+    private HitState GeneralRaycast()
     {
-        int stopBitmask = detectStopLine ? ~(1 << LayerMask.NameToLayer("StopSurfaceDetector"))
-                                        : ~(1 << LayerMask.NameToLayer("StopSurfaceDetector")) & ~(1 << LayerMask.NameToLayer("StopLine"));
-        
-        // Detect all layers
-        const int slowDownBitmask = ~0;
-        
-        if (CreateRaycasts(sensorStopLength, Color.red, stopBitmask))
+        if (CreateRaycasts(sensorStopLength, Color.red, _bitmasks[RaycastType.Stop]))
         {
             return HitState.Stop;
         }
-        if (CreateRaycasts(sensorSlowDownLength, Color.yellow, slowDownBitmask))
+        if (CreateRaycasts(sensorSlowDownLength, Color.yellow, _bitmasks[RaycastType.SlowDown]))
         {
             return HitState.SlowDown;
         }
         return HitState.None;
     }
-    
-    public void SetDetectStopLine(bool detect)
+
+    public void SetLayerOfRaycast(RaycastType raycastType, string layerName, bool toIgnore)
     {
-        detectStopLine = detect;
+        int layer = LayerMask.NameToLayer(layerName);
+        _bitmasks[raycastType] = toIgnore ? _bitmasks[raycastType] & ~(1 << layer) : _bitmasks[raycastType] | 1 << layer;
+    }
+    
+    private int IgnoreRaycastLayers(int bitmask, string[] layersToIgnore)
+    {
+        int ignoreBitmask = 0;
+        foreach (string layer in layersToIgnore)
+        {
+            bitmask |= 1 << LayerMask.NameToLayer(layer);
+        }
+
+        return bitmask & ~ignoreBitmask;
     }
 
     private bool CreateRaycasts(float sensorsLength, Color color, int bitmask)
     {
         RaycastHit hit;
         bool isHit = false;
-        
         Vector3 position = transform.position;
         Quaternion rotation = transform.rotation;
          
         Vector3 frontCenterSensorPos = position + rotation * new Vector3(0, sensorsHight, frontSensorsStartPoint);
         Vector3 frontRightSensorPos = position + rotation * new Vector3(frontSideSensorsPosition, sensorsHight, frontSensorsStartPoint);
         Vector3 frontLeftSensorPos = position + rotation * new Vector3(-frontSideSensorsPosition, sensorsHight, frontSensorsStartPoint);
-        
-
         
         // Front center sensor
         if (Physics.Raycast(frontCenterSensorPos, transform.forward, out hit, sensorsLength, bitmask))
@@ -224,4 +233,10 @@ public enum HitState
     None,
     SlowDown,
     Stop
+}
+
+public enum RaycastType
+{
+    Stop,
+    SlowDown
 }
