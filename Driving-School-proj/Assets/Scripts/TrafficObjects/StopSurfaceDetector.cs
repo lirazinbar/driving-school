@@ -2,15 +2,11 @@ using UnityEngine;
 
 public class StopSurfaceDetector: MonoBehaviour
 {
+    [SerializeField] private StopLine _stopLine;
     private CarController _car;
-    private StopLine _stopLine;
     private bool _carStopped;
     private bool _carReachedSign;
     
-    void Start()
-    {
-        _stopLine = transform.parent.gameObject.transform.Find("StopLine").GetComponentInChildren<StopLine>();
-    }
 
     private void Update()
     {
@@ -23,8 +19,8 @@ public class StopSurfaceDetector: MonoBehaviour
                 CarDriverAutonomous autonomousCar = _car.GetComponent<CarDriverAutonomous>();
                 if (autonomousCar != null)
                 {
-                    // Stop detecting the stop line with raycast
-                    autonomousCar.SetDetectStopLine(false);
+                    // Ignore stop line with Stop raycast
+                    autonomousCar.SetLayerOfRaycast(RaycastType.Stop, "StopLine", true);
                 }
                 _carReachedSign = false;
             }
