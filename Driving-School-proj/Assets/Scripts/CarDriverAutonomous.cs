@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
@@ -43,10 +44,10 @@ public class CarDriverAutonomous : MonoBehaviour
         SetTargetPosition(_knotsPositions[0]);
         
         
-        _bitmasks.Add(RaycastType.Stop, ~0);
-        _bitmasks.Add(RaycastType.SlowDown, ~0);
-        IgnoreRaycastLayers(_bitmasks[RaycastType.Stop], new[] {"StopSurfaceDetector", "TrafficLightSurfaceDetector"});
-        IgnoreRaycastLayers(_bitmasks[RaycastType.SlowDown], new[] {"TrafficLightSurfaceDetector"});
+        _bitmasks.Add(RaycastType.Stop, -1);
+        _bitmasks.Add(RaycastType.SlowDown, -1);
+        _bitmasks[RaycastType.Stop] = IgnoreRaycastLayers(_bitmasks[RaycastType.Stop], new[] {"StopSurfaceDetector", "TrafficLightSurfaceDetector"});
+        _bitmasks[RaycastType.SlowDown] = IgnoreRaycastLayers(_bitmasks[RaycastType.SlowDown], new[] {"TrafficLightSurfaceDetector"});
     }
     
     private void FixedUpdate()
@@ -84,12 +85,15 @@ public class CarDriverAutonomous : MonoBehaviour
     
     private int IgnoreRaycastLayers(int bitmask, string[] layersToIgnore)
     {
+        // Debug.Log("bitmask: " + Convert.ToString(bitmask, 2).PadLeft(32, '0'));
         int ignoreBitmask = 0;
         foreach (string layer in layersToIgnore)
         {
-            bitmask |= 1 << LayerMask.NameToLayer(layer);
+            ignoreBitmask |= 1 << LayerMask.NameToLayer(layer);
         }
-
+        
+        // Debug.Log("ignoreBitmask: " + Convert.ToString(~ignoreBitmask, 2).PadLeft(32, '0'));
+        // Debug.Log("bitmask & ~ignoreBitmask: " + (Convert.ToString(bitmask & ~ignoreBitmask, 2).PadLeft(32, '0')));
         return bitmask & ~ignoreBitmask;
     }
 
@@ -149,7 +153,7 @@ public class CarDriverAutonomous : MonoBehaviour
     private void MoveToPoint(HitState hitState)
     {
         float distanceToTarget = Vector3.Distance(transform.position, _targetPosition);
-        
+
         // The car reached the target position - stop
         if (distanceToTarget < StopDistance || hitState == HitState.Stop)
         {
@@ -167,16 +171,15 @@ public class CarDriverAutonomous : MonoBehaviour
         // If the car is not close to the target position
         else if (distanceToTarget > SlowDownDistance && hitState == HitState.None)
         {
-            _forwardAmount = CalculateForwardAmount(distanceToTarget);
+            _forwardAmount = CalculateForwardAmount();
             _turnAmount = CalculateTurnAmount();
             _isBreaking = false;
         }
         // The car is close and driving too fast - don't press the gas
         else if (distanceToTarget <= SlowDownDistance && distanceToTarget > StopDistance || hitState == HitState.SlowDown)
         {
-            _forwardAmount = _carController.GetSpeed() > 15f ? 0f : CalculateForwardAmount(distanceToTarget);
+            _forwardAmount = _carController.GetSpeed() > 15f ? 0f : CalculateForwardAmount();
             _turnAmount = CalculateTurnAmount();
-
             _isBreaking = _carController.GetSpeed() > 25f;
         }
 
@@ -189,7 +192,7 @@ public class CarDriverAutonomous : MonoBehaviour
     }
 
     // Calculates the forward amount based on the direction to the target position.
-    private float CalculateForwardAmount(float distanceToTarget)
+    private float CalculateForwardAmount()
     {
         Transform transform1 = transform;
         Vector3 dirToMovePosition = (_targetPosition - transform1.position).normalized;
