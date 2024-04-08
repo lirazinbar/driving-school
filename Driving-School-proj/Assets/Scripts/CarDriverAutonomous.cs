@@ -19,7 +19,7 @@ public class CarDriverAutonomous : MonoBehaviour
     private bool _isBreaking;
 
     private const float SlowDownDistance = 25f;
-    private const float StopDistance = 3f;
+    private const float StopDistance = 5f;
     
     [Header("Sensors")]
     [SerializeField] private float frontSensorsStartPoint = 3f;
@@ -182,7 +182,7 @@ public class CarDriverAutonomous : MonoBehaviour
             _turnAmount = CalculateTurnAmount();
             _isBreaking = _carController.GetSpeed() > 25f;
         }
-
+        
         _carController.SetInputs(_forwardAmount, _turnAmount, _isBreaking);
     }
 

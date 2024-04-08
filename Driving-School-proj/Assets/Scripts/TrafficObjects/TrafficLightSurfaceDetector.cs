@@ -18,6 +18,11 @@ namespace TrafficObjects
                 if (autonomousCar != null)
                 {
                     _autonomousCars.Add(autonomousCar);
+                    if (_trafficLightController.GetCurrentLightState() == TrafficLightController.LightState.Green)
+                    {
+                        autonomousCar.SetLayerOfRaycast(RaycastType.Stop, "StopLine", true);
+                        autonomousCar.SetLayerOfRaycast(RaycastType.SlowDown, "StopLine", true);
+                    }
                 }
             }
         }
