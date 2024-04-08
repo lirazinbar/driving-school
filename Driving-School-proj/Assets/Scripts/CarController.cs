@@ -16,6 +16,7 @@ public class CarController : MonoBehaviour
     // Settings
     [SerializeField] private float motorForce, breakForce, maxSteerAngle, acceleration;
     [SerializeField] private bool isAutonomous;
+    private float _currentMaxSteerAngle;
 
     // Wheel Colliders
     [SerializeField] private WheelCollider frontLeftWheelCollider, frontRightWheelCollider;
@@ -44,33 +45,19 @@ public class CarController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isAutonomous) return;
-        // if (Input.GetKeyDown(KeyCode.P))
-        // {
-        //     ChangeGear(GearState.Park);
-        // }
-        // else if (Input.GetKeyDown(KeyCode.G))
-        // {
-        //     ChangeGear(GearState.Drive);
-        // }
-        // else if (Input.GetKeyDown(KeyCode.R))
-        // {
-        //     ChangeGear(GearState.Reverse);
-        // }
-
-        if (GearStick.transform.rotation.eulerAngles.x < 60)
-        {
-            ChangeGear(GearState.Drive);
-            Debug.Log("DDD");
-        }
-        else
-        {
-            ChangeGear(GearState.Reverse);
-            Debug.Log("RRR");
-        }
-        
         if (!isAutonomous)
         { 
+            if (GearStick.transform.rotation.eulerAngles.x < 60)
+            {
+                ChangeGear(GearState.Drive);
+                Debug.Log("DDD");
+            }
+            else
+            {
+                ChangeGear(GearState.Reverse);
+                Debug.Log("RRR");
+            }
+            
             GetInput();
         }
         HandleMotor();
@@ -95,9 +82,9 @@ public class CarController : MonoBehaviour
 
         // Acceleration Input
         _verticalInput = OVRInput.Get(OVRInput.RawButton.RIndexTrigger) ? 1 : 0 ;
+        
         // Breaking Input
         _isBreaking = OVRInput.Get(OVRInput.RawButton.LIndexTrigger);
-        
     }
 
     private void HandleMotor()
@@ -124,9 +111,18 @@ public class CarController : MonoBehaviour
 
     private void HandleSteering()
     {
-        _currentSteerAngle = SteeringWheel.transform.rotation.eulerAngles.z - 180;
+        if (!isAutonomous)
+        {
+            _currentSteerAngle = SteeringWheel.transform.rotation.eulerAngles.z - 180;
+        }
+        else
+        {
+            _currentSteerAngle = _horizontalInput * maxSteerAngle;
+        }
+        
         // _currentSteerAngle += 180f;
         // _currentSteerAngle = maxSteerAngle * _horizontalInput;
+        
         frontLeftWheelCollider.steerAngle = _currentSteerAngle;
         frontRightWheelCollider.steerAngle = _currentSteerAngle;
     }
@@ -150,11 +146,16 @@ public class CarController : MonoBehaviour
 
     private void ShowCurrentSpeed()
     {
-        Debug.Log("Speed KM/H: " + rb.velocity.magnitude * 3.6f);
+        Debug.Log("Speed KM/H: " + GetSpeed());
     }
     
     public float GetSpeed() {
         return rb.velocity.magnitude * 3.6f;
+    }
+    
+    public bool IsStopped()
+    {
+        return GetSpeed() < 1f;
     }
     
     public GearState GetGearState()
