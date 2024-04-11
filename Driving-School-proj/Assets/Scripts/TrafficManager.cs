@@ -26,18 +26,17 @@ public class TrafficManager : MonoBehaviour
         EventsManager.Instance.carReachedStopSignEvent.AddListener(OnCarReachedStopSign);
         EventsManager.Instance.carPassedStopSignEvent.AddListener(OnCarPassedStopSign);
         EventsManager.Instance.carStoppedBeforeStopSignEvent.AddListener(OnCarStoppedBeforeStopSign);
-        
+        EventsManager.Instance.carPassedNoEntrySignEvent.AddListener(OnCarPassedNoEntrySign);
+        EventsManager.Instance.carPassedRedLightEvent.AddListener(OnCarPassedRedLight);
     }
 
     private void OnDestroy()
     {
-        // foreach (StopSign stopSign in _stopSignObjects)
-        {
-            // Unsubscribe the events triggered by each stop sign
-            EventsManager.Instance.carReachedStopSignEvent.RemoveListener(OnCarReachedStopSign);
-            EventsManager.Instance.carPassedStopSignEvent.RemoveListener(OnCarPassedStopSign);
-            EventsManager.Instance.carStoppedBeforeStopSignEvent.RemoveListener(OnCarStoppedBeforeStopSign);
-        }
+        EventsManager.Instance.carReachedStopSignEvent.RemoveListener(OnCarReachedStopSign);
+        EventsManager.Instance.carPassedStopSignEvent.RemoveListener(OnCarPassedStopSign);
+        EventsManager.Instance.carStoppedBeforeStopSignEvent.RemoveListener(OnCarStoppedBeforeStopSign);
+        EventsManager.Instance.carPassedNoEntrySignEvent.RemoveListener(OnCarPassedNoEntrySign);
+        EventsManager.Instance.carPassedRedLightEvent.RemoveListener(OnCarPassedRedLight);
     }
 
     private async void OnCarReachedStopSign(GameObject car, int stopSignId)
@@ -73,9 +72,15 @@ public class TrafficManager : MonoBehaviour
         GameManager.Instance.UpdateStopSignEvent(car, _stopSignObjects[stopSignId].carStopped);
     }
     
-    private void CarPassedNoEntrySign(GameObject car)
+    private void OnCarPassedNoEntrySign(int carId)
     {
         Debug.Log("Car passed the no entry sign.");
-        GameManager.Instance.UpdateNoEntrySignEvent(car);
+        GameManager.Instance.UpdateNoEntrySignEvent(carId);
+    }
+    
+    private void OnCarPassedRedLight(int carId)
+    {
+        Debug.Log("Car passed the red traffic light.");
+        GameManager.Instance.UpdateCarPassedRedLightEvent(carId);
     }
 }

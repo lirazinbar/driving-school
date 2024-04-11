@@ -33,11 +33,22 @@ public class GameManager : MonoBehaviour
         }
     }
     
-    public void UpdateNoEntrySignEvent(GameObject car)
+    public void UpdateNoEntrySignEvent(int carId)
     {
-        if (car.GetInstanceID() == mainCar.GetInstanceID())
+        if (carId == mainCar.GetInstanceID())
         {
             Debug.Log("Main car passed the no entry sign.");
+            ScoreManager.Instance.UpdateScore("NoEntry");
+        }
+    }
+    
+    public void UpdateCarPassedRedLightEvent(int carId)
+    {
+        if (carId == mainCar.GetInstanceID())
+        {
+            Debug.Log("Main car passed the red light.");
+            ScoreManager.Instance.UpdateScore("RedLight");
+            // Update UI
         }
     }
 }

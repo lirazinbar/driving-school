@@ -1,13 +1,16 @@
 using UnityEngine;
 
-public class NoEntrySign : MonoBehaviour
+namespace TrafficObjects
 {
-    private void OnTriggerEnter(Collider other)
+    public class NoEntrySign : MonoBehaviour
     {
-        if (other.CompareTag("Car"))
+        private void OnTriggerEnter(Collider other)
         {
-            Debug.Log("NoEntrySign triggered.");
-            EventsManager.Instance.TriggerCarPassedNoEntrySignEvent(other.gameObject);
+            if (other.CompareTag("Car"))
+            {
+                Debug.Log("NoEntrySign triggered.");
+                EventsManager.Instance.TriggerCarPassedNoEntrySignEvent(other.gameObject.GetInstanceID());
+            }
         }
     }
 }
