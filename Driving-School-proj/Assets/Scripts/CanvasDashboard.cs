@@ -15,7 +15,7 @@ public class CanvasDashboard : MonoBehaviour
 
     }
 
-    void FixedUpdate()
+    /* void FixedUpdate()
     {
         GearState currentGearState = _carController.GetGearState();
         switch (currentGearState)
@@ -33,5 +33,5 @@ public class CanvasDashboard : MonoBehaviour
                 gearState.SetText("N/A"); // Not applicable or unknown state
                 break;
         }
-    }
+    } */
 }
