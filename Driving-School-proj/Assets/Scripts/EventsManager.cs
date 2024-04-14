@@ -12,6 +12,8 @@ public class EventsManager : MonoBehaviour
     public CarReachedStopSignEvent carReachedStopSignEvent = new CarReachedStopSignEvent();
     public UnityEvent<int> carPassedStopSignEvent = new UnityEvent<int>();
     public UnityEvent<int> carStoppedBeforeStopSignEvent = new UnityEvent<int>();
+    public UnityEvent<GearState> carGearStateChangedEvent = new UnityEvent<GearState>();
+    public UnityEvent<CrossSectionDirections> carEnteredCrossSectionEvent = new UnityEvent<CrossSectionDirections>();
     public UnityEvent<GameObject> carPassedNoEntrySignEvent = new UnityEvent<GameObject>();
 
     private void Awake()
@@ -42,6 +44,17 @@ public class EventsManager : MonoBehaviour
     {
         carStoppedBeforeStopSignEvent?.Invoke(stopSignId);
     }
+    
+    public void TriggerCarGearStateChangedEvent(GearState gearState)
+    {
+        carGearStateChangedEvent?.Invoke(gearState);
+    }
+    
+    public void TriggerCarEnteredCrossSectionEvent(CrossSectionDirections direction)
+    {
+        carEnteredCrossSectionEvent?.Invoke(direction);
+    }
+
     
     public void TriggerCarPassedNoEntrySignEvent(GameObject car)
     {

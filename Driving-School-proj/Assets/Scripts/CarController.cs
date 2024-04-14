@@ -46,16 +46,17 @@ public class CarController : MonoBehaviour
     private void FixedUpdate()
     {
         if (!isAutonomous)
-        { 
-            if (GearStick.transform.rotation.eulerAngles.x < 60)
+        {
+            if (GearStick.transform.rotation.eulerAngles.x < 20 || GearStick.transform.rotation.eulerAngles.x > 340)
+            {
+                ChangeGear(GearState.Park);
+            } else if (GearStick.transform.rotation.eulerAngles.x < 60)
             {
                 ChangeGear(GearState.Drive);
-                Debug.Log("DDD");
             }
             else
             {
                 ChangeGear(GearState.Reverse);
-                Debug.Log("RRR");
             }
             
             GetInput();
@@ -165,6 +166,10 @@ public class CarController : MonoBehaviour
 
     private void ChangeGear(GearState newGearState)
     {
+        if (_currentGearState != newGearState)
+        {
+            EventsManager.Instance.TriggerCarGearStateChangedEvent(newGearState);
+        }
         _currentGearState = newGearState;
     }
 }
