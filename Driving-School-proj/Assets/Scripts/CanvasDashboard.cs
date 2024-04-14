@@ -8,7 +8,12 @@ public class CanvasDashboard : MonoBehaviour
 {
     private CarController _carController;
     public TMP_Text gearState; 
-    public TMP_Text turnDirection; 
+    public Image turnDirection;
+    // public TMP_Text turnDirection; 
+    
+    public Sprite leftTurnImage;
+    public Sprite rightTurnImage;
+    public Sprite forwardTurnImage;
 
     void Start()
     {
@@ -50,18 +55,31 @@ public class CanvasDashboard : MonoBehaviour
         switch (newDirection)
         {
             case CrossSectionDirections.Right:
-                turnDirection.SetText("right");
+                turnDirection.sprite = rightTurnImage;
                 break;
             case CrossSectionDirections.Forward:
-                turnDirection.SetText( "forward");
+                turnDirection.sprite = forwardTurnImage;
                 break;
             case CrossSectionDirections.Left:
-                turnDirection.SetText("left");
+                turnDirection.sprite = leftTurnImage;
                 break;
             default:
-                turnDirection.SetText("N/A"); // Not applicable or unknown state
+                turnDirection.sprite = null; // Not applicable or unknown direction
                 break;
         }
+        
+        // turnDirection.enabled = true;
+
+        // float displayStartTime = Time.time;
+
+        // Wait for 5 seconds
+        // while (Time.time - displayStartTime < 5f)
+        // {
+        //     
+        // }
+        
+        // Hide the image after 5 seconds
+        // turnDirection.enabled = false;
     }
 
     /* void FixedUpdate()
