@@ -39,12 +39,12 @@ public class TrafficManager : MonoBehaviour
         EventsManager.Instance.carPassedRedLightEvent.RemoveListener(OnCarPassedRedLight);
     }
 
-    private async void OnCarReachedStopSign(GameObject car, int stopSignId)
+    private async void OnCarReachedStopSign(int carId, int stopSignId)
     {
         Debug.Log("Car reached the stop sign.");
         _stopSignObjects[stopSignId] = (false, false);
         
-        await WaitForConditionsAsync(car, stopSignId);
+        await WaitForConditionsAsync(carId, stopSignId);
     }
     
     private void OnCarPassedStopSign(int stopSignId)
@@ -61,7 +61,7 @@ public class TrafficManager : MonoBehaviour
         _stopSignObjects[stopSignId] = (true, carPassed);
     }
     
-    private async Task WaitForConditionsAsync(GameObject car, int stopSignId)
+    private async Task WaitForConditionsAsync(int carId, int stopSignId)
     {
         // Wait until either the car passes the stop sign or the car stops
         while (!(_stopSignObjects[stopSignId].carStopped || _stopSignObjects[stopSignId].carPassed))
@@ -69,7 +69,7 @@ public class TrafficManager : MonoBehaviour
             await Task.Delay(100); // Adjust the delay as needed
         }
         
-        GameManager.Instance.UpdateStopSignEvent(car, _stopSignObjects[stopSignId].carStopped);
+        GameManager.Instance.UpdateStopSignEvent(carId, _stopSignObjects[stopSignId].carStopped);
     }
     
     private void OnCarPassedNoEntrySign(int carId)

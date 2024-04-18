@@ -7,7 +7,7 @@ public class EventsManager : MonoBehaviour
     public static EventsManager Instance { get; private set; }
     
     [System.Serializable]
-    public class CarReachedStopSignEvent : UnityEvent<GameObject, int> {}
+    public class CarReachedStopSignEvent : UnityEvent<int, int> {}
     
     public CarReachedStopSignEvent carReachedStopSignEvent = new CarReachedStopSignEvent();
     public UnityEvent<int> carPassedStopSignEvent = new UnityEvent<int>();
@@ -29,9 +29,9 @@ public class EventsManager : MonoBehaviour
         }
     }
     
-    public void TriggerCarReachedStopSignEvent(GameObject car, int stopSignId)
+    public void TriggerCarReachedStopSignEvent(int carId, int stopSignId)
     {
-        carReachedStopSignEvent?.Invoke(car, stopSignId);
+        carReachedStopSignEvent?.Invoke(carId, stopSignId);
     }
 
     public void TriggerCarPassedStopSignEvent(int stopSignId)

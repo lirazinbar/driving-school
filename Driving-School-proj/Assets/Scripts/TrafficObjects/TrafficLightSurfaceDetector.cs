@@ -44,7 +44,6 @@ namespace TrafficObjects
         
        public void OnLightChanged(TrafficLightController.LightState lightState)
         {
-            Debug.Log("Light changed to " + lightState);
             foreach (CarDriverAutonomous autonomousCar in _autonomousCars)
             {
                 switch (lightState)

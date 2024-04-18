@@ -21879,6 +21879,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06525da5eb2b7457899fce9b768ccb2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialScore: 100
 --- !u!4 &557745018
 Transform:
   m_ObjectHideFlags: 0
@@ -39349,7 +39350,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1006140031}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1b6179ef19dc84c52bac33e01d0768ed, type: 3}
   m_Name: 
@@ -39380,7 +39381,8 @@ MonoBehaviour:
   breakForce: 1000
   maxSteerAngle: 30
   acceleration: 0.1
-  isAutonomous: 1
+  isAutonomous: 0
+  keyboardControlled: 1
   frontLeftWheelCollider: {fileID: 1769796404}
   frontRightWheelCollider: {fileID: 238500340}
   rearLeftWheelCollider: {fileID: 537970629}
@@ -62270,6 +62272,7 @@ MonoBehaviour:
   maxSteerAngle: 30
   acceleration: 0.1
   isAutonomous: 1
+  keyboardControlled: 0
   frontLeftWheelCollider: {fileID: 1960759221}
   frontRightWheelCollider: {fileID: 2001210089}
   rearLeftWheelCollider: {fileID: 2101084355}
@@ -71339,7 +71342,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34731dcf90491463599d479bd2ca21af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trafficLightController: {fileID: 0}
+  trafficLightController: {fileID: 170967550}
 --- !u!1001 &1804726919
 PrefabInstance:
   m_ObjectHideFlags: 0

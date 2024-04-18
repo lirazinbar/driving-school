@@ -18,9 +18,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void UpdateStopSignEvent(GameObject car, bool carStopped)
+    public void UpdateStopSignEvent(int carId, bool carStopped)
     {
-        if (car.GetInstanceID() == mainCar.GetInstanceID())
+        if (carId == mainCar.GetInstanceID())
         {
             if (carStopped)
             {
@@ -28,7 +28,8 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("Main car passed the stop sign without stopping.");
+                Debug.Log("Main car passed stop sign without stopping.");
+                FeedbackManager.Instance.UpdateScore(FeedbackScore.StopSign);
             }
         }
     }
@@ -37,8 +38,8 @@ public class GameManager : MonoBehaviour
     {
         if (carId == mainCar.GetInstanceID())
         {
-            Debug.Log("Main car passed the no entry sign.");
-            ScoreManager.Instance.UpdateScore("NoEntry");
+            Debug.Log("Main car passed no entry sign.");
+            FeedbackManager.Instance.UpdateScore(FeedbackScore.NoEntry);
         }
     }
     
@@ -46,9 +47,8 @@ public class GameManager : MonoBehaviour
     {
         if (carId == mainCar.GetInstanceID())
         {
-            Debug.Log("Main car passed the red light.");
-            ScoreManager.Instance.UpdateScore("RedLight");
-            // Update UI
+            Debug.Log("Main car passed red light.");
+            FeedbackManager.Instance.UpdateScore(FeedbackScore.RedLight);
         }
     }
 }

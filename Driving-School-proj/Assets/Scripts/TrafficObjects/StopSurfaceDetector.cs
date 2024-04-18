@@ -37,7 +37,7 @@ public class StopSurfaceDetector: MonoBehaviour
         _carStopped = false;
         if (other.CompareTag("Car"))
         {
-            EventsManager.Instance.TriggerCarReachedStopSignEvent(other.gameObject, GetInstanceID());
+            EventsManager.Instance.TriggerCarReachedStopSignEvent(other.gameObject.GetInstanceID(), GetInstanceID());
             _car = other.gameObject.GetComponent<CarController>();
             _carReachedSign = true;
         }
