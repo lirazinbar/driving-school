@@ -51,4 +51,10 @@ public class GameManager : MonoBehaviour
             FeedbackManager.Instance.UpdateScore(FeedbackScore.RedLight);
         }
     }
+    
+    public void UpdateCarBrokeSpeedLimitEvent()
+    {
+        Debug.Log("Main car broke speed limit.");
+        FeedbackManager.Instance.UpdateScore(FeedbackScore.Speeding);
+    }
 }

@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class StopSurfaceDetector: MonoBehaviour
 {
+    [SerializeField] private GameObject stopSign;
     [SerializeField] private StopLine _stopLine;
     private CarController _car;
     private bool _carStopped;
@@ -37,7 +38,7 @@ public class StopSurfaceDetector: MonoBehaviour
         _carStopped = false;
         if (other.CompareTag("Car"))
         {
-            EventsManager.Instance.TriggerCarReachedStopSignEvent(other.gameObject.GetInstanceID(), GetInstanceID());
+            EventsManager.Instance.TriggerCarReachedStopSignEvent(other.gameObject.GetInstanceID(), stopSign.GetInstanceID());
             _car = other.gameObject.GetComponent<CarController>();
             _carReachedSign = true;
         }

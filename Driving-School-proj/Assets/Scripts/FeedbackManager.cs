@@ -31,9 +31,16 @@ public class FeedbackManager : MonoBehaviour
     public void UpdateScore(FeedbackScore feedbackScore)
     {
         _currentScore += (int) feedbackScore;
-        Debug.Log("You lost " + (int) feedbackScore + " points!");
+        Debug.Log("You lost " + -(int) feedbackScore + " points!");
         Debug.Log("Current score: " + _currentScore);
         // Update UI
+        
+        if (_currentScore <= 0)
+        {
+            Debug.Log("Game Over! You failed the test!");
+            // Time.timeScale = 0; // Pause the game
+            // Update UI: Show a board of the scores and the feedbacks and an exit button
+        }
     }
 }
 
@@ -41,11 +48,10 @@ public enum FeedbackScore
 {
     NoEntry = -10,
     RedLight = -20,
-    StopSign = -30
-    // Add more feedback scores here
-    // Example: Speeding = -10
-    // Example: WrongLane = -20
-    // Example: Collision = -30
-    // Example: WrongDirection = -40
-    // Example: OffRoad = -50
+    StopSign = -30,
+    Speeding = -10
+    // WrongLane = -20
+    // OffRoad = -50
+    // WrongDirection = -40
+    // Collision = -30
 }

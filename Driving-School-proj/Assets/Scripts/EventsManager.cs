@@ -14,6 +14,7 @@ public class EventsManager : MonoBehaviour
     public UnityEvent<int> carStoppedBeforeStopSignEvent = new UnityEvent<int>();
     public UnityEvent<int> carPassedNoEntrySignEvent = new UnityEvent<int>();
     public UnityEvent<int> carPassedRedLightEvent = new UnityEvent<int>();
+    public UnityEvent carBrokeSpeedLimitEvent = new UnityEvent();
 
     private void Awake()
     {
@@ -52,5 +53,10 @@ public class EventsManager : MonoBehaviour
     public void TriggerCarPassedRedLightEvent(int carId)
     {
         carPassedRedLightEvent?.Invoke(carId);
+    }
+    
+    public void TriggerCarBrokeSpeedLimitEvent()
+    {
+        carBrokeSpeedLimitEvent?.Invoke();
     }
 }

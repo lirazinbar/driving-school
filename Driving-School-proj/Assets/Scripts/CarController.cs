@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class CarController : MonoBehaviour
@@ -6,6 +7,8 @@ public class CarController : MonoBehaviour
     private float _currentSteerAngle, _currentBreakForce;
     private bool _isBreaking;
     private GearState _currentGearState = GearState.Drive;
+    private bool _isCheckingSpeed = true;
+    private bool _isShowingSpeed = true;
 
     [SerializeField] private Rigidbody rb;
 
@@ -47,7 +50,8 @@ public class CarController : MonoBehaviour
         HandleMotor();
         HandleSteering();
         UpdateWheels();
-        // ShowCurrentSpeed();
+        ShowCurrentSpeed();
+        IsCarBrokeSpeedLimit();
     }
     
     // For autonomous control
@@ -91,7 +95,7 @@ public class CarController : MonoBehaviour
             frontRightWheelCollider.motorTorque = _verticalInput * motorForce;
         }
 
-        // rb.AddForce(_verticalInput * acceleration * transform.forward, ForceMode.VelocityChange);
+        rb.AddForce(_verticalInput * acceleration * transform.forward, ForceMode.VelocityChange);
         _currentBreakForce = _isBreaking ? breakForce : 0f;
         ApplyBreaking();
     }
@@ -141,11 +145,42 @@ public class CarController : MonoBehaviour
 
     private void ShowCurrentSpeed()
     {
-        Debug.Log("Speed KM/H: " + GetSpeed());
+        if (_isShowingSpeed)
+        {
+            Debug.Log("Speed KM/H: " + GetSpeed());
+            _isShowingSpeed = false;
+            StartCoroutine(WaitForShowSpeed());
+        }
     }
     
     public float GetSpeed() {
         return rb.velocity.magnitude * 3.6f;
+    }
+    
+    private void IsCarBrokeSpeedLimit()
+    {
+        if (_isCheckingSpeed)
+        {
+            if (GetSpeed() > TrafficManager.Instance.GetSpeedLimit())
+            {
+                Debug.Log("Speed limit exceeded! (above " + TrafficManager.Instance.GetSpeedLimit() + " KM/H)");
+                EventsManager.Instance.TriggerCarBrokeSpeedLimitEvent();
+                _isCheckingSpeed = false;
+                StartCoroutine(WaitForCheckSpeed());
+            }
+        }
+    }
+    
+    private IEnumerator WaitForCheckSpeed()
+    {
+        yield return new WaitForSeconds(10);
+        _isCheckingSpeed = true;
+    }
+    
+    private IEnumerator WaitForShowSpeed()
+    {
+        yield return new WaitForSeconds(1);
+        _isShowingSpeed = true;
     }
     
     public bool IsStopped()
