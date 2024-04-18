@@ -47,7 +47,7 @@ public class CarController : MonoBehaviour
     {
         if (!isAutonomous)
         {
-            if (GearStick.transform.rotation.eulerAngles.x < 20 || GearStick.transform.rotation.eulerAngles.x > 340)
+            if (GearStick.transform.rotation.eulerAngles.x < 10 || GearStick.transform.rotation.eulerAngles.x > 350)
             {
                 ChangeGear(GearState.Park);
             } else if (GearStick.transform.rotation.eulerAngles.x < 60)
