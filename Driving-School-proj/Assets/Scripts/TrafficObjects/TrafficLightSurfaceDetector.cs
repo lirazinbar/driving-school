@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +5,7 @@ namespace TrafficObjects
 {
     public class TrafficLightSurfaceDetector : MonoBehaviour
     {
-        [SerializeField] TrafficLightController _trafficLightController;
+        [SerializeField] private TrafficLightController _trafficLightController;
         private List<CarDriverAutonomous> _autonomousCars = new List<CarDriverAutonomous>();
 
         private void OnTriggerEnter(Collider other)
@@ -45,7 +44,6 @@ namespace TrafficObjects
         
        public void OnLightChanged(TrafficLightController.LightState lightState)
         {
-            Debug.Log("Light changed to " + lightState);
             foreach (CarDriverAutonomous autonomousCar in _autonomousCars)
             {
                 switch (lightState)
