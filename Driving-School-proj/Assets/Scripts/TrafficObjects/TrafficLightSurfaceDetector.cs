@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cars;
 using UnityEngine;
 
 namespace TrafficObjects

@@ -505,8 +505,8 @@ MonoBehaviour:
   breakForce: 1000
   maxSteerAngle: 30
   acceleration: 0.002
-  isAutonomous: 0
-  keyboardControlled: 1
+  isAutonomous: 1
+  keyboardControlled: 0
   frontLeftWheelCollider: {fileID: 2902483113583134807}
   frontRightWheelCollider: {fileID: 9066995411883083447}
   rearLeftWheelCollider: {fileID: 3210941151631253829}
@@ -522,12 +522,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4999463542614872390}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1b6179ef19dc84c52bac33e01d0768ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  splineContainer: {fileID: 0}
   frontSensorsStartPoint: 3
   frontSideSensorsPosition: 1.2
   frontSideSensorsAngle: 20
