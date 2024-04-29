@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class CarController : MonoBehaviour
@@ -6,6 +7,8 @@ public class CarController : MonoBehaviour
     private float _currentSteerAngle, _currentBreakForce;
     private bool _isBreaking;
     private GearState _currentGearState = GearState.Drive;
+    private bool _isCheckingSpeed = true;
+    private bool _isShowingSpeed = true;
 
     [SerializeField] private Rigidbody rb;
 
@@ -15,7 +18,7 @@ public class CarController : MonoBehaviour
 
     // Settings
     [SerializeField] private float motorForce, breakForce, maxSteerAngle, acceleration;
-    [SerializeField] private bool isAutonomous;
+    [SerializeField] private bool isAutonomous, keyboardControlled;
     private float _currentMaxSteerAngle;
 
     // Wheel Colliders
@@ -26,37 +29,22 @@ public class CarController : MonoBehaviour
     [SerializeField] private Transform frontLeftWheelTransform, frontRightWheelTransform;
     [SerializeField] private Transform rearLeftWheelTransform, rearRightWheelTransform;
 
-    // private void Update()
-    // {
-    //     if (isAutonomous) return;
-    //     if (Input.GetKeyDown(KeyCode.P))
-    //     {
-    //         ChangeGear(GearState.Park);
-    //     }
-    //     else if (Input.GetKeyDown(KeyCode.G))
-    //     {
-    //         ChangeGear(GearState.Drive);
-    //     }
-    //     else if (Input.GetKeyDown(KeyCode.R))
-    //     {
-    //         ChangeGear(GearState.Reverse);
-    //     }
-    // }
-
     private void FixedUpdate()
     {
         if (!isAutonomous)
         {
-            if (GearStick.transform.rotation.eulerAngles.x < 10 || GearStick.transform.rotation.eulerAngles.x > 350)
-            {
-                ChangeGear(GearState.Park);
-            } else if (GearStick.transform.rotation.eulerAngles.x < 60)
-            {
-                ChangeGear(GearState.Drive);
-            }
-            else
-            {
-                ChangeGear(GearState.Reverse);
+            if (!keyboardControlled) {
+                if (GearStick.transform.rotation.eulerAngles.x < 10 || GearStick.transform.rotation.eulerAngles.x > 350)
+                {
+                    ChangeGear(GearState.Park);
+                } else if (GearStick.transform.rotation.eulerAngles.x < 60)
+                {
+                    ChangeGear(GearState.Drive);
+                }
+                else
+                {
+                    ChangeGear(GearState.Reverse);
+                }
             }
             
             GetInput();
@@ -64,7 +52,8 @@ public class CarController : MonoBehaviour
         HandleMotor();
         HandleSteering();
         UpdateWheels();
-        // ShowCurrentSpeed();
+        ShowCurrentSpeed();
+        IsCarBrokeSpeedLimit();
     }
     
     // For autonomous control
@@ -81,23 +70,34 @@ public class CarController : MonoBehaviour
         // Steering Input
         _horizontalInput = Input.GetAxis("Horizontal");
 
-        // Acceleration Input
-        _verticalInput = OVRInput.Get(OVRInput.RawButton.RIndexTrigger) ? 1 : 0 ;
-        
-        // Breaking Input
-        _isBreaking = OVRInput.Get(OVRInput.RawButton.LIndexTrigger);
+        // Acceleration and Breaking Input
+        if (!keyboardControlled)
+        {
+            _verticalInput = OVRInput.Get(OVRInput.RawButton.RIndexTrigger) ? 1 : 0 ;
+            _isBreaking = OVRInput.Get(OVRInput.RawButton.LIndexTrigger);
+        }
+        else
+        {
+            _verticalInput = Input.GetAxis("Vertical");
+            _isBreaking = Input.GetKey(KeyCode.Space);
+        }
     }
 
     private void HandleMotor()
     {
         // If the car is not autonomous, disable backward input (move backward only if the car is in reverse gear)
-        if (isAutonomous || _verticalInput > 0)
+        if (!isAutonomous && !keyboardControlled)
         {
             frontLeftWheelCollider.motorTorque = _verticalInput * motorForce * (float)_currentGearState;
             frontRightWheelCollider.motorTorque = _verticalInput * motorForce * (float)_currentGearState;
         }
+        else
+        {
+            frontLeftWheelCollider.motorTorque = _verticalInput * motorForce;
+            frontRightWheelCollider.motorTorque = _verticalInput * motorForce;
+        }
 
-        // rb.AddForce(_verticalInput * acceleration * transform.forward, ForceMode.VelocityChange);
+        rb.AddForce(_verticalInput * acceleration * transform.forward, ForceMode.VelocityChange);
         _currentBreakForce = _isBreaking ? breakForce : 0f;
         ApplyBreaking();
     }
@@ -112,7 +112,7 @@ public class CarController : MonoBehaviour
 
     private void HandleSteering()
     {
-        if (!isAutonomous)
+        if (!isAutonomous && !keyboardControlled)
         {
             _currentSteerAngle = SteeringWheel.transform.rotation.eulerAngles.z - 180;
         }
@@ -147,11 +147,42 @@ public class CarController : MonoBehaviour
 
     private void ShowCurrentSpeed()
     {
-        Debug.Log("Speed KM/H: " + GetSpeed());
+        if (_isShowingSpeed)
+        {
+            Debug.Log("Speed KM/H: " + GetSpeed());
+            _isShowingSpeed = false;
+            StartCoroutine(WaitForShowSpeed());
+        }
     }
     
     public float GetSpeed() {
         return rb.velocity.magnitude * 3.6f;
+    }
+    
+    private void IsCarBrokeSpeedLimit()
+    {
+        if (_isCheckingSpeed)
+        {
+            if (GetSpeed() > TrafficManager.Instance.GetSpeedLimit())
+            {
+                Debug.Log("Speed limit exceeded! (above " + TrafficManager.Instance.GetSpeedLimit() + " KM/H)");
+                EventsManager.Instance.TriggerCarBrokeSpeedLimitEvent();
+                _isCheckingSpeed = false;
+                StartCoroutine(WaitForCheckSpeed());
+            }
+        }
+    }
+    
+    private IEnumerator WaitForCheckSpeed()
+    {
+        yield return new WaitForSeconds(10);
+        _isCheckingSpeed = true;
+    }
+    
+    private IEnumerator WaitForShowSpeed()
+    {
+        yield return new WaitForSeconds(1);
+        _isShowingSpeed = true;
     }
     
     public bool IsStopped()

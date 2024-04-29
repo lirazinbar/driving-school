@@ -7,7 +7,7 @@ public class EventsManager : MonoBehaviour
     public static EventsManager Instance { get; private set; }
     
     [System.Serializable]
-    public class CarReachedStopSignEvent : UnityEvent<GameObject, int> {}
+    public class CarReachedStopSignEvent : UnityEvent<int, int> {}
     
     public CarReachedStopSignEvent carReachedStopSignEvent = new CarReachedStopSignEvent();
     public UnityEvent<int> carPassedStopSignEvent = new UnityEvent<int>();
@@ -15,6 +15,8 @@ public class EventsManager : MonoBehaviour
     public UnityEvent<GearState> carGearStateChangedEvent = new UnityEvent<GearState>();
     public UnityEvent<CrossSectionDirections> carEnteredCrossSectionEvent = new UnityEvent<CrossSectionDirections>();
     public UnityEvent<GameObject> carPassedNoEntrySignEvent = new UnityEvent<GameObject>();
+    public UnityEvent<int> carPassedRedLightEvent = new UnityEvent<int>();
+    public UnityEvent carBrokeSpeedLimitEvent = new UnityEvent();
 
     private void Awake()
     {
@@ -30,9 +32,9 @@ public class EventsManager : MonoBehaviour
         }
     }
     
-    public void TriggerCarReachedStopSignEvent(GameObject car, int stopSignId)
+    public void TriggerCarReachedStopSignEvent(int carId, int stopSignId)
     {
-        carReachedStopSignEvent?.Invoke(car, stopSignId);
+        carReachedStopSignEvent?.Invoke(carId, stopSignId);
     }
 
     public void TriggerCarPassedStopSignEvent(int stopSignId)
@@ -56,8 +58,18 @@ public class EventsManager : MonoBehaviour
     }
 
     
-    public void TriggerCarPassedNoEntrySignEvent(GameObject car)
+    public void TriggerCarPassedNoEntrySignEvent(int carId)
     {
-        carPassedNoEntrySignEvent?.Invoke(car);
+        carPassedNoEntrySignEvent?.Invoke(carId);
+    }
+    
+    public void TriggerCarPassedRedLightEvent(int carId)
+    {
+        carPassedRedLightEvent?.Invoke(carId);
+    }
+    
+    public void TriggerCarBrokeSpeedLimitEvent()
+    {
+        carBrokeSpeedLimitEvent?.Invoke();
     }
 }
