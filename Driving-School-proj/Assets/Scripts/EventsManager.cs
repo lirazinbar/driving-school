@@ -14,7 +14,7 @@ public class EventsManager : MonoBehaviour
     public UnityEvent<int> carStoppedBeforeStopSignEvent = new UnityEvent<int>();
     public UnityEvent<GearState> carGearStateChangedEvent = new UnityEvent<GearState>();
     public UnityEvent<CrossSectionDirections> carEnteredCrossSectionEvent = new UnityEvent<CrossSectionDirections>();
-    public UnityEvent<GameObject> carPassedNoEntrySignEvent = new UnityEvent<GameObject>();
+    public UnityEvent<int> carPassedNoEntrySignEvent = new UnityEvent<int>();
     public UnityEvent<int> carPassedRedLightEvent = new UnityEvent<int>();
     public UnityEvent carBrokeSpeedLimitEvent = new UnityEvent();
 
