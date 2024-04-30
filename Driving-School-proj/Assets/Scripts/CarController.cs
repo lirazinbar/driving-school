@@ -34,17 +34,19 @@ public class CarController : MonoBehaviour
         if (!isAutonomous)
         {
             if (!keyboardControlled) {
-                if (GearStick.transform.rotation.eulerAngles.x < 60)
+                if (GearStick.transform.rotation.eulerAngles.x < 10 || GearStick.transform.rotation.eulerAngles.x > 350)
+                {
+                    ChangeGear(GearState.Park);
+                } else if (GearStick.transform.rotation.eulerAngles.x < 60)
                 {
                     ChangeGear(GearState.Drive);
-                    Debug.Log("DDD");
                 }
                 else
                 {
                     ChangeGear(GearState.Reverse);
-                    Debug.Log("RRR");
                 }
             }
+            
             GetInput();
         }
         HandleMotor();
@@ -195,6 +197,10 @@ public class CarController : MonoBehaviour
 
     private void ChangeGear(GearState newGearState)
     {
+        if (_currentGearState != newGearState)
+        {
+            EventsManager.Instance.TriggerCarGearStateChangedEvent(newGearState);
+        }
         _currentGearState = newGearState;
     }
 }
