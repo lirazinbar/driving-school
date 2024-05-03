@@ -7,19 +7,28 @@ public class SlotController : MonoBehaviour, IDropHandler
 {
     public void OnDrop(PointerEventData eventData)
     {
-        if (transform.childCount == 0)
+        Debug.Log("OnDrop");
+        GameObject dropped = eventData.pointerDrag;
+        DraggableItem draggableItem = dropped.GetComponent<DraggableItem>();
+        //
+        Debug.Log("tag: " + draggableItem.originalParent.tag);
+        if (draggableItem.originalParent.CompareTag("SrcSlot") && (transform.childCount == 0 || transform.CompareTag("TrashSlot")) && !transform.CompareTag("SrcSlot"))
         {
-            GameObject dropped = eventData.pointerDrag;
-            // CheckIfSourceSlotIsEmpty(dropped);
-            DraggableItem draggableItem = dropped.GetComponent<DraggableItem>();
+            Transform newItem = Instantiate(draggableItem.transform);
+            newItem.SetParent(draggableItem.originalParent);
+            newItem.name = "Item";
+            newItem.GetComponent<DraggableItem>().image.raycastTarget = true;
             draggableItem.parentAfterDrag = transform;
-            // draggableItem.originalParent = transform;
-
+            draggableItem.originalParent = draggableItem.parentAfterDrag;
         }
-    }
-
-    private void CheckIfSourceSlotIsEmpty(GameObject item)
-    {
-        Instantiate(item);
+        //
+        else if (transform.childCount == 0)
+        {
+            draggableItem.parentAfterDrag = transform;
+        }
+        if (transform.CompareTag("TrashSlot"))
+        {
+            Destroy(dropped.gameObject);
+        }
     }
 }
