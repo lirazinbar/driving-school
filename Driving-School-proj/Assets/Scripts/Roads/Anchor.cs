@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Cars;
 using UnityEngine;
 using UnityEngine.Splines;
@@ -8,7 +9,7 @@ namespace Roads
     public class Anchor : MonoBehaviour
     {
         [SerializeField] private bool isEnterAnchor;
-        [SerializeField] private SplineContainer splineContainer;
+        [SerializeField] private List<SplineContainer> splineContainers;
     
         // private bool _hasCollided;
         
@@ -30,9 +31,9 @@ namespace Roads
         // }
 
 
-        public SplineContainer GetSplineContainer()
+        public SplineContainer GetRandomSplineContainer()
         {
-            return isEnterAnchor ? splineContainer : null;
+            return isEnterAnchor ? splineContainers[UnityEngine.Random.Range(0, splineContainers.Count)] : null;
         }
     
         public bool IsEnter()

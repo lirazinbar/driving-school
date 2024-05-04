@@ -63,7 +63,7 @@ namespace Cars
                 Anchor anchor = other.GetComponent<Anchor>();
                 if (anchor.IsEnter())
                 {
-                    SplineContainer splineContainer = anchor.GetSplineContainer();
+                    SplineContainer splineContainer = anchor.GetRandomSplineContainer();
                     if (splineContainer != null)
                     {
                         Debug.Log("Spline container: " + splineContainer.name);
