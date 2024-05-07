@@ -9,6 +9,11 @@ namespace TrafficObjects
         [SerializeField] private TrafficLightController _trafficLightController;
         private List<CarDriverAutonomous> _autonomousCars = new List<CarDriverAutonomous>();
 
+        public bool IsEmpty()
+        {
+            return _autonomousCars.Count == 0;   
+        }
+
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Car"))
@@ -49,7 +54,7 @@ namespace TrafficObjects
             {
                 switch (lightState)
                 {
-                    case TrafficLightController.LightState.Red:
+                    case TrafficLightController.LightState.Yellow:
                         autonomousCar.SetLayerOfRaycast(RaycastType.Stop, "StopLine", false);
                         autonomousCar.SetLayerOfRaycast(RaycastType.SlowDown, "StopLine", false);
                         break;

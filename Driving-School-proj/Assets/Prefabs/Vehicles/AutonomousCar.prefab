@@ -532,7 +532,7 @@ MonoBehaviour:
   frontSideSensorsPosition: 1.2
   frontSideSensorsAngle: 20
   sensorSlowDownLength: 25
-  sensorStopLength: 5
+  sensorStopLength: 3
   sensorsHight: 1
 --- !u!114 &-5547816086083028794
 MonoBehaviour:
@@ -546,6 +546,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ceda2d210d96436796711210d7b38b3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeToLiveSeconds: 120
 --- !u!1 &5450577674995089335
 GameObject:
   m_ObjectHideFlags: 0

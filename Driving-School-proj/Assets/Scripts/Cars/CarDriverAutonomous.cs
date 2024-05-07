@@ -21,7 +21,7 @@ namespace Cars
         private bool _isBreaking;
 
         private const float SlowDownDistance = 25f;
-        private const float StopDistance = 5f;
+        private const float StopDistance = 3f;
     
         [Header("Sensors")]
         [SerializeField] private float frontSensorsStartPoint = 3f;
@@ -162,7 +162,7 @@ namespace Cars
             // Front right angle sensor
             if (Physics.Raycast(frontRightSensorPos, 
                     Quaternion.AngleAxis(frontSideSensorsAngle, transform.up) * transform.forward,
-                    out hit, sensorsLength / 5f, bitmask))
+                    out hit, sensorsLength / 10f, bitmask))
             {
                 Debug.DrawLine(frontRightSensorPos, hit.point, color);
                 isHit = true;
@@ -178,7 +178,7 @@ namespace Cars
             // Front left angle sensor
             if (Physics.Raycast(frontLeftSensorPos, 
                     Quaternion.AngleAxis(-frontSideSensorsAngle, transform.up) * transform.forward,
-                    out hit, sensorsLength / 5f, bitmask))
+                    out hit, sensorsLength / 10f, bitmask))
             {
                 Debug.DrawLine(frontLeftSensorPos, hit.point, color);
                 isHit = true;
