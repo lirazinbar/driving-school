@@ -41,9 +41,10 @@ public class CreateRouteMap : MonoBehaviour
                     {
                         // Instantiate the prefab corresponding to the component number
                         GameObject prefab = componentsPrefabs[componentNumber - 1];
-                        Vector3 prefabPosition =new Vector3( transform.position.x + (j+1) * 100, 0, transform.position.z - (i+1) * 100);
+                        Vector3 prefabPosition =new Vector3( transform.position.x + (j+1) * 100, 0, transform.position.z - (i) * 100);
                         
-                        Instantiate(prefab, prefabPosition, Quaternion.Euler(0, componentObject.rotation, 0));
+                        GameObject newComponent = Instantiate(prefab, prefabPosition, Quaternion.Euler(0, 0, 0));
+                        newComponent.transform.GetChild(0).Rotate(new Vector3(0, componentObject.rotation * -1, 0));
                     }
                     else
                     {
