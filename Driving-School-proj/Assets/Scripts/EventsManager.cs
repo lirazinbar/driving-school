@@ -17,6 +17,7 @@ public class EventsManager : MonoBehaviour
     public UnityEvent<int> carPassedNoEntrySignEvent = new UnityEvent<int>();
     public UnityEvent<int> carPassedRedLightEvent = new UnityEvent<int>();
     public UnityEvent carBrokeSpeedLimitEvent = new UnityEvent();
+    public UnityEvent<ComponentObject[,]> routeMapSaved = new UnityEvent<ComponentObject[,]>();
 
     private void Awake()
     {
@@ -71,5 +72,10 @@ public class EventsManager : MonoBehaviour
     public void TriggerCarBrokeSpeedLimitEvent()
     {
         carBrokeSpeedLimitEvent?.Invoke();
+    }
+    
+    public void TriggerRouteMapSaved(ComponentObject[,] routeMap)
+    {
+        routeMapSaved?.Invoke(routeMap);
     }
 }
