@@ -91,7 +91,6 @@ namespace Cars
                 _knotsPositions.Add(knotWorldPosition);
             }
             
-            Debug.Log("Knots count: " + _knotsPositions.Count);
             SetTargetPosition(_knotsPositions[0]);
         }
 

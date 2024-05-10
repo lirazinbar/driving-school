@@ -18,9 +18,10 @@ namespace TrafficObjects
         private LightState _currentLightState;
 
         private const float YellowLightDuration = 2f;
-        private const float GreenLightDuration = 7f;
+        private const float GreenLightDuration = 5f;
 
         private float _timer;
+        private bool isEmpty = true;
 
         void Awake()
         {
@@ -113,19 +114,22 @@ namespace TrafficObjects
         
         public void StartSequence()
         {
-            if (trafficLightSurfaceDetector.IsEmpty())
-            {
-                YieldTurn();
-            }
-            else
-            {
-                SetLightState(LightState.RedAndYellow);
-            }
+            SetLightState(LightState.RedAndYellow);
         }
         
         private void YieldTurn()
         {
             _junctionTrafficLightsManager.OnTrafficLightChangedToRed();
+        }
+
+        public bool IsEmpty()
+        { 
+            return isEmpty;
+        }
+        
+        public void SetIsEmpty(bool value)
+        {
+            isEmpty = value;
         }
     }
 }

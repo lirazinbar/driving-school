@@ -17,7 +17,30 @@ namespace Roads
 
         private void SwitchTrafficLight()
         {
-            _currentTrafficLightIndex = (_currentTrafficLightIndex + 1) % _trafficLights.Length;
+            _currentTrafficLightIndex++;
+            if (_currentTrafficLightIndex >= _trafficLights.Length)
+            {
+                _currentTrafficLightIndex = 0;
+            }
+            
+            // bool isAnyTrafficLightNotEmpty = false;
+            // if (_currentTrafficLightIndex != 0)
+            // {
+            //     for (int i = _currentTrafficLightIndex; i < _trafficLights.Length && !isAnyTrafficLightNotEmpty; i++)
+            //     {
+            //         if (!_trafficLights[i].IsEmpty())
+            //         {
+            //             _currentTrafficLightIndex = i;
+            //             isAnyTrafficLightNotEmpty = true;
+            //         }
+            //     }
+            // }
+            //
+            // if (!isAnyTrafficLightNotEmpty)
+            // {
+            //     _currentTrafficLightIndex = 0;
+            // }
+
             _trafficLights[_currentTrafficLightIndex].StartSequence();
         }
         

@@ -10,13 +10,14 @@ namespace Cars
     { 
         [SerializeField] private GameObject carPrefab; 
         [SerializeField] private List<SplineContainer> splineContainers;
-        private float _timer = 10f;
+        private const float SpawnInterval = 12f;
+        private float _timer = SpawnInterval;
         
-       // Instantiate a new car every 10 seconds
+       // Instantiate a new car every SpawnInterval seconds
         private void Update()
         {
             _timer += Time.deltaTime;
-            if (_timer > 10)
+            if (_timer > SpawnInterval)
             {
                 _timer = 0;
                 GameObject car = Instantiate(carPrefab, transform.position, transform.parent.rotation);

@@ -8,11 +8,7 @@ namespace TrafficObjects
     {
         [SerializeField] private TrafficLightController _trafficLightController;
         private List<CarDriverAutonomous> _autonomousCars = new List<CarDriverAutonomous>();
-
-        public bool IsEmpty()
-        {
-            return _autonomousCars.Count == 0;   
-        }
+        private int _carsInTrafficLightCounter;
 
         private void OnTriggerEnter(Collider other)
         {
@@ -29,6 +25,11 @@ namespace TrafficObjects
                         autonomousCar.SetLayerOfRaycast(RaycastType.SlowDown, "StopLine", true);
                     }
                 }
+                _carsInTrafficLightCounter++;
+                if (_carsInTrafficLightCounter == 1)
+                {
+                    _trafficLightController.SetIsEmpty(false);
+                }
             }
         }
         
@@ -44,6 +45,12 @@ namespace TrafficObjects
                     _autonomousCars.Remove(autonomousCar);
                     autonomousCar.SetLayerOfRaycast(RaycastType.Stop, "StopLine", false);
                     autonomousCar.SetLayerOfRaycast(RaycastType.SlowDown, "StopLine", false);
+                }
+
+                _carsInTrafficLightCounter--;
+                if (_carsInTrafficLightCounter == 0)
+                {
+                    _trafficLightController.SetIsEmpty(true);
                 }
             }
         }
