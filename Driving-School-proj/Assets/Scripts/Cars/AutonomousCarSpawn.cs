@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Splines;
 using Random = UnityEngine.Random;
@@ -8,20 +9,45 @@ namespace Cars
 {
     public class AutonomousCarSpawn : MonoBehaviour
     { 
-        [SerializeField] private GameObject carPrefab; 
+        [SerializeField] private GameObject[] vehiclesPrefabs;
+        private Dictionary<string, Material[]> _materials = new Dictionary<string, Material[]>();
         [SerializeField] private List<SplineContainer> splineContainers;
         private const float SpawnInterval = 12f;
         private float _timer = SpawnInterval;
-        
-       // Instantiate a new car every SpawnInterval seconds
+
+        private void Start()
+        {
+            // Load prefabs form directory
+            vehiclesPrefabs = Resources.LoadAll<GameObject>("Prefabs/Vehicles");
+            
+            // Load materials from all directories under Materials/Vehicles
+            string[] materialsDirectoriesPaths = Directory.GetDirectories("Assets/Resources/Materials/Vehicles");
+            foreach (string directoryPath in materialsDirectoriesPaths)
+            {
+                string directoryName = Path.GetFileNameWithoutExtension(directoryPath);
+                if (directoryName != null)
+                    _materials[directoryName] = Resources.LoadAll<Material>("Materials/Vehicles/" + directoryName);
+            }
+        }
+
         private void Update()
         {
             _timer += Time.deltaTime;
             if (_timer > SpawnInterval)
             {
                 _timer = 0;
-                GameObject car = Instantiate(carPrefab, transform.position, transform.parent.rotation);
+                // Instantiate a new vehicle every SpawnInterval seconds randomly from the list of prefabs
+                GameObject vehiclePrefab = vehiclesPrefabs[Random.Range(0, vehiclesPrefabs.Length)];
 
+                // Set a random material for the vehicle if there are any materials for the vehicle type
+                string vehicleType = vehiclePrefab.name;
+                if (_materials.ContainsKey(vehicleType) && _materials[vehicleType].Length > 0)
+                {
+                    var vehicleBody = vehiclePrefab.transform.Find("Body");
+                    vehicleBody.GetComponent<Renderer>().material = _materials["PrivateCar"][Random.Range(0, _materials["PrivateCar"].Length)];
+                }
+                GameObject car = Instantiate(vehiclePrefab, transform.position, transform.parent.rotation);
+            
                 CarDriverAutonomous autonomousCar = car.GetComponent<CarDriverAutonomous>();
                 autonomousCar.Initialize(splineContainers[Random.Range(0, splineContainers.Count)]);
             }
