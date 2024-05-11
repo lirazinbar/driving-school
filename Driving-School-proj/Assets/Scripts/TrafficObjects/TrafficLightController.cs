@@ -1,59 +1,62 @@
+using Enums;
+using Managers;
+using Roads;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace TrafficObjects
 {
     public class TrafficLightController : MonoBehaviour
     {
+        [Header("Lights")]
         [SerializeField] private Light redLight;
         [SerializeField] private Light yellowLight;
         [SerializeField] private Light greenLight;
     
-        [SerializeField] private TrafficLightSurfaceDetector _trafficLightSurfaceDetector;
+        [SerializeField] private TrafficLightSurfaceDetector trafficLightSurfaceDetector;
+        private JunctionTrafficLightsManager _junctionTrafficLightsManager;
+        private LightState _currentLightState;
 
-        public enum LightState { Red, Yellow, Green, RedAndYellow};
-        private LightState currentLightState;
+        private const float YellowLightDuration = 2f;
+        private const float GreenLightDuration = 5f;
 
-        private float redLightDuration = 5f;
-        private float yellowLightDuration = 2f;
-        private float greenLightDuration = 5f;
+        private float _timer;
+        private bool isEmpty = true;
 
-        private float timer;
-
-        void Start()
+        void Awake()
         {
-            // Start with the red light
-            SetLightState(LightState.Red);
+            _junctionTrafficLightsManager = GetComponentInParent<JunctionTrafficLightsManager>();
+            // Start with red light
+            redLight.enabled = true;
+            yellowLight.enabled = false;
+            greenLight.enabled = false;
+            _currentLightState = LightState.Red;
         }
 
         void Update()
         {
             // Update the timer
-            timer += Time.deltaTime;
+            _timer += Time.deltaTime;
 
             // Check if it's time to switch lights
-            switch (currentLightState)
+            switch (_currentLightState)
             {
                 case LightState.Red:
-                    if (timer >= redLightDuration)
-                    {
-                        SetLightState(LightState.RedAndYellow);
-                    }
                     break;
                 case LightState.Yellow:
-                    if (timer >= yellowLightDuration)
+                    if (_timer >= YellowLightDuration)
                     {
                         SetLightState(LightState.Red);
                     }
                     break;
-
                 case LightState.Green:
-                    if (timer >= greenLightDuration)
+                    if (_timer >= GreenLightDuration)
                     {
                         SetLightState(LightState.Yellow);
                     }
                     break;
                 case LightState.RedAndYellow:
-                    if (timer >= yellowLightDuration)
+                    if (_timer >= YellowLightDuration)
                     {
                         SetLightState(LightState.Green);
                     }
@@ -64,7 +67,7 @@ namespace TrafficObjects
         private void SetLightState(LightState newState)
         {
             // Reset the timer
-            timer = 0f;
+            _timer = 0f;
 
             // Disable all lights
             redLight.enabled = false;
@@ -76,14 +79,15 @@ namespace TrafficObjects
             {
                 case LightState.Red:
                     redLight.enabled = true;
-                    _trafficLightSurfaceDetector.OnLightChanged(LightState.Red);
+                    YieldTurn();
                     break;
                 case LightState.Yellow:
                     yellowLight.enabled = true;
+                    trafficLightSurfaceDetector.OnLightChanged(LightState.Yellow);
                     break;
                 case LightState.Green:
                     greenLight.enabled = true;
-                    _trafficLightSurfaceDetector.OnLightChanged(LightState.Green);
+                    trafficLightSurfaceDetector.OnLightChanged(LightState.Green);
                     break;
                 case LightState.RedAndYellow:
                     redLight.enabled = true;
@@ -92,20 +96,40 @@ namespace TrafficObjects
             }
 
             // Update the current light state
-            currentLightState = newState;
+            _currentLightState = newState;
         }
     
         public LightState GetCurrentLightState()
         {
-            return currentLightState;
+            return _currentLightState;
         }
         
         public void OnCarPassedStopLine(int carId)
         {
-            if (currentLightState == LightState.Red)
+            if (_currentLightState == LightState.Red)
             {
                 EventsManager.Instance.TriggerCarPassedRedLightEvent(carId);
             }
+        }
+        
+        public void StartSequence()
+        {
+            SetLightState(LightState.RedAndYellow);
+        }
+        
+        private void YieldTurn()
+        {
+            _junctionTrafficLightsManager.OnTrafficLightChangedToRed();
+        }
+
+        public bool IsEmpty()
+        { 
+            return isEmpty;
+        }
+        
+        public void SetIsEmpty(bool value)
+        {
+            isEmpty = value;
         }
     }
 }

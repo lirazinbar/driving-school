@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Enums;
+using Managers;
 using UnityEngine;
 
 public class CrossSectionDitectorController : MonoBehaviour
@@ -37,10 +39,4 @@ public class CrossSectionDitectorController : MonoBehaviour
         }
     }
     
-}
-public enum CrossSectionDirections
-{
-    Left = 0,
-    Right = 1,
-    Forward = 2
 }
