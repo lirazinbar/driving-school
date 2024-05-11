@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Enums;
 using Roads;
 using Unity.Mathematics;
 using UnityEngine;
@@ -27,7 +28,7 @@ namespace Cars
         [SerializeField] private float frontSensorsStartPoint = 3f;
         [SerializeField] private float frontSideSensorsPosition = 1.2f;
         [SerializeField] private float frontSideSensorsAngle = 20f;
-        [SerializeField] private float sensorSlowDownLength = 15f;
+        [SerializeField] private float sensorSlowDownLength = 25f;
         [SerializeField] private float sensorStopLength = StopDistance;
         [SerializeField] private float sensorsHight = 1f;
         private Dictionary<RaycastType, int> _bitmasks = new Dictionary<RaycastType, int>( );
@@ -268,16 +269,7 @@ namespace Cars
 
     }
 
-    public enum HitState
-    {
-        None,
-        SlowDown,
-        Stop
-    }
+    
 
-    public enum RaycastType
-    {
-        Stop,
-        SlowDown
-    }
+    
 }

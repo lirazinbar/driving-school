@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Cars;
+using Enums;
 using UnityEngine;
 
 namespace TrafficObjects
@@ -19,7 +20,7 @@ namespace TrafficObjects
                 if (autonomousCar != null)
                 {
                     _autonomousCars.Add(autonomousCar);
-                    if (_trafficLightController.GetCurrentLightState() == TrafficLightController.LightState.Green)
+                    if (_trafficLightController.GetCurrentLightState() == LightState.Green)
                     {
                         autonomousCar.SetLayerOfRaycast(RaycastType.Stop, "StopLine", true);
                         autonomousCar.SetLayerOfRaycast(RaycastType.SlowDown, "StopLine", true);
@@ -55,17 +56,17 @@ namespace TrafficObjects
             }
         }
         
-       public void OnLightChanged(TrafficLightController.LightState lightState)
+       public void OnLightChanged(LightState lightState)
         {
             foreach (CarDriverAutonomous autonomousCar in _autonomousCars)
             {
                 switch (lightState)
                 {
-                    case TrafficLightController.LightState.Yellow:
+                    case LightState.Yellow:
                         autonomousCar.SetLayerOfRaycast(RaycastType.Stop, "StopLine", false);
                         autonomousCar.SetLayerOfRaycast(RaycastType.SlowDown, "StopLine", false);
                         break;
-                    case TrafficLightController.LightState.Green:
+                    case LightState.Green:
                         autonomousCar.SetLayerOfRaycast(RaycastType.Stop, "StopLine", true);
                         autonomousCar.SetLayerOfRaycast(RaycastType.SlowDown, "StopLine", true);
                         break;

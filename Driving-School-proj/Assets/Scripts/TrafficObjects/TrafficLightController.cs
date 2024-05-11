@@ -1,3 +1,4 @@
+using Enums;
 using Managers;
 using Roads;
 using UnityEngine;
@@ -14,7 +15,6 @@ namespace TrafficObjects
     
         [SerializeField] private TrafficLightSurfaceDetector trafficLightSurfaceDetector;
         private JunctionTrafficLightsManager _junctionTrafficLightsManager;
-        public enum LightState { Red, Yellow, Green, RedAndYellow};
         private LightState _currentLightState;
 
         private const float YellowLightDuration = 2f;

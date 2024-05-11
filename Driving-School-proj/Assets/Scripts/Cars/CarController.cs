@@ -1,4 +1,5 @@
 using System.Collections;
+using Enums;
 using Managers;
 using UnityEngine;
 
@@ -37,17 +38,19 @@ namespace Cars
             if (!isAutonomous)
             {
                 if (!keyboardControlled) {
-                    if (GearStick.transform.rotation.eulerAngles.x < 60)
+                    if (GearStick.transform.rotation.eulerAngles.x < 10 || GearStick.transform.rotation.eulerAngles.x > 350)
+                    {
+                        ChangeGear(GearState.Park);
+                    } else if (GearStick.transform.rotation.eulerAngles.x < 60)
                     {
                         ChangeGear(GearState.Drive);
-                        Debug.Log("DDD");
                     }
                     else
                     {
                         ChangeGear(GearState.Reverse);
-                        Debug.Log("RRR");
                     }
                 }
+            
                 GetInput();
             }
             HandleMotor();
@@ -196,22 +199,16 @@ namespace Cars
             return _currentGearState;
         }
 
-        private void ChangeGear(GearState newGearState)
-        {
-            _currentGearState = newGearState;
-        }
-        
-        public bool IsCarAutonomous()
-        {
-            return isAutonomous;
-        }
-    }
-    public enum GearState
+    private void ChangeGear(GearState newGearState)
     {
-        Park = 0,
-        Drive = 1,
-        Reverse = -1
+        if (_currentGearState != newGearState)
+        {
+            EventsManager.Instance.TriggerCarGearStateChangedEvent(newGearState);
+        }
+        _currentGearState = newGearState;
     }
+}
+
 
 
 
