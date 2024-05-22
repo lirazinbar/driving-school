@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class RouteEditorConvertor : MonoBehaviour
 {
     [SerializeField] private GameObject Grid; 
+    [SerializeField] private Canvas gCanvas; 
     ComponentObject[,] RouteMap = new ComponentObject[3, 8];
     
     public void OnSaveRoute()
@@ -34,6 +35,8 @@ public class RouteEditorConvertor : MonoBehaviour
 
         PrintMatrix();
         EventsManager.Instance.TriggerRouteMapSaved(RouteMap);
+        
+        gCanvas.gameObject.SetActive(false);
     }
     
     void PrintMatrix()
