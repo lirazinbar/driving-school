@@ -6,6 +6,7 @@ public class MainMenu : MonoBehaviour
 {
     public void LoadDefaultEnvironment()
     {
+        
         UnityEngine.SceneManagement.SceneManager.LoadScene("GameEnv");
     }
     

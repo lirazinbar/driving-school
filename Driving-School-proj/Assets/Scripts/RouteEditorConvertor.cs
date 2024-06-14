@@ -34,6 +34,10 @@ public class RouteEditorConvertor : MonoBehaviour
         }
 
         PrintMatrix();
+        // Save the route map
+        List<ComponentObject[,]> routeList = new List<ComponentObject[,]>();
+        routeList.Add(RouteMap);
+        XMLManager.Instance.Save(routeList);
         EventsManager.Instance.TriggerRouteMapSaved(RouteMap);
         
         gCanvas.gameObject.SetActive(false);
@@ -51,6 +55,7 @@ public class RouteEditorConvertor : MonoBehaviour
     }
 }
 
+[System.Serializable]
 public class ComponentObject
 {
     public int componentNumber;
