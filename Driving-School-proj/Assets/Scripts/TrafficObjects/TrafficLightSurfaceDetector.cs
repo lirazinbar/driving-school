@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Cars;
 using Enums;
+using Managers;
 using UnityEngine;
 
 namespace TrafficObjects
@@ -15,7 +16,11 @@ namespace TrafficObjects
         {
             if (other.CompareTag("Car"))
             {
-                Debug.Log("Car entered the traffic light surface detector.");
+                if (GameManager.Instance.IsMainCar( other.gameObject.GetInstanceID()))
+                {
+                    Debug.Log("Main car entered traffic light surface detector");
+                }
+                // Debug.Log("Car entered traffic light surface detector");
                 CarDriverAutonomous autonomousCar = other.GetComponent<CarDriverAutonomous>();
                 if (autonomousCar != null)
                 {
@@ -38,7 +43,11 @@ namespace TrafficObjects
         {
             if (other.CompareTag("Car"))
             {
-                Debug.Log("Car exited the traffic light surface detector.");
+                if (GameManager.Instance.IsMainCar( other.gameObject.GetInstanceID()))
+                {
+                    Debug.Log("Main car exited traffic light surface detector");
+                }
+                // Debug.Log("Car exited traffic light surface detector");
                 CarDriverAutonomous autonomousCar = other.GetComponent<CarDriverAutonomous>();
                 if (autonomousCar != null)
                 {

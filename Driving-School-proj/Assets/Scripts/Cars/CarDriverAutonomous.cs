@@ -53,7 +53,7 @@ namespace Cars
         
         public void Initialize(SplineContainer splineContainer)
         {
-            Debug.Log("Initialize car");
+            // Debug.Log("Initialize car");
             SetKnotsPositions(splineContainer);
         }
     
@@ -67,7 +67,6 @@ namespace Cars
                     SplineContainer splineContainer = anchor.GetRandomSplineContainer();
                     if (splineContainer != null)
                     {
-                        Debug.Log("Spline container: " + splineContainer.name);
                         SetKnotsPositions(splineContainer);
                     }
                 }

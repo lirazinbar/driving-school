@@ -59,5 +59,10 @@ namespace Managers
             Debug.Log("Main car broke speed limit.");
             FeedbackManager.Instance.UpdateScore(FeedbackScore.Speeding);
         }
+
+        public bool IsMainCar(int carId)
+        {
+            return carId == mainCar.GetInstanceID();
+        }
     }
 }
