@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class RouteEditorConvertor : MonoBehaviour
 {
     [SerializeField] private GameObject Grid; 
+    [SerializeField] private Canvas gCanvas; 
     ComponentObject[,] RouteMap = new ComponentObject[3, 8];
     
     public void OnSaveRoute()
@@ -33,7 +34,13 @@ public class RouteEditorConvertor : MonoBehaviour
         }
 
         PrintMatrix();
+        // Save the route map
+        List<ComponentObject[,]> routeList = new List<ComponentObject[,]>();
+        routeList.Add(RouteMap);
+        XMLManager.Instance.Save(routeList);
         EventsManager.Instance.TriggerRouteMapSaved(RouteMap);
+        
+        gCanvas.gameObject.SetActive(false);
     }
     
     void PrintMatrix()
@@ -48,6 +55,7 @@ public class RouteEditorConvertor : MonoBehaviour
     }
 }
 
+[System.Serializable]
 public class ComponentObject
 {
     public int componentNumber;
