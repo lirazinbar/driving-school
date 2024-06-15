@@ -51,7 +51,7 @@ namespace Managers
 
         private async void OnCarReachedStopSign(int carId, int stopSignId)
         {
-            Debug.Log("Car reached the stop sign event triggered");
+            // Debug.Log("Car reached stop sign event triggered");
             _stopSignObjects[stopSignId] = (false, false);
         
             await WaitForConditionsAsync(carId, stopSignId);
@@ -59,16 +59,14 @@ namespace Managers
     
         private void OnCarPassedStopSign(int stopSignId)
         {
-            Debug.Log("Car passed the stop sign event triggered");
-            var (carStopped, carPassed) = _stopSignObjects[stopSignId];
-            _stopSignObjects[stopSignId] = (carStopped, true);
+            // Debug.Log("Car passed stop sign event triggered");
+            _stopSignObjects[stopSignId] = (_stopSignObjects[stopSignId].carStopped, true);
         }
 
         private void OnCarStoppedBeforeStopSign(int stopSignId)
         {
-            Debug.Log("Car stopped at the stop sign event triggered");
-            var (carStopped, carPassed) = _stopSignObjects[stopSignId];
-            _stopSignObjects[stopSignId] = (true, carPassed);
+            // Debug.Log("Car stopped at stop sign event triggered");
+            _stopSignObjects[stopSignId] = (true, _stopSignObjects[stopSignId].carPassed);
         }
     
         private async Task WaitForConditionsAsync(int carId, int stopSignId)
@@ -84,19 +82,19 @@ namespace Managers
     
         private void OnCarPassedNoEntrySign(int carId)
         {
-            Debug.Log("Car passed the no entry sign event triggered");
+            // Debug.Log("Car passed the no entry sign event triggered");
             GameManager.Instance.UpdateNoEntrySignEvent(carId);
         }
     
         private void OnCarPassedRedLight(int carId)
         {
-            Debug.Log("Car passed the red traffic light event triggered");
+            // Debug.Log("Car passed the red traffic light event triggered");
             GameManager.Instance.UpdateCarPassedRedLightEvent(carId);
         }
     
         private void OnCarBrokenSpeedLimit()
         {
-            Debug.Log("Car broke the speed limit event triggered");
+            // Debug.Log("Car broke the speed limit event triggered");
             GameManager.Instance.UpdateCarBrokeSpeedLimitEvent();
         }
     }

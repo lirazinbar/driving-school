@@ -9,8 +9,17 @@ namespace TrafficObjects
         {
             if (other.CompareTag("Car"))
             {
-                Debug.Log("NoEntrySign triggered.");
-                EventsManager.Instance.TriggerCarPassedNoEntrySignEvent(other.gameObject.GetInstanceID());
+                if (GameManager.Instance.IsMainCar(other.gameObject.GetInstanceID()))
+                {
+                    Debug.Log("Main car reached no entry sign");
+                }
+                
+                string hitSide = TrafficObjectsUtils.CheckHitSide(transform, other);
+                Debug.Log("Hit side: " + hitSide);
+                if (hitSide.Equals("Front"))
+                {
+                    EventsManager.Instance.TriggerCarPassedNoEntrySignEvent(other.gameObject.GetInstanceID());
+                }
             }
         }
     }

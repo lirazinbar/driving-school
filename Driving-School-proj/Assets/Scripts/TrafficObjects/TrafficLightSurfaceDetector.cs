@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Cars;
 using Enums;
+using Managers;
 using UnityEngine;
 
 namespace TrafficObjects
@@ -15,17 +16,26 @@ namespace TrafficObjects
         {
             if (other.CompareTag("Car"))
             {
-                Debug.Log("Car entered the traffic light surface detector.");
-                CarDriverAutonomous autonomousCar = other.GetComponent<CarDriverAutonomous>();
-                if (autonomousCar != null)
+                if (GameManager.Instance.IsMainCar(other.gameObject.GetInstanceID()))
                 {
-                    _autonomousCars.Add(autonomousCar);
-                    if (_trafficLightController.GetCurrentLightState() == LightState.Green)
-                    {
-                        autonomousCar.SetLayerOfRaycast(RaycastType.Stop, "StopLine", true);
-                        autonomousCar.SetLayerOfRaycast(RaycastType.SlowDown, "StopLine", true);
-                    }
+                    Debug.Log("Main car entered traffic light surface detector");
                 }
+                
+                string hitSide = TrafficObjectsUtils.CheckHitSide(transform, other);
+                if (hitSide.Equals("Back"))
+                {
+                    CarDriverAutonomous autonomousCar = other.GetComponent<CarDriverAutonomous>();
+                    if (autonomousCar != null)
+                    {
+                        _autonomousCars.Add(autonomousCar);
+                        if (_trafficLightController.GetCurrentLightState() == LightState.Green)
+                        {
+                            autonomousCar.SetLayerOfRaycast(RaycastType.Stop, "StopLine", true);
+                            autonomousCar.SetLayerOfRaycast(RaycastType.SlowDown, "StopLine", true);
+                        }
+                    }
+                }                
+                
                 _carsInTrafficLightCounter++;
                 if (_carsInTrafficLightCounter == 1)
                 {
@@ -38,7 +48,10 @@ namespace TrafficObjects
         {
             if (other.CompareTag("Car"))
             {
-                Debug.Log("Car exited the traffic light surface detector.");
+                if (GameManager.Instance.IsMainCar( other.gameObject.GetInstanceID()))
+                {
+                    Debug.Log("Main car exited traffic light surface detector");
+                }
                 CarDriverAutonomous autonomousCar = other.GetComponent<CarDriverAutonomous>();
                 if (autonomousCar != null)
                 {

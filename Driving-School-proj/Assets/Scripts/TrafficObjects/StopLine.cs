@@ -1,6 +1,7 @@
 using Cars;
 using Enums;
 using Managers;
+using TrafficObjects;
 using UnityEngine;
 
 public class StopLine : MonoBehaviour
@@ -15,11 +16,19 @@ public class StopLine : MonoBehaviour
     {
         if (other.CompareTag("Car"))
         {
-            Debug.Log("StopLine triggered.");
             if (!_stopSurfaceDetector.IsCarStopped())
             {
                 _carPassed = true;
-                EventsManager.Instance.TriggerCarPassedStopSignEvent(_stopSign.GetInstanceID());
+                if (GameManager.Instance.IsMainCar(other.gameObject.GetInstanceID()))
+                {
+                    Debug.Log("Main car passed StopLine");
+                }
+                
+                string hitSide = TrafficObjectsUtils.CheckHitSide(transform, other);
+                if (hitSide.Equals("Front"))
+                {
+                    EventsManager.Instance.TriggerCarPassedStopSignEvent(_stopSign.GetInstanceID());
+                }
             }
         }
     }
@@ -28,7 +37,10 @@ public class StopLine : MonoBehaviour
     {
         if (other.CompareTag("Car"))
         {
-            Debug.Log("Car completely passed the StopLine.");
+            if (GameManager.Instance.IsMainCar(other.gameObject.GetInstanceID()))
+            {
+                Debug.Log("Main car completely passed StopLine");
+            }
             _autonomousCar = other.gameObject.GetComponent<CarDriverAutonomous>();
             if (_autonomousCar != null)
             {

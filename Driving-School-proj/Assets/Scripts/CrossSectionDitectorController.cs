@@ -32,7 +32,7 @@ public class CrossSectionDitectorController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("MainCar"))
+        if (other.CompareTag("Car") && GameManager.Instance.IsMainCar(other.gameObject.GetInstanceID()))
         {
            CrossSectionDirections selectedDirection = optionalDirectionsArray[rnd.Next(optionalDirectionsArray.Count)];
            EventsManager.Instance.TriggerCarEnteredCrossSectionEvent(selectedDirection);

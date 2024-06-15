@@ -18,7 +18,9 @@ namespace TrafficObjects
         private LightState _currentLightState;
 
         private const float YellowLightDuration = 2f;
-        private const float GreenLightDuration = 5f;
+        private const float GreenLightDuration = 7f;
+        private const float DecreasedGreenlightduration = 2f;
+        private float _currentGreenLightDuration = GreenLightDuration;
 
         private float _timer;
         private bool isEmpty = true;
@@ -50,12 +52,18 @@ namespace TrafficObjects
                     }
                     break;
                 case LightState.Green:
-                    if (_timer >= GreenLightDuration)
+                    if (_timer >= _currentGreenLightDuration)
                     {
+                        _currentGreenLightDuration = GreenLightDuration;
                         SetLightState(LightState.Yellow);
                     }
                     break;
                 case LightState.RedAndYellow:
+                    // If there are no cars in front the traffic light, decrease green light time
+                    if (isEmpty)
+                    {
+                        _currentGreenLightDuration = DecreasedGreenlightduration;
+                    }
                     if (_timer >= YellowLightDuration)
                     {
                         SetLightState(LightState.Green);
