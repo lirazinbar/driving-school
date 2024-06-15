@@ -1,6 +1,7 @@
 using Cars;
 using Enums;
 using Managers;
+using TrafficObjects;
 using UnityEngine;
 
 public class StopSurfaceDetector: MonoBehaviour
@@ -18,8 +19,13 @@ public class StopSurfaceDetector: MonoBehaviour
         {
             if (_car.IsStopped())
             {
+                if (GameManager.Instance.IsMainCar(_car.gameObject.GetInstanceID()))
+                {
+                    Debug.Log("Main car stopped before stop sign");
+                }
+                
                 _carStopped = true;
-                EventsManager.Instance.TriggerCarStoppedBeforeStopSignEvent(GetInstanceID());
+                EventsManager.Instance.TriggerCarStoppedBeforeStopSignEvent(stopSign.GetInstanceID());
                 CarDriverAutonomous autonomousCar = _car.GetComponent<CarDriverAutonomous>();
                 if (autonomousCar != null)
                 {
@@ -37,13 +43,21 @@ public class StopSurfaceDetector: MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("StopSurfaceDetector triggered.");
-        _carStopped = false;
         if (other.CompareTag("Car"))
         {
-            EventsManager.Instance.TriggerCarReachedStopSignEvent(other.gameObject.GetInstanceID(), stopSign.GetInstanceID());
-            _car = other.gameObject.GetComponent<CarController>();
-            _carReachedSign = true;
+            _carStopped = false;
+            if (GameManager.Instance.IsMainCar(other.gameObject.GetInstanceID()))
+            {
+                Debug.Log("Main car reached stop sign");
+            }
+            
+            string hitSide = TrafficObjectsUtils.CheckHitSide(transform, other);
+            if (hitSide.Equals("Front"))
+            {
+                EventsManager.Instance.TriggerCarReachedStopSignEvent(other.gameObject.GetInstanceID(), stopSign.GetInstanceID());
+                _car = other.gameObject.GetComponent<CarController>();
+                _carReachedSign = true;
+            }            
         }
     }
     

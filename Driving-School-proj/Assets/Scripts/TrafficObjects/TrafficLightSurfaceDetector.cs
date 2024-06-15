@@ -16,21 +16,26 @@ namespace TrafficObjects
         {
             if (other.CompareTag("Car"))
             {
-                if (GameManager.Instance.IsMainCar( other.gameObject.GetInstanceID()))
+                if (GameManager.Instance.IsMainCar(other.gameObject.GetInstanceID()))
                 {
                     Debug.Log("Main car entered traffic light surface detector");
                 }
-                // Debug.Log("Car entered traffic light surface detector");
-                CarDriverAutonomous autonomousCar = other.GetComponent<CarDriverAutonomous>();
-                if (autonomousCar != null)
+                
+                string hitSide = TrafficObjectsUtils.CheckHitSide(transform, other);
+                if (hitSide.Equals("Back"))
                 {
-                    _autonomousCars.Add(autonomousCar);
-                    if (_trafficLightController.GetCurrentLightState() == LightState.Green)
+                    CarDriverAutonomous autonomousCar = other.GetComponent<CarDriverAutonomous>();
+                    if (autonomousCar != null)
                     {
-                        autonomousCar.SetLayerOfRaycast(RaycastType.Stop, "StopLine", true);
-                        autonomousCar.SetLayerOfRaycast(RaycastType.SlowDown, "StopLine", true);
+                        _autonomousCars.Add(autonomousCar);
+                        if (_trafficLightController.GetCurrentLightState() == LightState.Green)
+                        {
+                            autonomousCar.SetLayerOfRaycast(RaycastType.Stop, "StopLine", true);
+                            autonomousCar.SetLayerOfRaycast(RaycastType.SlowDown, "StopLine", true);
+                        }
                     }
-                }
+                }                
+                
                 _carsInTrafficLightCounter++;
                 if (_carsInTrafficLightCounter == 1)
                 {
@@ -47,7 +52,6 @@ namespace TrafficObjects
                 {
                     Debug.Log("Main car exited traffic light surface detector");
                 }
-                // Debug.Log("Car exited traffic light surface detector");
                 CarDriverAutonomous autonomousCar = other.GetComponent<CarDriverAutonomous>();
                 if (autonomousCar != null)
                 {

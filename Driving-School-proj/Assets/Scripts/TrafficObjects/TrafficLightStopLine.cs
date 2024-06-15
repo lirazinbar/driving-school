@@ -1,3 +1,4 @@
+using Managers;
 using UnityEngine;
 
 namespace TrafficObjects
@@ -10,8 +11,15 @@ namespace TrafficObjects
         {
             if (other.CompareTag("Car"))
             {
-                Debug.Log("Car entered the traffic light stop line.");
-                trafficLightController.OnCarPassedStopLine(other.gameObject.GetInstanceID());
+                if (GameManager.Instance.IsMainCar(other.gameObject.GetInstanceID()))
+                {
+                    Debug.Log("Main car passed traffic light stop line");
+                }
+                string hitSide = TrafficObjectsUtils.CheckHitSide(transform, other);
+                if (hitSide.Equals("Back"))
+                {
+                    trafficLightController.OnCarPassedStopLine(other.gameObject.GetInstanceID());
+                }
             }
         }
     }
