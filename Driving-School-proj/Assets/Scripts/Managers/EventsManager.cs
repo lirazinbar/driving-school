@@ -22,18 +22,10 @@ namespace Managers
         public UnityEvent<int> carPassedRedLightEvent = new UnityEvent<int>();
         public UnityEvent carBrokeSpeedLimitEvent = new UnityEvent();
 
-        private void Awake()
+        void Awake()
         {
             // Singleton
-            if (Instance == null)
-            {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
+            Instance = this;
         }
     
         public void TriggerCarReachedStopSignEvent(int carId, int stopSignId)

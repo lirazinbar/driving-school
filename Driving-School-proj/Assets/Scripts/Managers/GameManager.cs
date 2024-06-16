@@ -9,15 +9,7 @@ namespace Managers
         void Awake()
         {
             // Singleton
-            if (Instance == null)
-            {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
+            Instance = this;
         }
 
         public void UpdateStopSignEvent(int carId, bool carStopped)
@@ -26,11 +18,11 @@ namespace Managers
             {
                 if (carStopped)
                 {
-                    Debug.Log("Main car stopped before the stop sign.");
+                    Debug.Log("Main car stopped before the stop sign");
                 }
                 else
                 {
-                    Debug.Log("Main car passed stop sign without stopping.");
+                    Debug.Log("Main car passed stop sign without stopping");
                     FeedbackManager.Instance.UpdateScore(FeedbackScore.StopSign);
                 }
             }
@@ -40,7 +32,7 @@ namespace Managers
         {
             if (carId == mainCar.GetInstanceID())
             {
-                Debug.Log("Main car passed no entry sign.");
+                Debug.Log("Main car passed no entry sign");
                 FeedbackManager.Instance.UpdateScore(FeedbackScore.NoEntry);
             }
         }
@@ -49,14 +41,14 @@ namespace Managers
         {
             if (carId == mainCar.GetInstanceID())
             {
-                Debug.Log("Main car passed red light.");
+                Debug.Log("Main car passed red light");
                 FeedbackManager.Instance.UpdateScore(FeedbackScore.RedLight);
             }
         }
     
         public void UpdateCarBrokeSpeedLimitEvent()
         {
-            Debug.Log("Main car broke speed limit.");
+            Debug.Log("Main car broke speed limit");
             FeedbackManager.Instance.UpdateScore(FeedbackScore.Speeding);
         }
 

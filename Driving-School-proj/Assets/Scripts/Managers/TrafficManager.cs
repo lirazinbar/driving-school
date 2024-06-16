@@ -10,18 +10,10 @@ namespace Managers
         private Dictionary<int, (bool carStopped, bool carPassed)> _stopSignObjects = new Dictionary<int, (bool, bool)>();
         [SerializeField] private int speedLimit = 50;
 
-        private void Awake()
+        void Awake()
         {
             // Singleton
-            if (Instance == null)
-            {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
+            Instance = this;
         }
     
         private void Start()
