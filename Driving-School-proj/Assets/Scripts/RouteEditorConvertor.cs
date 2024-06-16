@@ -49,8 +49,6 @@ public class RouteEditorConvertor : MonoBehaviour
         MapMatrixObject mapMatrixObject = new MapMatrixObject(MapName.GetComponent<TMP_InputField>().text, cellsArray);
         routeList.Add(mapMatrixObject);
         XMLManager.Instance.Save(routeList);
-        // TODO - here!
-        // EventsManager.Instance.TriggerRouteMapSaved(RouteMap);
         
         editorCanvas.gameObject.SetActive(false);
         menuCanvas.gameObject.SetActive(true);
