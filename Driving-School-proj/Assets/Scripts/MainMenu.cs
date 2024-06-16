@@ -25,17 +25,33 @@ public class MainMenu : MonoBehaviour
             GameObject newComponent = Instantiate(routeComponentPrefab, gridContainerGameObject.transform);
             newComponent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = route.name;
             Debug.Log(route.name);
-            
             newComponent.name = "Route" + (index+1);
+            
+            Button buttonComponent = newComponent.GetComponent<Button>();
+            buttonComponent.onClick.AddListener(() => OnChooseRoute(newComponent.name));
         }
 
         
         playModeMenuCanvas.gameObject.SetActive(true);
-        // UnityEngine.SceneManagement.SceneManager.LoadScene("GameEnv");
     }
     
     public void LoadEnvironmentEditor()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("RoutesEditor");
+    }
+    
+    public void OnChooseRoute(string name)
+    {
+        int routeIndex = int.Parse(name.Substring(5));
+
+        if (routeIndex == 0)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("GameEnv");
+        }
+        else
+        {
+            PlayerPrefs.SetString("RouteNumber", (routeIndex-1)+"");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("RoutesCreatorEnv");
+        }
     }
 }
