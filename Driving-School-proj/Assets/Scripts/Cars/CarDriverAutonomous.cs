@@ -72,7 +72,7 @@ namespace Cars
                 }
             }
             
-            if (other.CompareTag("DestroyPoint"))
+            if (other.CompareTag("DestroyPoint") && !gameObject.CompareTag("MainCar")) 
             {
                 Debug.Log("Destroy car");
                 Destroy(gameObject);

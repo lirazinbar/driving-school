@@ -8,28 +8,21 @@ public class CreateRouteMap : MonoBehaviour
     [SerializeField] private List<GameObject> componentsPrefabs;
     private void Start()
     {
-        EventsManager.Instance.routeMapSaved.AddListener(OnRouteMapSave);
+        List<MapMatrixObject> routeList = XMLManager.Instance.Load();
+        int routeNumber = int.Parse(PlayerPrefs.GetString("RouteNumber"));
+
+        OnRouteMapSave(routeList[routeNumber]);
     }
 
-    private void OnDestroy()
-    {
-        EventsManager.Instance.routeMapSaved.RemoveListener(OnRouteMapSave);
-    }
-    
-    private void OnRouteMapSave(ComponentObject[,] routeMap)
+    private void OnRouteMapSave(MapMatrixObject mapMatrixObject)
     {
         Debug.Log("route map saved event event triggered");
         
-        int rows = routeMap.GetLength(0);
-        int cols = routeMap.GetLength(1);
-
         // Iterate over the routeMap matrix
-        for (int i = 0; i < rows; i++)
+        foreach (MapCellObject cell in mapMatrixObject.mapCellObjectsArray)
         {
-            for (int j = 0; j < cols; j++)
-            {
                 // Get the SlotObject at the current cell
-                ComponentObject componentObject = routeMap[i, j];
+                ComponentObject componentObject = cell.componentObject;
 
                 // If the slot is not empty (SlotObject is not null)
                 if (componentObject.componentNumber != 0)
@@ -42,7 +35,7 @@ public class CreateRouteMap : MonoBehaviour
                     {
                         // Instantiate the prefab corresponding to the component number
                         GameObject prefab = componentsPrefabs[componentNumber - 1];
-                        Vector3 prefabPosition =new Vector3( transform.position.x + (j+1) * 100, 0, transform.position.z - (i) * 100);
+                        Vector3 prefabPosition =new Vector3( transform.position.x + (cell.col+1) * 100, 0, transform.position.z - (cell.row) * 100);
                         
                         GameObject newComponent = Instantiate(prefab, prefabPosition, Quaternion.Euler(0, 0, 0));
                         newComponent.transform.GetChild(0).Rotate(new Vector3(0, componentObject.rotation * -1, 0));
@@ -52,7 +45,7 @@ public class CreateRouteMap : MonoBehaviour
                         Debug.LogWarning("Component number out of bounds: " + componentNumber);
                     }
                 }
-            }
+            
         }
     }
 }

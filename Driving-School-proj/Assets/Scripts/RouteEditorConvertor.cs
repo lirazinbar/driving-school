@@ -4,15 +4,23 @@ using Managers;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Xml.Serialization;
+using TMPro;
+
 
 public class RouteEditorConvertor : MonoBehaviour
 {
     [SerializeField] private GameObject Grid; 
-    [SerializeField] private Canvas gCanvas; 
+    [SerializeField] private Canvas editorCanvas;     
+    [SerializeField] private Canvas menuCanvas;     
+    [SerializeField] private GameObject MapName; 
+
     ComponentObject[,] RouteMap = new ComponentObject[3, 8];
     
     public void OnSaveRoute()
     {
+        MapCellObject[] cellsArray = new MapCellObject[3*8];
+
         foreach (Transform slot in Grid.transform)
         {
             int rowIndex = int.Parse(slot.name.Substring(4, 1));
@@ -29,18 +37,23 @@ public class RouteEditorConvertor : MonoBehaviour
             }
             
             ComponentObject componentObject = new ComponentObject(componentNumber, rotationZ);
+            MapCellObject mapCellObject = new MapCellObject(rowIndex, colIndex, componentObject);
+            cellsArray[rowIndex*8 + colIndex] = mapCellObject;
 
             RouteMap[rowIndex, colIndex] = componentObject;
         }
 
         PrintMatrix();
         // Save the route map
-        List<ComponentObject[,]> routeList = new List<ComponentObject[,]>();
-        routeList.Add(RouteMap);
+        List<MapMatrixObject> routeList = XMLManager.Instance.Load();
+        MapMatrixObject mapMatrixObject = new MapMatrixObject(MapName.GetComponent<TMP_InputField>().text, cellsArray);
+        routeList.Add(mapMatrixObject);
         XMLManager.Instance.Save(routeList);
-        EventsManager.Instance.TriggerRouteMapSaved(RouteMap);
+        // TODO - here!
+        // EventsManager.Instance.TriggerRouteMapSaved(RouteMap);
         
-        gCanvas.gameObject.SetActive(false);
+        editorCanvas.gameObject.SetActive(false);
+        menuCanvas.gameObject.SetActive(true);
     }
     
     void PrintMatrix()
@@ -55,11 +68,63 @@ public class RouteEditorConvertor : MonoBehaviour
     }
 }
 
+
+
+[System.Serializable]
+public class MapMatrixObject
+{
+    [XmlElement("Name")]
+    public string name;
+    
+    [XmlArray("Matrix")]
+    [XmlArrayItem("Cell")]
+    public MapCellObject[] mapCellObjectsArray;
+
+    public MapMatrixObject()
+    {
+        this.name = "";
+    }
+
+    public MapMatrixObject(string name, MapCellObject[] mapCellObjectsArray)
+    {
+        this.name = name;
+        this.mapCellObjectsArray = mapCellObjectsArray;
+    }
+}
+
+[System.Serializable]
+public class MapCellObject
+{
+    public int row;
+    public int col;
+    public ComponentObject componentObject;
+
+    public MapCellObject()
+    {
+        this.row = 0;
+        this.col = 0;
+        this.componentObject = new ComponentObject();
+    }
+
+    public MapCellObject(int row, int col, ComponentObject componentObject)
+    {
+        this.row = row;
+        this.col = col;
+        this.componentObject = componentObject;
+    }
+}
+
 [System.Serializable]
 public class ComponentObject
 {
     public int componentNumber;
     public int rotation;
+
+    public ComponentObject()
+    {
+        this.componentNumber = 0;
+        this.rotation = 0;
+    }
 
     public ComponentObject(int componentNumber, int rotation)
     {
