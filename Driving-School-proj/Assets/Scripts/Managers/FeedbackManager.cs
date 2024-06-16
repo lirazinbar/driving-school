@@ -10,20 +10,11 @@ namespace Managers
         private int _currentScore;
         private List<FeedbackScore> _feedbackScores = new List<FeedbackScore>();
 
-        private void Awake()
+        void Awake()
         {
             // Singleton
-            if (Instance == null)
-            {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
+            Instance = this;
         }
-
         private void Start()
         {
             _currentScore = initialScore;

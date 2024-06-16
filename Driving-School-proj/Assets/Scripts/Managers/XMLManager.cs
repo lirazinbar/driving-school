@@ -13,18 +13,11 @@ namespace Managers
         private void Awake()
         {
             // Singleton
-            if (Instance == null)
-            {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
+            Instance = this;
+            
             if (!Directory.Exists(Application.persistentDataPath + "/Routes/"))
             {
                 Directory.CreateDirectory(Application.persistentDataPath + "/Routes/");
-            }
-            else
-            {
-                Destroy(gameObject);
             }
         }
         

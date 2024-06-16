@@ -19,11 +19,6 @@ public class StopSurfaceDetector: MonoBehaviour
         {
             if (_car.IsStopped())
             {
-                if (GameManager.Instance.IsMainCar(_car.gameObject.GetInstanceID()))
-                {
-                    Debug.Log("Main car stopped before stop sign");
-                }
-                
                 _carStopped = true;
                 EventsManager.Instance.TriggerCarStoppedBeforeStopSignEvent(stopSign.GetInstanceID());
                 CarDriverAutonomous autonomousCar = _car.GetComponent<CarDriverAutonomous>();
