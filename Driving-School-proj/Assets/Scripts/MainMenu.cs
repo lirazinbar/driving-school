@@ -18,8 +18,12 @@ public class MainMenu : MonoBehaviour
         
         List<MapMatrixObject> routeList = XMLManager.Instance.Load();
         
+        for (int i = gridContainerGameObject.transform.childCount - 1; i > 0; i--)
+        {
+            Destroy(gridContainerGameObject.transform.GetChild(i).gameObject);
+        }
         
-        for (int index = gridContainerGameObject.transform.childCount - 1; index < routeList.Count; index++)
+        for (int index = 0; index < routeList.Count; index++)
         {
             MapMatrixObject route = routeList[index];
             GameObject newComponent = Instantiate(routeComponentPrefab, gridContainerGameObject.transform);
