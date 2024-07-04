@@ -47,10 +47,19 @@ public class RouteEditorConvertor : MonoBehaviour
         // Save the route map
         List<MapMatrixObject> routeList = XMLManager.Instance.Load();
         MapMatrixObject mapMatrixObject = new MapMatrixObject(MapName.GetComponent<TMP_InputField>().text, cellsArray);
-        routeList.Add(mapMatrixObject);
+        
+        string isNewRoute = PlayerPrefs.GetString("isNewRoute");
+        if (isNewRoute == "true")
+        {
+            routeList.Add(mapMatrixObject);
+        }
+        else
+        {
+            int index = int.Parse(isNewRoute.Substring("false-".Length));
+            routeList[index] = mapMatrixObject;
+        }
+        
         XMLManager.Instance.Save(routeList);
-        // TODO - here!
-        // EventsManager.Instance.TriggerRouteMapSaved(RouteMap);
         
         editorCanvas.gameObject.SetActive(false);
         menuCanvas.gameObject.SetActive(true);
