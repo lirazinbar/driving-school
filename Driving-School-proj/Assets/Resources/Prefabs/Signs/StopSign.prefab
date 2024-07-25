@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5965985740863772132}
+  - component: {fileID: 246240972537788905}
   m_Layer: 0
   m_Name: StopSign
   m_TagString: Untagged
@@ -34,6 +35,20 @@ Transform:
   - {fileID: 4041357302243925894}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &246240972537788905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4515732847949767920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 157fce9fe2974e5a9bec350e9166fc0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stopLine: {fileID: 7069986230098210865}
+  _stopSurfaceDetector: {fileID: 944123370987343439}
 --- !u!1 &5071056235939230480
 GameObject:
   m_ObjectHideFlags: 0
