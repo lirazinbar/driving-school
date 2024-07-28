@@ -24,6 +24,7 @@ namespace Managers
             EventsManager.Instance.carPassedNoEntrySignEvent.AddListener(OnCarPassedNoEntrySign);
             EventsManager.Instance.carPassedRedLightEvent.AddListener(OnCarPassedRedLight);
             EventsManager.Instance.carBrokeSpeedLimitEvent.AddListener(OnCarBrokenSpeedLimit);
+            EventsManager.Instance.carDidNotGiveWayEvent.AddListener(OnCarDidNotGiveWay);
         }
 
         private void OnDestroy()
@@ -88,6 +89,12 @@ namespace Managers
         {
             // Debug.Log("Car broke the speed limit event triggered");
             GameManager.Instance.UpdateCarBrokeSpeedLimitEvent();
+        }
+        
+        private void OnCarDidNotGiveWay()
+        {
+            // Debug.Log("Car did not give way event triggered");
+            GameManager.Instance.UpdateCarDidNotGiveWayEvent();
         }
     }
 }

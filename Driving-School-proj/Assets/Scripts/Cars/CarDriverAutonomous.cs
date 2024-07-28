@@ -40,9 +40,10 @@ namespace Cars
             _bitmasks.Add(RaycastType.Stop, -1);
             _bitmasks.Add(RaycastType.SlowDown, -1);
             _bitmasks[RaycastType.Stop] = IgnoreRaycastLayers(_bitmasks[RaycastType.Stop], 
-                new[] {"StopSurfaceDetector", "TrafficLightSurfaceDetector", "Anchor", "DestroyPoint"});
+                new[] {"StopSurfaceDetector", "TrafficLightSurfaceDetector", "Anchor", "DestroyPoint",
+                    "JunctionExitDetector"});
             _bitmasks[RaycastType.SlowDown] = IgnoreRaycastLayers(_bitmasks[RaycastType.SlowDown],
-                new[] {"TrafficLightSurfaceDetector", "Anchor", "DestroyPoint"});
+                new[] {"TrafficLightSurfaceDetector", "Anchor", "DestroyPoint", "JunctionExitDetector"});
         }
 
         void FixedUpdate()

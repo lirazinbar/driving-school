@@ -47,8 +47,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 157fce9fe2974e5a9bec350e9166fc0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stopLine: {fileID: 7069986230098210865}
-  _stopSurfaceDetector: {fileID: 944123370987343439}
+  junctionGiveWayManager: {fileID: 0}
+  stopLine: {fileID: 7069986230098210865}
+  stopSurfaceDetector: {fileID: 944123370987343439}
 --- !u!1 &5071056235939230480
 GameObject:
   m_ObjectHideFlags: 0
@@ -74,7 +75,7 @@ Transform:
   m_GameObject: {fileID: 5071056235939230480}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.11, y: 0.3, z: 0}
+  m_LocalPosition: {x: 3.11, y: 0.15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -111,8 +112,8 @@ Transform:
   m_GameObject: {fileID: 6523706289832227416}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.521, z: 0}
-  m_LocalScale: {x: 5, y: 2, z: 0.49510005}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalScale: {x: 5, y: 2, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8059206929060721992}
@@ -200,8 +201,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94acf5feb1b59497e83b401026f8d5a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stopSign: {fileID: 4515732847949767920}
-  _stopSurfaceDetector: {fileID: 944123370987343439}
+  stopSignObject: {fileID: 4515732847949767920}
+  stopSurfaceDetector: {fileID: 944123370987343439}
 --- !u!1 &7221431799326733584
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,7 +230,7 @@ Transform:
   m_GameObject: {fileID: 7221431799326733584}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.49, z: 0}
+  m_LocalPosition: {x: 0, y: -0.52, z: 0}
   m_LocalScale: {x: 5, y: 0, z: 0.49510005}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -312,7 +313,7 @@ Transform:
   m_GameObject: {fileID: 8443887876143538552}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.01, z: 0}
+  m_LocalPosition: {x: -0.3, y: -0.2, z: 0.28}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -486,5 +487,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ca304f73d6bc4fcb90336761e5089d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stopSign: {fileID: 4515732847949767920}
-  _stopLine: {fileID: 7069986230098210865}
+  stopSignObject: {fileID: 4515732847949767920}
+  stopLine: {fileID: 7069986230098210865}
