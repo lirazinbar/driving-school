@@ -2,6 +2,7 @@ using Cars;
 using Enums;
 using Managers;
 using UnityEngine;
+
 namespace TrafficObjects.GiveWay
 {
     public class StopSign: MonoBehaviour
@@ -9,11 +10,13 @@ namespace TrafficObjects.GiveWay
         [SerializeField] private JunctionGiveWayManager junctionGiveWayManager;
         [SerializeField] private StopLine stopLine;
         [SerializeField] private StopSurfaceDetector stopSurfaceDetector;
+        [SerializeField] private MeshRenderer stopSignRenderer;
+        [SerializeField] private MeshRenderer stopLineRenderer;
         
         private CarController _currentCar;
         private bool _isOccupied;
         private bool _hasLock;
-        
+        bool isVisible;
         
         void Start()
         {
@@ -33,7 +36,6 @@ namespace TrafficObjects.GiveWay
             {
                 if (!_hasLock && TryTakeLock())
                 {
-                    Debug.Log("StopSign took lock");
                     _hasLock = true;
                     _isOccupied = false;
                     SetCurrentCar();
@@ -49,6 +51,18 @@ namespace TrafficObjects.GiveWay
             }
         }
         
+        public void SetIsVisible(bool isSignVisible)
+        {
+            isVisible = isSignVisible;
+            stopSignRenderer.enabled = isVisible;
+            stopLineRenderer.enabled = isVisible;
+        }
+        
+        public bool IsVisible()
+        {
+            return isVisible;
+        }
+        
         public bool HasLock()
         {
             return _hasLock;
@@ -62,7 +76,6 @@ namespace TrafficObjects.GiveWay
         private void SetCurrentCar()
         {
             _currentCar = stopSurfaceDetector.GetCar();
-            Debug.Log("StopSign set current car: " + _currentCar.GetInstanceID());
         }
         
         private bool TryTakeLock()
@@ -75,8 +88,6 @@ namespace TrafficObjects.GiveWay
             // Yield the lock when the car exits the junction
             if (_hasLock && carId == _currentCar.GetInstanceID())
             {
-                Debug.Log("Car exited junction (sign): " + carId);
-                Debug.Log("Current car: " + _currentCar.GetInstanceID());
                 _hasLock = false;
                 junctionGiveWayManager.YieldLock();
             }

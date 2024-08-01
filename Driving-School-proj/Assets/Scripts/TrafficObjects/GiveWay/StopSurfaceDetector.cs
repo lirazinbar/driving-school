@@ -1,8 +1,6 @@
 using Cars;
-using Enums;
 using Managers;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 
 namespace TrafficObjects.GiveWay
@@ -14,7 +12,13 @@ namespace TrafficObjects.GiveWay
         private CarController _car;
         private bool _carStopped;
         private bool _carReachedSign;
-    
+        private bool _isVisible;
+
+        private void Start()
+        {
+            _isVisible = stopSignObject.GetComponent<StopSign>().IsVisible();
+        }
+
         private void Update()
         {
             if (_carReachedSign)
@@ -22,7 +26,10 @@ namespace TrafficObjects.GiveWay
                 if (_car.IsStopped())
                 {
                     _carStopped = true;
-                    EventsManager.Instance.TriggerCarStoppedBeforeStopSignEvent(stopSignObject.GetInstanceID());
+                    if (_isVisible)
+                    {
+                        EventsManager.Instance.TriggerCarStoppedBeforeStopSignEvent(stopSignObject.GetInstanceID());
+                    }
                     stopSignObject.GetComponent<StopSign>().SetOccupied(true);
                     _carReachedSign = false;
                 }
@@ -46,7 +53,10 @@ namespace TrafficObjects.GiveWay
                 string hitSide = TrafficObjectsUtils.CheckHitSide(transform, other);
                 if (hitSide.Equals("Front"))
                 {
-                    EventsManager.Instance.TriggerCarReachedStopSignEvent(other.gameObject.GetInstanceID(), stopSignObject.GetInstanceID());
+                    if (_isVisible)
+                    {
+                        EventsManager.Instance.TriggerCarReachedStopSignEvent(other.gameObject.GetInstanceID(), stopSignObject.GetInstanceID());
+                    }
                     _car = other.gameObject.GetComponent<CarController>();
                     _carReachedSign = true;
                 }            

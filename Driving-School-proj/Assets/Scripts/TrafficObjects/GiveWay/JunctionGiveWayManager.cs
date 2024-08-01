@@ -1,9 +1,20 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace TrafficObjects.GiveWay {
     public class JunctionGiveWayManager: MonoBehaviour
     {
+        [SerializeField] StopSign[] stopSigns;
         private bool _giveWayLock;
+        [SerializeField] private bool isVisible = true;
+        
+        public void Start()
+        {
+            foreach (StopSign stopSign in stopSigns)
+            {
+                stopSign.SetIsVisible(isVisible);
+            }
+        }
         
         public bool TryTakeLock()
         {

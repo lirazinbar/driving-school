@@ -1,3 +1,4 @@
+using System;
 using Cars;
 using Enums;
 using Managers;
@@ -11,8 +12,14 @@ namespace TrafficObjects.GiveWay
         [SerializeField] private StopSurfaceDetector stopSurfaceDetector;
         private CarDriverAutonomous _autonomousCar;
         private bool _carPassed;
-        
-    
+        private bool _isVisible;
+
+
+        private void Start()
+        {
+            _isVisible = stopSignObject.GetComponent<StopSign>().IsVisible();
+        }
+
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Car"))
@@ -20,15 +27,14 @@ namespace TrafficObjects.GiveWay
                 if (!stopSurfaceDetector.IsCarStopped())
                 {
                     _carPassed = true;
-                    if (GameManager.Instance.IsMainCar(other.gameObject.GetInstanceID()))
+                    if (GameManager.Instance.IsMainCar(other.gameObject.GetInstanceID()) && _isVisible)
                     {
-                        Debug.Log("Main car passed StopLine");
-                    }
-                    
-                    string hitSide = TrafficObjectsUtils.CheckHitSide(transform, other);
-                    if (hitSide.Equals("Front"))
-                    {
-                        EventsManager.Instance.TriggerCarPassedStopSignEvent(stopSignObject.GetInstanceID());
+                        string hitSide = TrafficObjectsUtils.CheckHitSide(transform, other);
+                        if (hitSide.Equals("Front"))
+                        {
+                            Debug.Log("Main car passed StopLine");
+                            EventsManager.Instance.TriggerCarPassedStopSignEvent(stopSignObject.GetInstanceID());
+                        }
                     }
                 }
             }

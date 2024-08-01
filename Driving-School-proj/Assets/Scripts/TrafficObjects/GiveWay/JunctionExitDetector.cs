@@ -11,7 +11,6 @@ namespace TrafficObjects.GiveWay
         {
             if (other.CompareTag("Car"))
             {
-                Debug.Log("Car Exited junction: " + other.GetComponent<CarController>().GetInstanceID());
                 EventsManager.Instance.TriggerCarExitedJunctionEvent(other.GetComponent<CarController>().GetInstanceID());
             }
         }
