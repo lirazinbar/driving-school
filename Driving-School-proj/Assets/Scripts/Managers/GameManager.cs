@@ -56,5 +56,11 @@ namespace Managers
         {
             return carId == mainCar.GetInstanceID();
         }
+        
+        public void UpdateCarDidNotGiveWayEvent()
+        {
+            Debug.Log("Main car did not give way");
+            FeedbackManager.Instance.UpdateScore(FeedbackScore.GiveWay);
+        }
     }
 }

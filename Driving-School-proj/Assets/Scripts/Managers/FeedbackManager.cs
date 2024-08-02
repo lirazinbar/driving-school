@@ -41,7 +41,8 @@ namespace Managers
         NoEntry = -10,
         RedLight = -20,
         StopSign = -30,
-        Speeding = -10
+        Speeding = -10,
+        GiveWay = -20
         // WrongLane = -20
         // OffRoad = -50
         // WrongDirection = -40

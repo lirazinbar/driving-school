@@ -21,6 +21,8 @@ namespace Managers
         public UnityEvent<int> carPassedNoEntrySignEvent = new UnityEvent<int>();
         public UnityEvent<int> carPassedRedLightEvent = new UnityEvent<int>();
         public UnityEvent carBrokeSpeedLimitEvent = new UnityEvent();
+        public UnityEvent<int> carExitedJunctionEvent = new UnityEvent<int>();
+        public UnityEvent carDidNotGiveWayEvent = new UnityEvent();
 
         void Awake()
         {
@@ -68,5 +70,16 @@ namespace Managers
         {
             carBrokeSpeedLimitEvent?.Invoke();
         }
+
+        public void TriggerCarExitedJunctionEvent(int carId)
+        {
+            carExitedJunctionEvent?.Invoke(carId);
+        }
+        
+        public void TriggerCarDidNotGiveWayEvent()
+        {
+            carDidNotGiveWayEvent?.Invoke();
+        }
+        
     }
 }
