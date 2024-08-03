@@ -25,24 +25,23 @@ namespace Managers
             _currentScore += (int) feedbackScore;
             Debug.Log("You lost " + -(int) feedbackScore + " points!");
             Debug.Log("Current score: " + _currentScore);
+            _feedbackScores.Add(feedbackScore);
             // Update UI
         
             if (_currentScore <= 0)
             {
-                Debug.Log("Game Over! You failed the test!");
-                // Time.timeScale = 0; // Pause the game
-                // Update UI: Show a board of the scores and the feedbacks and an exit button
+                GameManager.Instance.GameFinished(false);
             }
         }
     }
 
     public enum FeedbackScore
     {
-        NoEntry = -10,
-        RedLight = -20,
-        StopSign = -30,
+        NoEntry = -20,
+        RedLight = -40,
+        StopSign = -20,
         Speeding = -10,
-        GiveWay = -20
+        GiveWay = -10
         // WrongLane = -20
         // OffRoad = -50
         // WrongDirection = -40
