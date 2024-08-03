@@ -62,5 +62,18 @@ namespace Managers
             Debug.Log("Main car did not give way");
             FeedbackManager.Instance.UpdateScore(FeedbackScore.GiveWay);
         }
+        
+        public void GameFinished(bool success)
+        {
+            if (success)
+            {
+                Debug.Log("Congratulations! You passed the test!");
+            }
+            else
+            {
+                Debug.Log("Game Over! You failed the test!");
+            }
+            // UI: Show lost/pass the test + score table + input for the name
+        }
     }
 }
