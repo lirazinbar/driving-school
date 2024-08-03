@@ -17,6 +17,8 @@ public class CreateRouteMap : MonoBehaviour
     private void OnRouteMapSave(MapMatrixObject mapMatrixObject)
     {
         Debug.Log("route map saved event event triggered");
+        Debug.Log("position-X: " + transform.position.x);
+        Debug.Log("position-Z: " + transform.position.z);
         
         // Iterate over the routeMap matrix
         foreach (MapCellObject cell in mapMatrixObject.mapCellObjectsArray)
@@ -37,7 +39,7 @@ public class CreateRouteMap : MonoBehaviour
                         GameObject prefab = componentsPrefabs[componentNumber - 1];
                         Vector3 prefabPosition =new Vector3( transform.position.x + (cell.col+1) * 100, 0, transform.position.z - (cell.row) * 100);
                         
-                        GameObject newComponent = Instantiate(prefab, prefabPosition, Quaternion.Euler(0, 0, 0));
+                        GameObject newComponent = Instantiate(prefab, prefabPosition, Quaternion.Euler(0, 0, 0), transform);
                         newComponent.transform.GetChild(0).Rotate(new Vector3(0, componentObject.rotation * -1, 0));
                     }
                     else
