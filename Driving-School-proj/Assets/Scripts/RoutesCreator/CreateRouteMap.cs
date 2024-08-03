@@ -13,12 +13,10 @@ public class CreateRouteMap : MonoBehaviour
 
         OnRouteMapSave(routeList[routeNumber]);
     }
-
+    
     private void OnRouteMapSave(MapMatrixObject mapMatrixObject)
     {
         Debug.Log("route map saved event event triggered");
-        Debug.Log("position-X: " + transform.position.x);
-        Debug.Log("position-Z: " + transform.position.z);
         
         // Iterate over the routeMap matrix
         foreach (MapCellObject cell in mapMatrixObject.mapCellObjectsArray)
