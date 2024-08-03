@@ -6,18 +6,13 @@ using UnityEngine.EventSystems;
 
 public class RouteRotator : MonoBehaviour, IPointerClickHandler
 {
-    void Update()
-    {
-        
-    }
+    [SerializeField] private GameObject slot;
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        GameObject slot = transform.parent.GetChild(transform.GetSiblingIndex() + 1).gameObject;
         if (slot.transform.childCount > 0)
         {
             slot.transform.GetChild(0).transform.Rotate(new Vector3(0, 0, 90));
-            
         }
     }
 }
