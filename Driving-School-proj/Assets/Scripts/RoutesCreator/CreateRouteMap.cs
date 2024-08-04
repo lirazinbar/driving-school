@@ -8,7 +8,7 @@ public class CreateRouteMap : MonoBehaviour
     [SerializeField] private List<GameObject> componentsPrefabs;
     private void Start()
     {
-        List<MapMatrixObject> routeList = XMLManager.Instance.Load();
+        List<MapMatrixObject> routeList = XMLManager.Instance.LoadRoutes();
         int routeNumber = int.Parse(PlayerPrefs.GetString("RouteNumber"));
 
         OnRouteMapSave(routeList[routeNumber]);

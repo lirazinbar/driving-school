@@ -9,6 +9,7 @@ namespace Managers
     {
         public static XMLManager Instance { get; private set; }
         public RoutesCollection routesCollection;
+        public ScoresCollection scoresCollection;
     
         private void Awake()
         {
@@ -19,9 +20,13 @@ namespace Managers
             {
                 Directory.CreateDirectory(Application.persistentDataPath + "/Routes/");
             }
+            if (!Directory.Exists(Application.persistentDataPath + "/Scores/"))
+            {
+                Directory.CreateDirectory(Application.persistentDataPath + "/Scores/");
+            }
         }
         
-        public void Save(List<MapMatrixObject> matrixListToSave)
+        public void SaveRoutes(List<MapMatrixObject> matrixListToSave)
         {
             routesCollection.list = matrixListToSave; 
             XmlSerializer serializer = new XmlSerializer(typeof(RoutesCollection));
@@ -30,7 +35,7 @@ namespace Managers
             stream.Close();
         }
 
-        public List<MapMatrixObject> Load()
+        public List<MapMatrixObject> LoadRoutes()
         {
             if (File.Exists(Application.persistentDataPath + "/Routes/routes.xml"))
             {
@@ -41,6 +46,28 @@ namespace Managers
             }
 
             return routesCollection.list;
+        }
+        
+        public void SaveScores(List<ScoresObject> scoresObjectListToSave)
+        {
+            scoresCollection.list = scoresObjectListToSave; 
+            XmlSerializer serializer = new XmlSerializer(typeof(ScoresCollection));
+            FileStream stream = new FileStream(Application.persistentDataPath + "/Scores/scores.xml", FileMode.Create);
+            serializer.Serialize(stream, scoresCollection);
+            stream.Close();
+        }
+
+        public List<ScoresObject> LoadScores()
+        {
+            if (File.Exists(Application.persistentDataPath + "/Scores/scores.xml"))
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(ScoresCollection));
+                FileStream stream = new FileStream(Application.persistentDataPath + "/Scores/scores.xml", FileMode.Open);
+                scoresCollection = serializer.Deserialize(stream) as ScoresCollection;
+                stream.Close();
+            }
+
+            return scoresCollection.list;
         }
     }
 }
@@ -56,3 +83,13 @@ public class RoutesCollection
     }
 }
 
+[System.Serializable]
+public class ScoresCollection
+{
+    [XmlElement("ScoresObjectList")]
+    public List<ScoresObject> list = new List<ScoresObject>();
+
+    public ScoresCollection()
+    {
+    }
+}

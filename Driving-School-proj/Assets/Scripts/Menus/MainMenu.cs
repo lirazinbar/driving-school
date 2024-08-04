@@ -8,15 +8,23 @@ using UnityEngine.UI;
 public class MainMenu : MonoBehaviour
 {
     [SerializeField] private Canvas playModeMenuCanvas;     
+    [SerializeField] private TMP_InputField playerNameInput;     
+    [SerializeField] private Canvas chooseRouteMenuCanvas;     
     [SerializeField] private Canvas mainMenuCanvas;
     [SerializeField] private GameObject routeComponentPrefab;
     [SerializeField] private GameObject gridContainerGameObject;
 
-    public void LoadDefaultEnvironment()
+    public void EnterPlayModeMenu()
     {
         mainMenuCanvas.gameObject.SetActive(false);
+        playModeMenuCanvas.gameObject.SetActive(true);
+    }
+    public void SaveNameAndLoadRoutes()
+    {
+        GameManager.Instance.SetPlayerName(this.playerNameInput.text);
+        playModeMenuCanvas.gameObject.SetActive(false);
         
-        List<MapMatrixObject> routeList = XMLManager.Instance.Load();
+        List<MapMatrixObject> routeList = XMLManager.Instance.LoadRoutes();
         
         for (int i = gridContainerGameObject.transform.childCount - 1; i > 0; i--)
         {
@@ -36,7 +44,7 @@ public class MainMenu : MonoBehaviour
         }
 
         
-        playModeMenuCanvas.gameObject.SetActive(true);
+        chooseRouteMenuCanvas.gameObject.SetActive(true);
     }
     
     public void LoadEnvironmentEditor()

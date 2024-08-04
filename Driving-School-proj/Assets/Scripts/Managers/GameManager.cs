@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Managers
@@ -6,10 +7,17 @@ namespace Managers
     {
         public static GameManager Instance { get; private set; }
         [SerializeField] private GameObject mainCar;
+        private string playerName;
         void Awake()
         {
             // Singleton
             Instance = this;
+        }
+
+        public void SetPlayerName(string playerNameInput)
+        {
+            this.playerName = playerNameInput;
+            Debug.Log("name: " + this.playerName);
         }
 
         public void UpdateStopSignEvent(int carId, bool carStopped)
@@ -63,7 +71,7 @@ namespace Managers
             FeedbackManager.Instance.UpdateScore(FeedbackScore.GiveWay);
         }
         
-        public void GameFinished(bool success)
+        public void GameFinished(bool success, List<FeedbackScore> _feedbackScores)
         {
             if (success)
             {
@@ -73,7 +81,31 @@ namespace Managers
             {
                 Debug.Log("Game Over! You failed the test!");
             }
-            // UI: Show lost/pass the test + score table + input for the name
+
+            // string playerName = "mmm"; // TODO - add screen in the beginning to save the name
+            List<ScoresObject> scoresList = XMLManager.Instance.LoadScores();
+            ScoresObject foundScoresObject = scoresList.Find((scoresObj => scoresObj.playerName == playerName));
+            ScoresObject scoresObject;
+            
+            Debug.Log("finish - "+ this.playerName);
+            if (foundScoresObject != null)
+            {
+                scoresObject = foundScoresObject;
+            }
+            else
+            {
+                scoresObject = new ScoresObject(this.playerName, new List<FeedbackTable>()); 
+            }
+            
+            scoresObject._feedbackTables.Add(new FeedbackTable(_feedbackScores));
+
+            if (foundScoresObject == null)
+            {
+                scoresList.Add(scoresObject);
+            }
+            XMLManager.Instance.SaveScores(scoresList);
+
+            // TODO - UI: Show lost/pass the test + score table + input for the name
         }
     }
 }
