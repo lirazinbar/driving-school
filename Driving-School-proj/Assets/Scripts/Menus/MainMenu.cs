@@ -21,7 +21,8 @@ public class MainMenu : MonoBehaviour
     }
     public void SaveNameAndLoadRoutes()
     {
-        GameManager.Instance.SetPlayerName(this.playerNameInput.text);
+        // GameManager.Instance.SetPlayerName(this.playerNameInput.text);
+        PlayerPrefs.SetString("PlayerName", this.playerNameInput.text);
         playModeMenuCanvas.gameObject.SetActive(false);
         
         List<MapMatrixObject> routeList = XMLManager.Instance.LoadRoutes();

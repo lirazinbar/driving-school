@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace Managers
@@ -7,18 +8,23 @@ namespace Managers
     {
         public static GameManager Instance { get; private set; }
         [SerializeField] private GameObject mainCar;
-        private string playerName;
+        [SerializeField] private TMP_Text successStatus;
+        [SerializeField] private GameObject scoreComponentPrefab;
+        [SerializeField] private GameObject gridContainerGameOverMenu;
+        [SerializeField] private Canvas GameOverCanvas;
+
+        //private string playerName;
         void Awake()
         {
             // Singleton
             Instance = this;
         }
 
-        public void SetPlayerName(string playerNameInput)
-        {
-            this.playerName = playerNameInput;
-            Debug.Log("name: " + this.playerName);
-        }
+        //public void SetPlayerName(string playerNameInput)
+        //{
+        //    this.playerName = playerNameInput;
+        //    Debug.Log("name: " + this.playerName);
+        //}
 
         public void UpdateStopSignEvent(int carId, bool carStopped)
         {
@@ -81,20 +87,21 @@ namespace Managers
             {
                 Debug.Log("Game Over! You failed the test!");
             }
+            string playerName = PlayerPrefs.GetString("PlayerName");
 
-            // string playerName = "mmm"; // TODO - add screen in the beginning to save the name
             List<ScoresObject> scoresList = XMLManager.Instance.LoadScores();
             ScoresObject foundScoresObject = scoresList.Find((scoresObj => scoresObj.playerName == playerName));
             ScoresObject scoresObject;
             
-            Debug.Log("finish - "+ this.playerName);
+            
+            Debug.Log("finish - "+ playerName);
             if (foundScoresObject != null)
             {
                 scoresObject = foundScoresObject;
             }
             else
             {
-                scoresObject = new ScoresObject(this.playerName, new List<FeedbackTable>()); 
+                scoresObject = new ScoresObject(playerName, new List<FeedbackTable>()); 
             }
             
             scoresObject._feedbackTables.Add(new FeedbackTable(_feedbackScores));
@@ -104,8 +111,47 @@ namespace Managers
                 scoresList.Add(scoresObject);
             }
             XMLManager.Instance.SaveScores(scoresList);
+            // DisplayGameOver(success, _feedbackScores);
+
+            StartCoroutine(DisplayGameOverAfterDelay(success, _feedbackScores));
 
             // TODO - UI: Show lost/pass the test + score table + input for the name
+        }
+
+        private void DisplayGameOver(bool success, List<FeedbackScore> _feedbackScores)
+        {
+            GameOverCanvas.gameObject.SetActive(true);
+            int sumScores = 100;
+            for (int index = 0; index < _feedbackScores.Count; index++)
+            {
+                FeedbackScore score = _feedbackScores[index];
+                GameObject newComponent = Instantiate(scoreComponentPrefab, gridContainerGameOverMenu.transform);
+                
+                newComponent.transform.GetComponent<TextMeshProUGUI>().text = score.ToString() + "    " + (int)score;
+                sumScores += (int)score;
+                
+                newComponent.name = "ScoreLine" + (index+1);
+            }
+
+            if (success)
+            {
+                successStatus.SetText("You Win!  scores: " + sumScores);
+            }
+            else
+            {
+                successStatus.SetText("You Lost!  scores: " + sumScores);
+            }
+        }
+        
+        private IEnumerator<WaitForSeconds> DisplayGameOverAfterDelay(bool success, List<FeedbackScore> _feedbackScores)
+        {
+            yield return new WaitForSeconds(2f);
+            DisplayGameOver(success, _feedbackScores);
+        }
+
+        public void OnGoBackToMainMenu()
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
         }
     }
 }

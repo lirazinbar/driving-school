@@ -58,8 +58,8 @@ public class ScoresObject
     [XmlElement("Name")]
     public string playerName;
     
-    [XmlArray("FeedbackScores")]
-    [XmlArrayItem("Score")]
+    [XmlArray("FeedbackTables")]
+    [XmlArrayItem("FeedbackTable")]
     public List<FeedbackTable> _feedbackTables;
 
     public ScoresObject()
@@ -77,7 +77,7 @@ public class ScoresObject
 [System.Serializable]
 public class FeedbackTable
 {
-    [XmlArray("FeedbackTable")]
+    [XmlArray("Table")]
     [XmlArrayItem("Score")]
     public List<FeedbackScore> _feedbackScores;
 
