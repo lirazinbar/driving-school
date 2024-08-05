@@ -23,6 +23,7 @@ namespace Managers
         public UnityEvent carBrokeSpeedLimitEvent = new UnityEvent();
         public UnityEvent<int> carExitedJunctionEvent = new UnityEvent<int>();
         public UnityEvent carDidNotGiveWayEvent = new UnityEvent();
+        public UnityEvent carDidNotGiveWayToPedestrianEvent = new UnityEvent();
 
         void Awake()
         {
@@ -79,6 +80,11 @@ namespace Managers
         public void TriggerCarDidNotGiveWayEvent()
         {
             carDidNotGiveWayEvent?.Invoke();
+        }
+        
+        public void TriggerCarDidNotGiveWayToPedestrianEvent()
+        {
+            carDidNotGiveWayToPedestrianEvent?.Invoke();
         }
         
     }
