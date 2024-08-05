@@ -50,7 +50,7 @@ namespace TrafficObjects.TrafficLight
             {
                 if (GameManager.Instance.IsMainCar( other.gameObject.GetInstanceID()))
                 {
-                    Debug.Log("Main car exited traffic light surface detector");
+                    // Debug.Log("Main car exited traffic light surface detector");
                 }
                 CarDriverAutonomous autonomousCar = other.GetComponent<CarDriverAutonomous>();
                 if (autonomousCar != null)

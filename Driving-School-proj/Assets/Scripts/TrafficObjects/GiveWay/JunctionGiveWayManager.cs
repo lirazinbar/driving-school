@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace TrafficObjects.GiveWay {
     public class JunctionGiveWayManager: MonoBehaviour
@@ -7,12 +6,17 @@ namespace TrafficObjects.GiveWay {
         [SerializeField] StopSign[] stopSigns;
         private bool _giveWayLock;
         [SerializeField] private bool isVisible = true;
+        [SerializeField] private bool pedestriansSpawn = true;
         
         public void Start()
         {
             foreach (StopSign stopSign in stopSigns)
             {
                 stopSign.SetIsVisible(isVisible);
+                if (!pedestriansSpawn)
+                {
+                    stopSign.DoNotSpawnPedestrians();
+                }
             }
         }
         
@@ -28,7 +32,6 @@ namespace TrafficObjects.GiveWay {
         
         public void YieldLock()
         {
-            Debug.Log("Sign has yielded lock");
             _giveWayLock = false;
         }
         

@@ -23,8 +23,7 @@ namespace Managers
         public void UpdateScore(FeedbackScore feedbackScore)
         {
             _currentScore += (int) feedbackScore;
-            Debug.Log("You lost " + -(int) feedbackScore + " points!");
-            Debug.Log("Current score: " + _currentScore);
+            Debug.Log("You lost " + -(int) feedbackScore + " points! " + "Current score: " + _currentScore);
             _feedbackScores.Add(feedbackScore);
             // Update UI
         
@@ -41,7 +40,8 @@ namespace Managers
         RedLight = -40,
         StopSign = -20,
         Speeding = -10,
-        GiveWay = -10
+        GiveWay = -10,
+        GiveWayPedestrian = -10
         // WrongLane = -20
         // OffRoad = -50
         // WrongDirection = -40

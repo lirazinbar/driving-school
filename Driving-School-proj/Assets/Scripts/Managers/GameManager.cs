@@ -11,6 +11,11 @@ namespace Managers
             // Singleton
             Instance = this;
         }
+        
+        public bool IsMainCar(int carId)
+        {
+            return carId == mainCar.GetInstanceID();
+        }
 
         public void UpdateStopSignEvent(int carId, bool carStopped)
         {
@@ -51,16 +56,17 @@ namespace Managers
             Debug.Log("Main car broke speed limit");
             FeedbackManager.Instance.UpdateScore(FeedbackScore.Speeding);
         }
-
-        public bool IsMainCar(int carId)
-        {
-            return carId == mainCar.GetInstanceID();
-        }
         
         public void UpdateCarDidNotGiveWayEvent()
         {
             Debug.Log("Main car did not give way");
             FeedbackManager.Instance.UpdateScore(FeedbackScore.GiveWay);
+        }
+        
+        public void UpdateCarDidNotGiveWayToPedestrianEvent()
+        {
+            Debug.Log("Main car did not give way to pedestrian");
+            FeedbackManager.Instance.UpdateScore(FeedbackScore.GiveWayPedestrian);
         }
         
         public void GameFinished(bool success)

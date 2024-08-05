@@ -1,6 +1,7 @@
 using Cars;
 using Enums;
 using Managers;
+using Roads;
 using UnityEngine;
 
 namespace TrafficObjects.GiveWay
@@ -12,11 +13,16 @@ namespace TrafficObjects.GiveWay
         [SerializeField] private StopSurfaceDetector stopSurfaceDetector;
         [SerializeField] private MeshRenderer stopSignRenderer;
         [SerializeField] private MeshRenderer stopLineRenderer;
+        [SerializeField] private PedestriansCrossingStopCollider pedestriansCrossingStopCollider;
+        [SerializeField] private PedestrianSpawner[] pedestrianSpawners;
         
         private CarController _currentCar;
         private bool _isOccupied;
         private bool _hasLock;
         bool isVisible;
+
+        private int _pedestriansCrossingNumber;
+        private bool _pedestrianIsCrossing;
         
         void Start()
         {
@@ -32,14 +38,14 @@ namespace TrafficObjects.GiveWay
         // When a stopSign successfully takes the lock, it will yield it when the car exits the junction
         public void Update()
         {
-            if (_isOccupied)
+            if (_isOccupied && !_pedestrianIsCrossing)
             {
                 if (!_hasLock && TryTakeLock())
                 {
                     _hasLock = true;
                     _isOccupied = false;
                     SetCurrentCar();
-                    
+                
                     // Let the autonomous car cross the junction
                     CarDriverAutonomous autonomousCar = _currentCar.GetComponent<CarDriverAutonomous>();
                     if (autonomousCar != null)
@@ -96,6 +102,43 @@ namespace TrafficObjects.GiveWay
         public bool IsLockAvailable()
         {
             return junctionGiveWayManager.IsLockAvailable();
+        }
+        
+        public void PedestrianStartCrossing()
+        {
+            _pedestriansCrossingNumber++;
+            if (_pedestriansCrossingNumber == 1)
+            {
+                SetPedestrianIsCrossing(true);
+            }
+        }
+        
+        public void PedestrianFinishCrossing()
+        {
+            _pedestriansCrossingNumber--;
+            if (_pedestriansCrossingNumber == 0)
+            {
+                SetPedestrianIsCrossing(false);
+            }
+        }
+        
+        private void SetPedestrianIsCrossing(bool isCrossing)
+        {
+            _pedestrianIsCrossing = isCrossing;
+            pedestriansCrossingStopCollider.SetPedestrianIsCrossing(_pedestrianIsCrossing);
+        }
+        
+        public bool IsPedestrianCrossing()
+        {
+            return _pedestrianIsCrossing;
+        }
+
+        public void DoNotSpawnPedestrians()
+        {
+            foreach (PedestrianSpawner pedestrianSpawner in pedestrianSpawners)
+            {
+                pedestrianSpawner.enabled = false;
+            }
         }
     }
 }

@@ -41,9 +41,10 @@ namespace Cars
             _bitmasks.Add(RaycastType.SlowDown, -1);
             _bitmasks[RaycastType.Stop] = IgnoreRaycastLayers(_bitmasks[RaycastType.Stop], 
                 new[] {"StopSurfaceDetector", "TrafficLightSurfaceDetector", "Anchor", "DestroyPoint",
-                    "JunctionExitDetector"});
+                    "JunctionExitDetector", "PedestriansNotCrossing"});
             _bitmasks[RaycastType.SlowDown] = IgnoreRaycastLayers(_bitmasks[RaycastType.SlowDown],
-                new[] {"TrafficLightSurfaceDetector", "Anchor", "DestroyPoint", "JunctionExitDetector"});
+                new[] {"TrafficLightSurfaceDetector", "Anchor", "DestroyPoint", "JunctionExitDetector",
+                    "PedestriansNotCrossing"});
         }
 
         void FixedUpdate()
@@ -54,7 +55,6 @@ namespace Cars
         
         public void Initialize(SplineContainer splineContainer)
         {
-            // Debug.Log("Initialize car");
             PathUtils.SetKnotsPositions(splineContainer, _knotsPositions, ref _currentKnotIndex);
             SetTargetPosition(_knotsPositions[0]);
         }
@@ -77,7 +77,6 @@ namespace Cars
             
             if (other.CompareTag("DestroyPoint") && !gameObject.CompareTag("MainCar")) 
             {
-                Debug.Log("Destroy car");
                 Destroy(gameObject);
             }
         }
