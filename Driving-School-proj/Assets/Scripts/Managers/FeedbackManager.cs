@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Xml.Serialization;
+using Managers;
 using UnityEngine;
 
 namespace Managers
@@ -25,11 +27,11 @@ namespace Managers
             _currentScore += (int) feedbackScore;
             Debug.Log("You lost " + -(int) feedbackScore + " points! " + "Current score: " + _currentScore);
             _feedbackScores.Add(feedbackScore);
-            // Update UI
+            CanvasDashboard.Instance.DisplayUpdateScore(feedbackScore);
         
             if (_currentScore <= 0)
             {
-                GameManager.Instance.GameFinished(false);
+                GameManager.Instance.GameFinished(false, _feedbackScores);
             }
         }
     }
@@ -37,7 +39,7 @@ namespace Managers
     public enum FeedbackScore
     {
         NoEntry = -20,
-        RedLight = -40,
+        RedLight = -100,
         StopSign = -20,
         Speeding = -10,
         GiveWay = -10,
@@ -46,5 +48,57 @@ namespace Managers
         // OffRoad = -50
         // WrongDirection = -40
         // Collision = -30
+    }
+}
+
+public class PlayersScores
+{
+    public string playerName;
+    public int score;
+    
+    public PlayersScores(string playerName, int score)
+    {
+        this.playerName = playerName;
+        this.score = score;
+    }
+}
+
+
+[System.Serializable]
+public class ScoresObject
+{
+    [XmlElement("Name")]
+    public string playerName;
+    
+    [XmlArray("FeedbackTables")]
+    [XmlArrayItem("FeedbackTable")]
+    public List<FeedbackTable> _feedbackTables;
+
+    public ScoresObject()
+    {
+        this.playerName = "";
+    }
+
+    public ScoresObject(string playerName, List<FeedbackTable> _feedbackTables)
+    {
+        this.playerName = playerName;
+        this._feedbackTables = _feedbackTables;
+    }
+}
+
+[System.Serializable]
+public class FeedbackTable
+{
+    [XmlArray("Table")]
+    [XmlArrayItem("Score")]
+    public List<FeedbackScore> _feedbackScores;
+
+    public FeedbackTable()
+    {
+    }
+
+    public FeedbackTable(List<FeedbackScore> _feedbackScores)
+    {
+        this._feedbackScores = _feedbackScores;
     }
 }

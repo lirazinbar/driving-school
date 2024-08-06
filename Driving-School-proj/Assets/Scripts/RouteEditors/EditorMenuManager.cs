@@ -28,7 +28,7 @@ public class EditorMenuManager : MonoBehaviour
     {
         menuCanvas.gameObject.SetActive(false);
         
-        List<MapMatrixObject> routeList = XMLManager.Instance.Load();
+        List<MapMatrixObject> routeList = XMLManager.Instance.LoadRoutes();
         
         for (int i = gridContainerGameObject.transform.childCount - 1; i >= 0; i--)
         {
@@ -66,7 +66,7 @@ public class EditorMenuManager : MonoBehaviour
     
     public void LoadChosenRouteIntoMatrix(int index)
     {
-        List<MapMatrixObject> routeList = XMLManager.Instance.Load();
+        List<MapMatrixObject> routeList = XMLManager.Instance.LoadRoutes();
         MapMatrixObject chosenRoute = routeList[index];
         MapName.GetComponent<TMP_InputField>().text = chosenRoute.name;
         
