@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace Managers
@@ -6,6 +8,12 @@ namespace Managers
     {
         public static GameManager Instance { get; private set; }
         [SerializeField] private GameObject mainCar;
+        [SerializeField] private TMP_Text successStatus;
+        [SerializeField] private GameObject scoreComponentPrefab;
+        [SerializeField] private GameObject gridContainerGameOverMenu;
+        [SerializeField] private Canvas GameOverCanvas;
+
+        //private string playerName;
         void Awake()
         {
             // Singleton
@@ -16,6 +24,12 @@ namespace Managers
         {
             return carId == mainCar.GetInstanceID();
         }
+
+        //public void SetPlayerName(string playerNameInput)
+        //{
+        //    this.playerName = playerNameInput;
+        //    Debug.Log("name: " + this.playerName);
+        //}
 
         public void UpdateStopSignEvent(int carId, bool carStopped)
         {
@@ -44,6 +58,7 @@ namespace Managers
     
         public void UpdateCarPassedRedLightEvent(int carId)
         {
+            Debug.Log("red lightt");
             if (carId == mainCar.GetInstanceID())
             {
                 Debug.Log("Main car passed red light");
@@ -69,7 +84,7 @@ namespace Managers
             FeedbackManager.Instance.UpdateScore(FeedbackScore.GiveWayPedestrian);
         }
         
-        public void GameFinished(bool success)
+        public void GameFinished(bool success, List<FeedbackScore> _feedbackScores)
         {
             if (success)
             {
@@ -79,7 +94,70 @@ namespace Managers
             {
                 Debug.Log("Game Over! You failed the test!");
             }
-            // UI: Show lost/pass the test + score table + input for the name
+            string playerName = PlayerPrefs.GetString("PlayerName");
+
+            List<ScoresObject> scoresList = XMLManager.Instance.LoadScores();
+            ScoresObject foundScoresObject = scoresList.Find((scoresObj => scoresObj.playerName == playerName));
+            ScoresObject scoresObject;
+            
+            
+            Debug.Log("finish - "+ playerName);
+            if (foundScoresObject != null)
+            {
+                scoresObject = foundScoresObject;
+            }
+            else
+            {
+                scoresObject = new ScoresObject(playerName, new List<FeedbackTable>()); 
+            }
+            
+            scoresObject._feedbackTables.Add(new FeedbackTable(_feedbackScores));
+
+            if (foundScoresObject == null)
+            {
+                scoresList.Add(scoresObject);
+            }
+            XMLManager.Instance.SaveScores(scoresList);
+
+            StartCoroutine(DisplayGameOverAfterDelay(success, _feedbackScores));
+        }
+
+        private void DisplayGameOver(bool success, List<FeedbackScore> _feedbackScores)
+        {
+            GameOverCanvas.gameObject.SetActive(true);
+            int sumScores = 100;
+            for (int index = 0; index < _feedbackScores.Count; index++)
+            {
+                FeedbackScore score = _feedbackScores[index];
+                GameObject newComponent = Instantiate(scoreComponentPrefab, gridContainerGameOverMenu.transform);
+                
+                newComponent.transform.GetComponent<TextMeshProUGUI>().text = score.ToString() + "    " + (int)score;
+                sumScores += (int)score;
+                
+                newComponent.name = "ScoreLine" + (index+1);
+            }
+
+            if (success)
+            {
+                successStatus.SetText("You Win!  scores: " + sumScores);
+            }
+            else
+            {
+                successStatus.SetText("You Lost!  scores: " + sumScores);
+            }
+            Debug.Log("Enddd");
+        }
+        
+        private IEnumerator<WaitForSeconds> DisplayGameOverAfterDelay(bool success, List<FeedbackScore> _feedbackScores)
+        {
+            yield return new WaitForSeconds(2f);
+            DisplayGameOver(success, _feedbackScores);
+        }
+
+        public void OnGoBackToMainMenu()
+        {
+            Debug.Log("mainnnn");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Cars;
 using Enums;
 using Managers;
@@ -7,14 +8,22 @@ using UnityEngine.UI;
 
 public class CanvasDashboard : MonoBehaviour
 {
+    public static CanvasDashboard Instance { get; private set; }
+
     private CarController _carController;
     public TMP_Text gearState; 
+    [SerializeField] TMP_Text score; 
     public Image turnDirection;
-    // public TMP_Text turnDirection; 
     
     public Sprite leftTurnImage;
     public Sprite rightTurnImage;
     public Sprite forwardTurnImage;
+
+    void Awake()
+    {
+        // Singleton
+        Instance = this;
+    }
 
     void Start()
     {
@@ -52,6 +61,7 @@ public class CanvasDashboard : MonoBehaviour
 
     private void OnCarEnteredCrossSectionEvent(CrossSectionDirections newDirection)
     {
+        turnDirection.enabled = true;
         Debug.Log("Car entered cross section ");
         switch (newDirection)
         {
@@ -69,6 +79,8 @@ public class CanvasDashboard : MonoBehaviour
                 break;
         }
         
+        StartCoroutine(CleanDirectionAfterDelay());
+        
         // turnDirection.enabled = true;
 
         // float displayStartTime = Time.time;
@@ -81,6 +93,24 @@ public class CanvasDashboard : MonoBehaviour
         
         // Hide the image after 5 seconds
         // turnDirection.enabled = false;
+    }
+
+    public void DisplayUpdateScore(FeedbackScore feedbackScore)
+    {
+        score.SetText(feedbackScore.ToString() + " " + (int)feedbackScore);
+        StartCoroutine(CleanScoreAfterDelay());
+    }
+    
+    private IEnumerator<WaitForSeconds> CleanScoreAfterDelay()
+    {
+        yield return new WaitForSeconds(3f);
+        score.SetText("");
+    }
+    
+    private IEnumerator<WaitForSeconds> CleanDirectionAfterDelay()
+    {
+        yield return new WaitForSeconds(3f);
+        turnDirection.enabled = false;
     }
 
     /* void FixedUpdate()
