@@ -64,7 +64,8 @@ public class PlayModeMenu : MonoBehaviour
             players.Add(new PlayersScores(scoresObject.playerName, maxScoreOfPlayer));
         }
         
-        List<PlayersScores> topPlayers = players.OrderByDescending(p => p.score).Take(3).ToList();
+        List<PlayersScores> topPlayers = players.OrderByDescending(p => p.score).ToList();
+        // List<PlayersScores> topPlayers = players.OrderByDescending(p => p.score).Take(3).ToList();
 
         for (int topPlayerIndex = 0; topPlayerIndex < topPlayers.Count; topPlayerIndex++)
         {
