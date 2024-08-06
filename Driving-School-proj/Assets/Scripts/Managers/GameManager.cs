@@ -111,11 +111,8 @@ namespace Managers
                 scoresList.Add(scoresObject);
             }
             XMLManager.Instance.SaveScores(scoresList);
-            // DisplayGameOver(success, _feedbackScores);
 
             StartCoroutine(DisplayGameOverAfterDelay(success, _feedbackScores));
-
-            // TODO - UI: Show lost/pass the test + score table + input for the name
         }
 
         private void DisplayGameOver(bool success, List<FeedbackScore> _feedbackScores)
@@ -141,6 +138,7 @@ namespace Managers
             {
                 successStatus.SetText("You Lost!  scores: " + sumScores);
             }
+            Debug.Log("Enddd");
         }
         
         private IEnumerator<WaitForSeconds> DisplayGameOverAfterDelay(bool success, List<FeedbackScore> _feedbackScores)
@@ -151,6 +149,7 @@ namespace Managers
 
         public void OnGoBackToMainMenu()
         {
+            Debug.Log("mainnnn");
             UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
         }
     }

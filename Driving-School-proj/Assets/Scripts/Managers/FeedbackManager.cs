@@ -51,6 +51,18 @@ namespace Managers
     }
 }
 
+public class PlayersScores
+{
+    public string playerName;
+    public int score;
+    
+    public PlayersScores(string playerName, int score)
+    {
+        this.playerName = playerName;
+        this.score = score;
+    }
+}
+
 
 [System.Serializable]
 public class ScoresObject
