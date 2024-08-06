@@ -25,6 +25,7 @@ namespace Managers
             EventsManager.Instance.carPassedRedLightEvent.AddListener(OnCarPassedRedLight);
             EventsManager.Instance.carBrokeSpeedLimitEvent.AddListener(OnCarBrokenSpeedLimit);
             EventsManager.Instance.carDidNotGiveWayEvent.AddListener(OnCarDidNotGiveWay);
+            EventsManager.Instance.carDidNotGiveWayToPedestrianEvent.AddListener(CarDidNotGiveWayToPedestrian);
         }
 
         private void OnDestroy()
@@ -35,6 +36,8 @@ namespace Managers
             EventsManager.Instance.carPassedNoEntrySignEvent.RemoveListener(OnCarPassedNoEntrySign);
             EventsManager.Instance.carPassedRedLightEvent.RemoveListener(OnCarPassedRedLight);
             EventsManager.Instance.carBrokeSpeedLimitEvent.RemoveListener(OnCarBrokenSpeedLimit);
+            EventsManager.Instance.carDidNotGiveWayEvent.RemoveListener(OnCarDidNotGiveWay);
+            EventsManager.Instance.carDidNotGiveWayToPedestrianEvent.RemoveListener(CarDidNotGiveWayToPedestrian);
         }
     
         public int GetSpeedLimit()
@@ -95,6 +98,12 @@ namespace Managers
         {
             // Debug.Log("Car did not give way event triggered");
             GameManager.Instance.UpdateCarDidNotGiveWayEvent();
+        }
+        
+        private void CarDidNotGiveWayToPedestrian()
+        {
+            // Debug.Log("Car did not give way to pedestrian event triggered");
+            GameManager.Instance.UpdateCarDidNotGiveWayToPedestrianEvent();
         }
     }
 }

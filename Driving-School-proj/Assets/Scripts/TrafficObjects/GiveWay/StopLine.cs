@@ -51,7 +51,12 @@ namespace TrafficObjects.GiveWay
                     StopSign stopSign = stopSignObject.GetComponent<StopSign>();
                     if (!stopSign.HasLock() && !stopSign.IsLockAvailable())
                     {
-                        EventsManager.Instance.carDidNotGiveWayEvent.Invoke();
+                        // If other car has way
+                        EventsManager.Instance.TriggerCarDidNotGiveWayEvent();
+                    }
+                    if (stopSign.IsPedestrianCrossing())
+                    {
+                        EventsManager.Instance.TriggerCarDidNotGiveWayToPedestrianEvent();
                     }
                 }
                 _autonomousCar = other.gameObject.GetComponent<CarDriverAutonomous>();

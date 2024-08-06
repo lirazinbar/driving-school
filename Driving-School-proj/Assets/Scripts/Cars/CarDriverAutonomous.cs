@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using Enums;
 using Roads;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
+
 
 namespace Cars
 {
@@ -41,9 +41,10 @@ namespace Cars
             _bitmasks.Add(RaycastType.SlowDown, -1);
             _bitmasks[RaycastType.Stop] = IgnoreRaycastLayers(_bitmasks[RaycastType.Stop], 
                 new[] {"StopSurfaceDetector", "TrafficLightSurfaceDetector", "Anchor", "DestroyPoint",
-                    "JunctionExitDetector"});
+                    "JunctionExitDetector", "PedestriansNotCrossing"});
             _bitmasks[RaycastType.SlowDown] = IgnoreRaycastLayers(_bitmasks[RaycastType.SlowDown],
-                new[] {"TrafficLightSurfaceDetector", "Anchor", "DestroyPoint", "JunctionExitDetector"});
+                new[] {"TrafficLightSurfaceDetector", "Anchor", "DestroyPoint", "JunctionExitDetector",
+                    "PedestriansNotCrossing"});
         }
 
         void FixedUpdate()
@@ -54,8 +55,8 @@ namespace Cars
         
         public void Initialize(SplineContainer splineContainer)
         {
-            // Debug.Log("Initialize car");
-            SetKnotsPositions(splineContainer);
+            PathUtils.SetKnotsPositions(splineContainer, _knotsPositions, ref _currentKnotIndex);
+            SetTargetPosition(_knotsPositions[0]);
         }
     
         private void OnTriggerEnter(Collider other)
@@ -68,31 +69,16 @@ namespace Cars
                     SplineContainer splineContainer = anchor.GetRandomSplineContainer();
                     if (splineContainer != null)
                     {
-                        SetKnotsPositions(splineContainer);
+                        PathUtils.SetKnotsPositions(splineContainer, _knotsPositions, ref _currentKnotIndex);
+                        SetTargetPosition(_knotsPositions[0]);
                     }
                 }
             }
             
             if (other.CompareTag("DestroyPoint") && !gameObject.CompareTag("MainCar")) 
             {
-                Debug.Log("Destroy car");
                 Destroy(gameObject);
             }
-        }
-    
-        private void SetKnotsPositions(SplineContainer splineContainer)
-        {
-            _knotsPositions.Clear();
-            _currentKnotIndex = 0;
-            for (int i = 0; i < splineContainer.Spline.Count; i++)
-            {
-                float3 knot = splineContainer.Spline.ToArray()[i].Position;
-                Vector3 knotLocalPosition = new Vector3(knot.x, knot.y, knot.z);
-                Vector3 knotWorldPosition = splineContainer.transform.TransformPoint(knotLocalPosition);
-                _knotsPositions.Add(knotWorldPosition);
-            }
-            
-            SetTargetPosition(_knotsPositions[0]);
         }
 
         private HitState Sensors()
@@ -268,8 +254,4 @@ namespace Cars
         }
 
     }
-
-    
-
-    
 }
