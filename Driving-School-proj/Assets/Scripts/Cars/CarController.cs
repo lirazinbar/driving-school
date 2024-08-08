@@ -10,6 +10,7 @@ namespace Cars
         private float _horizontalInput, _verticalInput;
         private float _currentSteerAngle, _currentBreakForce;
         private bool _isBreaking;
+        private int _speedLimit;
         private GearState _currentGearState = GearState.Drive;
         private bool _isCheckingSpeed = true;
         private bool _isShowingSpeed = true;
@@ -32,6 +33,11 @@ namespace Cars
         // Wheels
         [SerializeField] private Transform frontLeftWheelTransform, frontRightWheelTransform;
         [SerializeField] private Transform rearLeftWheelTransform, rearRightWheelTransform;
+        
+        private void Start()
+        {
+            _speedLimit = TrafficManager.Instance.GetSpeedLimit();
+        }
 
         private void FixedUpdate()
         {
@@ -57,7 +63,10 @@ namespace Cars
             HandleSteering();
             UpdateWheels();
             // ShowCurrentSpeed();
-            IsCarBrokeSpeedLimit();
+            if (!isAutonomous)
+            {
+                IsCarBrokeSpeedLimit();
+            }
         }
     
         // For autonomous control
@@ -165,11 +174,11 @@ namespace Cars
     
         private void IsCarBrokeSpeedLimit()
         {
-            if (_isCheckingSpeed && !isAutonomous)
+            if (_isCheckingSpeed)
             {
-                if (GetSpeed() > TrafficManager.Instance.GetSpeedLimit())
+                if (GetSpeed() > _speedLimit)
                 {
-                    Debug.Log("Speed limit exceeded! (above " + TrafficManager.Instance.GetSpeedLimit() + " KM/H)");
+                    Debug.Log("Speed limit exceeded! (above " + _speedLimit + " KM/H)");
                     EventsManager.Instance.TriggerCarBrokeSpeedLimitEvent();
                     _isCheckingSpeed = false;
                     StartCoroutine(WaitForCheckSpeed());
