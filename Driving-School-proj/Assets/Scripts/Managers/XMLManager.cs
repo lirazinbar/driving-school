@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Xml.Serialization;
@@ -28,16 +29,18 @@ namespace Managers
         
         public void SaveRoutes(List<MapMatrixObject> matrixListToSave)
         {
-            routesCollection.list = matrixListToSave; 
+            DatabaseManager.Instance.CreateRoutes(matrixListToSave);
+            /*routesCollection.list = matrixListToSave; 
             XmlSerializer serializer = new XmlSerializer(typeof(RoutesCollection));
             FileStream stream = new FileStream(Application.persistentDataPath + "/Routes/routes.xml", FileMode.Create);
             serializer.Serialize(stream, routesCollection);
-            stream.Close();
+            stream.Close();*/
         }
 
-        public List<MapMatrixObject> LoadRoutes()
+        public void LoadRoutes(Action<List<MapMatrixObject>> OnRoutesFetched)
         {
-            if (File.Exists(Application.persistentDataPath + "/Routes/routes.xml"))
+            StartCoroutine(DatabaseManager.Instance.GetRoutes(OnRoutesFetched));
+            /*if (File.Exists(Application.persistentDataPath + "/Routes/routes.xml"))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(RoutesCollection));
                 FileStream stream = new FileStream(Application.persistentDataPath + "/Routes/routes.xml", FileMode.Open);
@@ -46,6 +49,7 @@ namespace Managers
             }
 
             return routesCollection.list;
+            */
         }
         
         public void SaveScores(List<ScoresObject> scoresObjectListToSave)
@@ -69,6 +73,19 @@ namespace Managers
 
             return scoresCollection.list;
         }
+
+        /*private void OnRoutesFetched(List<MapMatrixObject> routes)
+        {
+            // Handle the fetched data
+            foreach (var route in routes)
+            {
+                Debug.Log($"Matrix Name: {route.name}");
+                foreach (var cell in route.mapCellObjectsList)
+                {
+                    Debug.Log($"Cell at ({cell.row}, {cell.col}) with component number: {cell.componentObject.componentNumber}");
+                }
+            }
+        }*/
     }
 }
 

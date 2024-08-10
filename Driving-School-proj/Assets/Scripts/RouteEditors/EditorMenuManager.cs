@@ -15,6 +15,7 @@ public class EditorMenuManager : MonoBehaviour
     [SerializeField] private GameObject MapName; // of the editor screen
     [SerializeField] private GameObject Grid; // of the editor screen
     [SerializeField] private GameObject Item; // of the editor screen
+    private int chosenRouteIndex;
 
     public void OnCreateNewRoute()
     {
@@ -28,8 +29,34 @@ public class EditorMenuManager : MonoBehaviour
     {
         menuCanvas.gameObject.SetActive(false);
         
-        List<MapMatrixObject> routeList = XMLManager.Instance.LoadRoutes();
+         //List<MapMatrixObject> routeList = XMLManager.Instance.LoadRoutes();
+        XMLManager.Instance.LoadRoutes(OnRoutesFetched1);
         
+        /*
+        for (int i = gridContainerGameObject.transform.childCount - 1; i >= 0; i--)
+        {
+            Destroy(gridContainerGameObject.transform.GetChild(i).gameObject);
+        }
+        
+        for (int index = 0; index < routeList.Count; index++)
+        {
+            MapMatrixObject route = routeList[index];
+            GameObject newComponent = Instantiate(routeComponentPrefab, gridContainerGameObject.transform);
+            newComponent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = route.name;
+            Debug.Log(route.name);
+            newComponent.name = "Route" + (index+1);
+            
+            Button buttonComponent = newComponent.GetComponent<Button>();
+            buttonComponent.onClick.AddListener(() => OnChooseRoute(newComponent.name));
+        }
+
+        
+        chooseRouteCanvas.gameObject.SetActive(true);
+        */
+    }
+
+    private void OnRoutesFetched1(List<MapMatrixObject> routeList)
+    {
         for (int i = gridContainerGameObject.transform.childCount - 1; i >= 0; i--)
         {
             Destroy(gridContainerGameObject.transform.GetChild(i).gameObject);
@@ -66,11 +93,49 @@ public class EditorMenuManager : MonoBehaviour
     
     public void LoadChosenRouteIntoMatrix(int index)
     {
-        List<MapMatrixObject> routeList = XMLManager.Instance.LoadRoutes();
-        MapMatrixObject chosenRoute = routeList[index];
+        chosenRouteIndex = index;
+        //List<MapMatrixObject> routeList = XMLManager.Instance.LoadRoutes();
+        XMLManager.Instance.LoadRoutes(OnRoutesFetched2);
+        /* MapMatrixObject chosenRoute = routeList[index];
         MapName.GetComponent<TMP_InputField>().text = chosenRoute.name;
         
-        foreach (MapCellObject mapCellObject in chosenRoute.mapCellObjectsArray)
+        foreach (MapCellObject mapCellObject in chosenRoute.mapCellObjectsList)
+        {
+            int componentNumber = mapCellObject.componentObject.componentNumber;
+            int rotationZ = mapCellObject.componentObject.rotation;
+            
+            int rowIndex = mapCellObject.row;
+            int colIndex = mapCellObject.col;
+
+            GameObject slot = Grid.transform.GetChild(rowIndex * 8 + colIndex).gameObject;
+
+            if (slot.transform.childCount > 0)
+            {
+                Destroy(slot.transform.GetChild(0).gameObject);
+            }
+            
+            if (componentNumber != 0)
+            {
+                Transform newItem = Instantiate(Item.transform, slot.transform);
+                newItem.name = "Item";
+                Image itemImage = newItem.transform.GetComponent<Image>();
+                Sprite sprite = Resources.Load<Sprite>("Photos/RoutesItems/" + "component"+componentNumber);
+               
+                itemImage.sprite = sprite;
+                
+                newItem.GetComponent<DraggableItem>().image.raycastTarget = true;
+                newItem.transform.Rotate(new Vector3(0, 0, rotationZ));
+            }
+        }
+        */
+    }
+
+    private void OnRoutesFetched2(List<MapMatrixObject> routeList)
+    {
+        MapMatrixObject chosenRoute = routeList[chosenRouteIndex];
+        MapName.GetComponent<TMP_InputField>().text = chosenRoute.name;
+        
+        foreach (MapCellObject mapCellObject in chosenRoute.mapCellObjectsList)
         {
             int componentNumber = mapCellObject.componentObject.componentNumber;
             int rotationZ = mapCellObject.componentObject.rotation;
@@ -99,7 +164,6 @@ public class EditorMenuManager : MonoBehaviour
             }
         }
     }
-
     public void onGetBackToMainMenu()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");

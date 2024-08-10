@@ -8,7 +8,15 @@ public class CreateRouteMap : MonoBehaviour
     [SerializeField] private List<GameObject> componentsPrefabs;
     private void Start()
     {
-        List<MapMatrixObject> routeList = XMLManager.Instance.LoadRoutes();
+        // List<MapMatrixObject> routeList = XMLManager.Instance.LoadRoutes();
+        XMLManager.Instance.LoadRoutes(OnRoutesFetched);
+        //int routeNumber = int.Parse(PlayerPrefs.GetString("RouteNumber"));
+
+        //OnRouteMapSave(routeList[routeNumber]);
+    }
+
+    private void OnRoutesFetched(List<MapMatrixObject> routeList)
+    {
         int routeNumber = int.Parse(PlayerPrefs.GetString("RouteNumber"));
 
         OnRouteMapSave(routeList[routeNumber]);
@@ -19,7 +27,7 @@ public class CreateRouteMap : MonoBehaviour
         Debug.Log("route map saved event event triggered");
         
         // Iterate over the routeMap matrix
-        foreach (MapCellObject cell in mapMatrixObject.mapCellObjectsArray)
+        foreach (MapCellObject cell in mapMatrixObject.mapCellObjectsList)
         {
                 // Get the SlotObject at the current cell
                 ComponentObject componentObject = cell.componentObject;
