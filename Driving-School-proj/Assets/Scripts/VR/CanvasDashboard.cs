@@ -62,7 +62,7 @@ public class CanvasDashboard : MonoBehaviour
     private void OnCarEnteredCrossSectionEvent(CrossSectionDirections newDirection)
     {
         turnDirection.enabled = true;
-        Debug.Log("Car entered cross section ");
+        // Debug.Log("Car entered cross section ");
         switch (newDirection)
         {
             case CrossSectionDirections.Right:

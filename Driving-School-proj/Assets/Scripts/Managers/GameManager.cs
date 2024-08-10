@@ -18,6 +18,7 @@ namespace Managers
         {
             // Singleton
             Instance = this;
+            Application.targetFrameRate = 90;
         }
         
         public bool IsMainCar(int carId)
