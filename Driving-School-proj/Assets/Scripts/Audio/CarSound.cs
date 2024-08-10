@@ -37,7 +37,6 @@ namespace Audio
             }
             else
             {
-                Debug.Log("Engine sound is playing");
                 EngineSound();
             }
         }
@@ -45,7 +44,6 @@ namespace Audio
         private void EngineSound()
         {
             float carSpeed = GetSpeed();
-            Debug.Log("Car speed: " + carSpeed);
             
             if (carSpeed < maxSpeed)
             {
