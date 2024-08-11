@@ -414,6 +414,7 @@ GameObject:
   - component: {fileID: 7978565854681765186}
   - component: {fileID: 6288799916689321620}
   - component: {fileID: -5547816086083028794}
+  - component: {fileID: 3322483856221621199}
   m_Layer: 0
   m_Name: PrivateCar
   m_TagString: Car
@@ -547,6 +548,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToLiveSeconds: 120
+--- !u!114 &3322483856221621199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4999463542614872390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d51e9d07d34f43adb053c938cae7c685, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isMainCar: 0
 --- !u!1 &5450577674995089335
 GameObject:
   m_ObjectHideFlags: 0

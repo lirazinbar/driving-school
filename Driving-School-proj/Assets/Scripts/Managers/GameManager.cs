@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Audio;
 using TMPro;
 using UnityEngine;
 
@@ -11,7 +12,8 @@ namespace Managers
         [SerializeField] private TMP_Text successStatus;
         [SerializeField] private GameObject scoreComponentPrefab;
         [SerializeField] private GameObject gridContainerGameOverMenu;
-        [SerializeField] private Canvas GameOverCanvas;
+        [SerializeField] private Canvas GameOverCanvas; 
+        private AudioManager audioManager;
 
         //private string playerName;
         void Awake()
@@ -19,6 +21,11 @@ namespace Managers
             // Singleton
             Instance = this;
             Application.targetFrameRate = 90;
+        }
+        
+        void Start()
+        {
+            audioManager = FindObjectOfType<AudioManager>();
         }
         
         public bool IsMainCar(int carId)
@@ -84,6 +91,19 @@ namespace Managers
             Debug.Log("Main car did not give way to pedestrian");
             FeedbackManager.Instance.UpdateScore(FeedbackScore.GiveWayPedestrian);
         }
+        public void UpdateCarHitOtherCarEvent()
+        {
+            Debug.Log("Main car hit another car");
+            audioManager.Play("CarCrash");
+            FeedbackManager.Instance.UpdateScore(FeedbackScore.CarHit);
+        }
+        
+        public void UpdateCarHitPedestrianEvent()
+        {
+            Debug.Log("Main car hit a pedestrian");
+            audioManager.Play("CarCrash");
+            FeedbackManager.Instance.UpdateScore(FeedbackScore.PedestrianHit);
+        }
         
         public void GameFinished(bool success, List<FeedbackScore> _feedbackScores)
         {
@@ -119,7 +139,7 @@ namespace Managers
                 scoresList.Add(scoresObject);
             }
             XMLManager.Instance.SaveScores(scoresList);
-
+            
             StartCoroutine(DisplayGameOverAfterDelay(success, _feedbackScores));
         }
 
@@ -146,7 +166,8 @@ namespace Managers
             {
                 successStatus.SetText("You Lost!  scores: " + sumScores);
             }
-            Debug.Log("Enddd");
+            Time.timeScale = 0f; // Pause the game
+            // Debug.Log("Enddd");
         }
         
         private IEnumerator<WaitForSeconds> DisplayGameOverAfterDelay(bool success, List<FeedbackScore> _feedbackScores)
@@ -157,7 +178,7 @@ namespace Managers
 
         public void OnGoBackToMainMenu()
         {
-            Debug.Log("mainnnn");
+            // Debug.Log("mainnnn");
             UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
         }
     }
