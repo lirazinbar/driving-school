@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 3131202498432506696}
   - component: {fileID: 5717016513433849982}
   - component: {fileID: 1412436825064806959}
+  - component: {fileID: 4601950621467921300}
   m_Layer: 0
   m_Name: PickupTruck
   m_TagString: Car
@@ -230,6 +231,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToLiveSeconds: 120
+--- !u!114 &4601950621467921300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d51e9d07d34f43adb053c938cae7c685, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isMainCar: 0
 --- !u!1 &297423852544501792
 GameObject:
   m_ObjectHideFlags: 0

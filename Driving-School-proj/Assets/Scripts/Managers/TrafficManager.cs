@@ -25,7 +25,9 @@ namespace Managers
             EventsManager.Instance.carPassedRedLightEvent.AddListener(OnCarPassedRedLight);
             EventsManager.Instance.carBrokeSpeedLimitEvent.AddListener(OnCarBrokenSpeedLimit);
             EventsManager.Instance.carDidNotGiveWayEvent.AddListener(OnCarDidNotGiveWay);
-            EventsManager.Instance.carDidNotGiveWayToPedestrianEvent.AddListener(CarDidNotGiveWayToPedestrian);
+            EventsManager.Instance.carDidNotGiveWayToPedestrianEvent.AddListener(OnCarDidNotGiveWayToPedestrian);
+            EventsManager.Instance.carHitOtherCarEvent.AddListener(OnCarHitOtherCar);
+            EventsManager.Instance.carHitPedestrianEvent.AddListener(OnCarHitPedestrian);
         }
 
         private void OnDestroy()
@@ -37,7 +39,9 @@ namespace Managers
             EventsManager.Instance.carPassedRedLightEvent.RemoveListener(OnCarPassedRedLight);
             EventsManager.Instance.carBrokeSpeedLimitEvent.RemoveListener(OnCarBrokenSpeedLimit);
             EventsManager.Instance.carDidNotGiveWayEvent.RemoveListener(OnCarDidNotGiveWay);
-            EventsManager.Instance.carDidNotGiveWayToPedestrianEvent.RemoveListener(CarDidNotGiveWayToPedestrian);
+            EventsManager.Instance.carDidNotGiveWayToPedestrianEvent.RemoveListener(OnCarDidNotGiveWayToPedestrian);
+            EventsManager.Instance.carHitOtherCarEvent.RemoveListener(OnCarHitOtherCar);
+            EventsManager.Instance.carHitPedestrianEvent.RemoveListener(OnCarHitPedestrian);
         }
     
         public int GetSpeedLimit()
@@ -100,10 +104,22 @@ namespace Managers
             GameManager.Instance.UpdateCarDidNotGiveWayEvent();
         }
         
-        private void CarDidNotGiveWayToPedestrian()
+        private void OnCarDidNotGiveWayToPedestrian()
         {
             // Debug.Log("Car did not give way to pedestrian event triggered");
             GameManager.Instance.UpdateCarDidNotGiveWayToPedestrianEvent();
+        }
+
+        private void OnCarHitOtherCar()
+        {
+            // Debug.Log("Car hit other car event triggered");
+            GameManager.Instance.UpdateCarHitOtherCarEvent();
+        }
+        
+        private void OnCarHitPedestrian()
+        {
+            // Debug.Log("Car hit pedestrian event triggered");
+            GameManager.Instance.UpdateCarHitPedestrianEvent();
         }
     }
 }
