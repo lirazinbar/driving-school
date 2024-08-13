@@ -1,6 +1,7 @@
 using Cars;
 using Enums;
 using Managers;
+using Pedestrian;
 using Roads;
 using UnityEngine;
 
