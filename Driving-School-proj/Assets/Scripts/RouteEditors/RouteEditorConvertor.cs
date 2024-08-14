@@ -20,7 +20,16 @@ public class RouteEditorConvertor : MonoBehaviour
     
     public void OnSaveRoute()
     {
-        MapCellObject[] cellsArray = new MapCellObject[3*8];
+        /*
+        int rows = 3;
+        int cols = 8;
+        List<MapCellObject> cellsList = new List<MapCellObject>(rows * cols);
+
+        // Initialize the list with default MapCellObject instances
+        for (int i = 0; i < rows * cols; i++)
+        {
+            cellsList.Add(null);
+        }
 
         foreach (Transform slot in Grid.transform)
         {
@@ -39,15 +48,21 @@ public class RouteEditorConvertor : MonoBehaviour
             
             ComponentObject componentObject = new ComponentObject(componentNumber, rotationZ);
             MapCellObject mapCellObject = new MapCellObject(rowIndex, colIndex, componentObject);
-            cellsArray[rowIndex*8 + colIndex] = mapCellObject;
+            Debug.Log("row "+ rowIndex);
+            Debug.Log("col "+ colIndex);
+            cellsList[rowIndex*8 + colIndex] = mapCellObject;
 
             RouteMap[rowIndex, colIndex] = componentObject;
         }
 
         PrintMatrix();
         // Save the route map
-        List<MapMatrixObject> routeList = XMLManager.Instance.LoadRoutes();
-        MapMatrixObject mapMatrixObject = new MapMatrixObject(MapName.GetComponent<TMP_InputField>().text, cellsArray);
+        */
+        // List<MapMatrixObject> routeList = XMLManager.Instance.LoadRoutes();
+        // XMLManager.Instance.LoadRoutes(OnRoutesFetched);
+        StartCoroutine(DatabaseManager.Instance.GetRoutes(OnRoutesFetched));
+
+        /* MapMatrixObject mapMatrixObject = new MapMatrixObject(MapName.GetComponent<TMP_InputField>().text, cellsList);
         
         string isNewRoute = PlayerPrefs.GetString("isNewRoute");
         if (isNewRoute == "true")
@@ -64,6 +79,66 @@ public class RouteEditorConvertor : MonoBehaviour
         
         editorCanvas.gameObject.SetActive(false);
         menuCanvas.gameObject.SetActive(true);
+        */
+    }
+
+    private void OnRoutesFetched(List<MapMatrixObject> routeList)
+    {
+        int rows = 3;
+        int cols = 8;
+        List<MapCellObject> cellsList = new List<MapCellObject>(rows * cols);
+
+        // Initialize the list with default MapCellObject instances
+        for (int i = 0; i < rows * cols; i++)
+        {
+            cellsList.Add(null);
+        }
+
+        foreach (Transform slot in Grid.transform)
+        {
+            int rowIndex = int.Parse(slot.name.Substring(4, 1));
+            int colIndex = int.Parse(slot.name.Substring(5, 1));
+
+            int componentNumber = 0;
+            int rotationZ = 0;
+            
+            if (slot.childCount > 0)
+            {
+                string componentName = slot.GetChild(0).GetComponent<Image>().sprite.name;
+                componentNumber = int.Parse(componentName.Substring("component".Length));
+                rotationZ = Mathf.RoundToInt(slot.GetChild(0).GetComponent<RectTransform>().localRotation.eulerAngles.z);
+            }
+            
+            ComponentObject componentObject = new ComponentObject(componentNumber, rotationZ);
+            MapCellObject mapCellObject = new MapCellObject(rowIndex, colIndex, componentObject);
+            Debug.Log("row "+ rowIndex);
+            Debug.Log("col "+ colIndex);
+            cellsList[rowIndex*8 + colIndex] = mapCellObject;
+
+            RouteMap[rowIndex, colIndex] = componentObject;
+        }
+
+        PrintMatrix();
+        // Save the route map
+        MapMatrixObject mapMatrixObject = new MapMatrixObject(MapName.GetComponent<TMP_InputField>().text, cellsList);
+        
+        string isNewRoute = PlayerPrefs.GetString("isNewRoute");
+        if (isNewRoute == "true")
+        {
+            routeList.Add(mapMatrixObject);
+        }
+        else
+        {
+            int index = int.Parse(isNewRoute.Substring("false-".Length));
+            routeList[index] = mapMatrixObject;
+        }
+        
+       // XMLManager.Instance.SaveRoutes(routeList);
+        DatabaseManager.Instance.CreateRoutes(routeList);
+
+        
+        editorCanvas.gameObject.SetActive(false);
+        menuCanvas.gameObject.SetActive(true);   
     }
     
     void PrintMatrix()
@@ -88,17 +163,17 @@ public class MapMatrixObject
     
     [XmlArray("Matrix")]
     [XmlArrayItem("Cell")]
-    public MapCellObject[] mapCellObjectsArray;
+    public List<MapCellObject> mapCellObjectsList;
 
     public MapMatrixObject()
     {
         this.name = "";
     }
 
-    public MapMatrixObject(string name, MapCellObject[] mapCellObjectsArray)
+    public MapMatrixObject(string name, List<MapCellObject> mapCellObjectsList)
     {
         this.name = name;
-        this.mapCellObjectsArray = mapCellObjectsArray;
+        this.mapCellObjectsList = mapCellObjectsList;
     }
 }
 

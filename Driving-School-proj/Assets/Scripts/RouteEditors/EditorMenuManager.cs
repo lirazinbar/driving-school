@@ -15,12 +15,43 @@ public class EditorMenuManager : MonoBehaviour
     [SerializeField] private GameObject MapName; // of the editor screen
     [SerializeField] private GameObject Grid; // of the editor screen
     [SerializeField] private GameObject Item; // of the editor screen
+    private int chosenRouteIndex;
 
     public void OnCreateNewRoute()
     {
         menuCanvas.gameObject.SetActive(false);
         PlayerPrefs.SetString("isNewRoute", "true");
+        loadEmptyBoard();
         editorCanvas.gameObject.SetActive(true);
+    }
+
+    private void loadEmptyBoard()
+    {
+        MapName.GetComponent<TMP_InputField>().text = "";
+
+        for (int rowIndex = 0; rowIndex < 3; rowIndex++)
+        {
+            for (int colIndex = 0; colIndex < 8; colIndex++)
+            {
+                GameObject slot = Grid.transform.GetChild(rowIndex * 8 + colIndex).gameObject;
+
+                if ((rowIndex == 0 && colIndex == 7) || (rowIndex == 2 && colIndex == 0) ||
+                    (rowIndex == 2 && colIndex == 7))
+                {
+                    DraggableItem draggableItem = slot.transform.GetChild(0).gameObject.GetComponent<DraggableItem>();
+
+                    if (draggableItem != null)
+                    {
+                        // Disable the script
+                        draggableItem.enabled = false;
+                    }
+                }
+                else if ((slot.transform.childCount > 0) && (rowIndex != 0 || colIndex != 0))
+                {
+                    Destroy(slot.transform.GetChild(0).gameObject);
+                }
+            }
+        }
     }
     
 
@@ -28,8 +59,11 @@ public class EditorMenuManager : MonoBehaviour
     {
         menuCanvas.gameObject.SetActive(false);
         
-        List<MapMatrixObject> routeList = XMLManager.Instance.LoadRoutes();
-        
+        StartCoroutine(DatabaseManager.Instance.GetRoutes(OnRoutesFetched1));
+    }
+
+    private void OnRoutesFetched1(List<MapMatrixObject> routeList)
+    {
         for (int i = gridContainerGameObject.transform.childCount - 1; i >= 0; i--)
         {
             Destroy(gridContainerGameObject.transform.GetChild(i).gameObject);
@@ -40,7 +74,6 @@ public class EditorMenuManager : MonoBehaviour
             MapMatrixObject route = routeList[index];
             GameObject newComponent = Instantiate(routeComponentPrefab, gridContainerGameObject.transform);
             newComponent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = route.name;
-            Debug.Log(route.name);
             newComponent.name = "Route" + (index+1);
             
             Button buttonComponent = newComponent.GetComponent<Button>();
@@ -66,11 +99,16 @@ public class EditorMenuManager : MonoBehaviour
     
     public void LoadChosenRouteIntoMatrix(int index)
     {
-        List<MapMatrixObject> routeList = XMLManager.Instance.LoadRoutes();
-        MapMatrixObject chosenRoute = routeList[index];
+        chosenRouteIndex = index;
+        StartCoroutine(DatabaseManager.Instance.GetRoutes(OnRoutesFetched2));
+    }
+
+    private void OnRoutesFetched2(List<MapMatrixObject> routeList)
+    {
+        MapMatrixObject chosenRoute = routeList[chosenRouteIndex];
         MapName.GetComponent<TMP_InputField>().text = chosenRoute.name;
         
-        foreach (MapCellObject mapCellObject in chosenRoute.mapCellObjectsArray)
+        foreach (MapCellObject mapCellObject in chosenRoute.mapCellObjectsList)
         {
             int componentNumber = mapCellObject.componentObject.componentNumber;
             int rotationZ = mapCellObject.componentObject.rotation;
@@ -96,10 +134,21 @@ public class EditorMenuManager : MonoBehaviour
                 
                 newItem.GetComponent<DraggableItem>().image.raycastTarget = true;
                 newItem.transform.Rotate(new Vector3(0, 0, rotationZ));
+
+                if ((rowIndex == 0 && colIndex == 7) || (rowIndex == 2 && colIndex == 0) ||
+                    (rowIndex == 2 && colIndex == 7))
+                {
+                    DraggableItem draggableItem = newItem.GetComponent<DraggableItem>();
+            
+                    if (draggableItem != null)
+                    {
+                        // Disable the script
+                        draggableItem.enabled = false;
+                    }
+                }
             }
         }
     }
-
     public void onGetBackToMainMenu()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");

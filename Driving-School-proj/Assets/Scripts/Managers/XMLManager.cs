@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Xml.Serialization;
@@ -24,28 +25,6 @@ namespace Managers
             {
                 Directory.CreateDirectory(Application.persistentDataPath + "/Scores/");
             }
-        }
-        
-        public void SaveRoutes(List<MapMatrixObject> matrixListToSave)
-        {
-            routesCollection.list = matrixListToSave; 
-            XmlSerializer serializer = new XmlSerializer(typeof(RoutesCollection));
-            FileStream stream = new FileStream(Application.persistentDataPath + "/Routes/routes.xml", FileMode.Create);
-            serializer.Serialize(stream, routesCollection);
-            stream.Close();
-        }
-
-        public List<MapMatrixObject> LoadRoutes()
-        {
-            if (File.Exists(Application.persistentDataPath + "/Routes/routes.xml"))
-            {
-                XmlSerializer serializer = new XmlSerializer(typeof(RoutesCollection));
-                FileStream stream = new FileStream(Application.persistentDataPath + "/Routes/routes.xml", FileMode.Open);
-                routesCollection = serializer.Deserialize(stream) as RoutesCollection;
-                stream.Close();
-            }
-
-            return routesCollection.list;
         }
         
         public void SaveScores(List<ScoresObject> scoresObjectListToSave)
