@@ -606,7 +606,34 @@ $RECYCLE.BIN/
 # *.FBX
 # *.mat
 *CICADA*
-*FirebaseCppApp*
+# *FirebaseCppApp*
+
+# Firebase SDK binary and cache files
+**/FirebaseCppApp/libs/
+**/FirebaseCppApp/cache/
+**/.firebase/
+
+# Exclude Firebase plugin binaries and platform-specific folders
+**/Firebase/Plugins/x86_64/
+**/Firebase/Plugins/x86_64/**/*.dll
+**/Firebase/Plugins/x86_64/**/*.lib
+**/Firebase/Plugins/x86_64/**/*.so
+**/Firebase/Plugins/x86_64/**/*.a
+**/Firebase/Plugins/x86_64/**/*.dylib
+**/Firebase/Plugins/x86_64/**/*.pdb
+**/Firebase/Plugins/x86_64/**/*.mdb
+**/Firebase/Plugins/x86_64/**/*.bundle
+
+
+# Exclude cache or temporary files, if any
+**/Firebase/Plugins/x86_64/**/cache/
+**/Firebase/Plugins/x86_64/**/temp/
+**/Firebase/Plugins/x86_64/**/obj/
+
+# Include necessary files (if needed)
+!**/Firebase/Plugins/x86_64/**/*.meta
+!**/Firebase/Plugins/**/*.json
+!**/Firebase/Plugins/**/*.cs
 
 ### VisualStudio ###
 
