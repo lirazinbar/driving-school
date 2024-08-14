@@ -5,7 +5,6 @@ namespace Pedestrian
 {
     public class PedestriansCrossPoint: MonoBehaviour
     {
-        
         [SerializeField] private GameObject pedestriansCloseSpawner;
         [SerializeField] private GameObject pedestriansFarSpawner;
         [SerializeField] private StopSign stopSign;
@@ -19,11 +18,13 @@ namespace Pedestrian
                 {
                    // Pedestrians starts crossing
                    stopSign.PedestrianStartCrossing();
+                   pedestrianController.SetIsCrossing(true, stopSign);
                 }
                 else if (pedestrianController.SpawnerId() == pedestriansFarSpawner.GetInstanceID())
                 {
                     // Pedestrian finished crossing
                     stopSign.PedestrianFinishCrossing();
+                    pedestrianController.SetIsCrossing(false, null);
                 }
             }
         }

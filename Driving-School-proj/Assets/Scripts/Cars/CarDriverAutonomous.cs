@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using Enums;
 using Roads;
+using TrafficObjects.GiveWay;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -9,13 +11,12 @@ namespace Cars
 {
     public class CarDriverAutonomous : MonoBehaviour
     {
-        // [SerializeField] private Transform targetPositionTransform;
-        // [SerializeField] private SplineContainer splineContainer; 
-    
         private CarController _carController;
         private Vector3 _targetPosition;
         private readonly List<Vector3> _knotsPositions = new List<Vector3>();
         private int _currentKnotIndex;
+
+        private StopSign _currentStopSign;
 
         private float _forwardAmount;
         private float _turnAmount;
@@ -31,7 +32,7 @@ namespace Cars
         [SerializeField] private float sensorSlowDownLength = 25f;
         [SerializeField] private float sensorStopLength = StopDistance;
         [SerializeField] private float sensorsHight = 1f;
-        private Dictionary<RaycastType, int> _bitmasks = new Dictionary<RaycastType, int>( );
+        private Dictionary<RaycastType, int> _bitmasks = new Dictionary<RaycastType, int>();
 
         private void Awake()
         {
@@ -45,6 +46,15 @@ namespace Cars
             _bitmasks[RaycastType.SlowDown] = IgnoreRaycastLayers(_bitmasks[RaycastType.SlowDown],
                 new[] {"TrafficLightSurfaceDetector", "Anchor", "DestroyPoint", "JunctionExitDetector",
                     "PedestriansNotCrossing"});
+        }
+
+        private void OnDestroy()
+        {
+            // In case the car is destroyed while it's in the junction with the lock
+            if (_currentStopSign != null && _currentStopSign.HasLock())
+            {
+                _currentStopSign.YieldLock();
+            }
         }
 
         void FixedUpdate()
@@ -73,11 +83,6 @@ namespace Cars
                         SetTargetPosition(_knotsPositions[0]);
                     }
                 }
-            }
-            
-            if (other.CompareTag("DestroyPoint") && !gameObject.CompareTag("MainCar")) 
-            {
-                Destroy(gameObject);
             }
         }
 
@@ -108,15 +113,12 @@ namespace Cars
     
         private int IgnoreRaycastLayers(int bitmask, string[] layersToIgnore)
         {
-            // Debug.Log("bitmask: " + Convert.ToString(bitmask, 2).PadLeft(32, '0'));
             int ignoreBitmask = 0;
             foreach (string layer in layersToIgnore)
             {
                 ignoreBitmask |= 1 << LayerMask.NameToLayer(layer);
             }
-        
-            // Debug.Log("ignoreBitmask: " + Convert.ToString(~ignoreBitmask, 2).PadLeft(32, '0'));
-            // Debug.Log("bitmask & ~ignoreBitmask: " + (Convert.ToString(bitmask & ~ignoreBitmask, 2).PadLeft(32, '0')));
+            
             return bitmask & ~ignoreBitmask;
         }
 
@@ -252,6 +254,10 @@ namespace Cars
         
             return _turnAmount;
         }
-
+        
+        public void SetCurrentStopSign(StopSign stopSign)
+        {
+            _currentStopSign = stopSign;
+        }
     }
 }

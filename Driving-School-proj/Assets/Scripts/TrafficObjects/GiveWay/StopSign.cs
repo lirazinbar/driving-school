@@ -53,6 +53,8 @@ namespace TrafficObjects.GiveWay
                     {
                         // Ignore stop line with Stop raycast
                         autonomousCar.SetLayerOfRaycast(RaycastType.Stop, "StopLine", true);
+                        // In case the car is being destroyed with a lock
+                        autonomousCar.SetCurrentStopSign(this);
                     }
                 }
             }
@@ -140,6 +142,11 @@ namespace TrafficObjects.GiveWay
             {
                 pedestrianSpawner.enabled = false;
             }
+        }
+        
+        public void YieldLock()
+        {
+            junctionGiveWayManager.YieldLock();
         }
     }
 }

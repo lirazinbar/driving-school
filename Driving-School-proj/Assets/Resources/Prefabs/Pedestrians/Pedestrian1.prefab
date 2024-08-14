@@ -79,11 +79,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 66c0576740a684da99f67d2162f09cb5,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1866479227783517977}
+      addedObject: {fileID: 7444240578776845022}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 66c0576740a684da99f67d2162f09cb5,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7444240578776845022}
+      addedObject: {fileID: 1866479227783517977}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 66c0576740a684da99f67d2162f09cb5,
         type: 3}
       insertIndex: -1
@@ -121,20 +121,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &1866479227783517977
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8256927877004651054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73126654a145d4d49b24abf026cfe193, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  agent: {fileID: 6840354592865884394}
-  animator: {fileID: 7444240578776845022}
 --- !u!95 &7444240578776845022
 Animator:
   serializedVersion: 5
@@ -156,6 +142,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1866479227783517977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8256927877004651054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73126654a145d4d49b24abf026cfe193, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agent: {fileID: 6840354592865884394}
+  animator: {fileID: 7444240578776845022}
 --- !u!65 &9047642290045046998
 BoxCollider:
   m_ObjectHideFlags: 0
