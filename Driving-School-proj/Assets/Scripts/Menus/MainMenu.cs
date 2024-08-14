@@ -21,34 +21,10 @@ public class MainMenu : MonoBehaviour
     }
     public void SaveNameAndLoadRoutes()
     {
-        // GameManager.Instance.SetPlayerName(this.playerNameInput.text);
-        // DatabaseManager.Instance.CreateUser();
         PlayerPrefs.SetString("PlayerName", this.playerNameInput.text);
         playModeMenuCanvas.gameObject.SetActive(false);
         
-        // List<MapMatrixObject> routeList = XMLManager.Instance.LoadRoutes();
-        XMLManager.Instance.LoadRoutes(OnRoutesFetched);
-        
-        /* 
-        for (int i = gridContainerGameObject.transform.childCount - 1; i > 0; i--)
-        {
-            Destroy(gridContainerGameObject.transform.GetChild(i).gameObject);
-        }
-        
-        for (int index = 0; index < routeList.Count; index++)
-        {
-            MapMatrixObject route = routeList[index];
-            GameObject newComponent = Instantiate(routeComponentPrefab, gridContainerGameObject.transform);
-            newComponent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = route.name;
-            newComponent.name = "Route" + (index+1);
-            
-            Button buttonComponent = newComponent.GetComponent<Button>();
-            buttonComponent.onClick.AddListener(() => OnChooseRoute(newComponent.name));
-        }
-
-        
-        chooseRouteMenuCanvas.gameObject.SetActive(true);
-        */
+        StartCoroutine(DatabaseManager.Instance.GetRoutes(OnRoutesFetched));
     }
 
     private void OnRoutesFetched(List<MapMatrixObject> routeList)

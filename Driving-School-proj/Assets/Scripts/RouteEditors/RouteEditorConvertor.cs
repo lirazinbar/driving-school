@@ -59,7 +59,9 @@ public class RouteEditorConvertor : MonoBehaviour
         // Save the route map
         */
         // List<MapMatrixObject> routeList = XMLManager.Instance.LoadRoutes();
-        XMLManager.Instance.LoadRoutes(OnRoutesFetched);
+        // XMLManager.Instance.LoadRoutes(OnRoutesFetched);
+        StartCoroutine(DatabaseManager.Instance.GetRoutes(OnRoutesFetched));
+
         /* MapMatrixObject mapMatrixObject = new MapMatrixObject(MapName.GetComponent<TMP_InputField>().text, cellsList);
         
         string isNewRoute = PlayerPrefs.GetString("isNewRoute");
@@ -131,7 +133,9 @@ public class RouteEditorConvertor : MonoBehaviour
             routeList[index] = mapMatrixObject;
         }
         
-        XMLManager.Instance.SaveRoutes(routeList);
+       // XMLManager.Instance.SaveRoutes(routeList);
+        DatabaseManager.Instance.CreateRoutes(routeList);
+
         
         editorCanvas.gameObject.SetActive(false);
         menuCanvas.gameObject.SetActive(true);   

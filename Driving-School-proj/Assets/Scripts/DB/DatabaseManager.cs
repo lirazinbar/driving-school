@@ -33,13 +33,31 @@ public class DatabaseManager : MonoBehaviour
     private string userId;
     private DatabaseReference dbReference;
 
-    [SerializeField] private TMP_InputField Name;
-    [SerializeField] private TMP_InputField Gold;
     
     void Awake()
     {
-        // Singleton
+        // If an instance of FirebaseManager already exists, destroy this one
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        // Set this as the singleton instance
         Instance = this;
+
+        DontDestroyOnLoad(gameObject);
+
+        // Initialize Firebase
+        InitializeFirebase();
+    }
+    
+    private void InitializeFirebase()
+    {
+        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task => {
+            app = FirebaseApp.DefaultInstance;
+            dbReference = FirebaseDatabase.DefaultInstance.RootReference;
+        });
     }
     void Start()
     {
@@ -54,18 +72,6 @@ public class DatabaseManager : MonoBehaviour
         dbReference = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
-    public void CreateUser()
-    {
-        User newUser = new User(Name.text, 999);
-        // User newUser = new User("111", 22);
-
-        string json = JsonUtility.ToJson(newUser);
-        
-        Debug.Log("json: "+ json);
-        Debug.Log("dbReference: "+ dbReference);
-        
-        dbReference.Child("users").Child(userId).SetRawJsonValueAsync(json);
-    }
     
     public void CreateRoutes(List<MapMatrixObject> matrixListToSave)
     {
@@ -79,6 +85,9 @@ public class DatabaseManager : MonoBehaviour
 
     public IEnumerator GetRoutes(Action<List<MapMatrixObject>> onCallBack)
     {
+        Debug.Log("dbReference: "+ dbReference);
+        Debug.Log("userId: "+ userId);
+
         var routesDate = dbReference.Child("Routes").Child(userId).GetValueAsync();
 
         yield return new WaitUntil(predicate: () => routesDate.IsCompleted);

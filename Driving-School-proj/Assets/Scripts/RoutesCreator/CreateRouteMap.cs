@@ -9,7 +9,9 @@ public class CreateRouteMap : MonoBehaviour
     private void Start()
     {
         // List<MapMatrixObject> routeList = XMLManager.Instance.LoadRoutes();
-        XMLManager.Instance.LoadRoutes(OnRoutesFetched);
+        // XMLManager.Instance.LoadRoutes(OnRoutesFetched);
+        StartCoroutine(DatabaseManager.Instance.GetRoutes(OnRoutesFetched));
+
         //int routeNumber = int.Parse(PlayerPrefs.GetString("RouteNumber"));
 
         //OnRouteMapSave(routeList[routeNumber]);
