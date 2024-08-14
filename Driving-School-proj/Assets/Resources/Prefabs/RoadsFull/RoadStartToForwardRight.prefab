@@ -137,35 +137,35 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -0.5850966
+        z: -1.1270642
       TangentOut:
         x: 0
         y: 0
-        z: 0.5850966
+        z: 1.1270642
       Rotation:
         value:
-          x: -0.0030337349
-          y: 0.7119181
-          z: -0.0054100654
-          w: -0.7022351
+          x: 0.0012288981
+          y: 0.71085995
+          z: -0.0005918088
+          w: -0.7033323
     - Position:
-        x: 10.57
-        y: -0.07
-        z: 5.5099945
+        x: 5.1500015
+        y: 0.01
+        z: 5.470001
       TangentIn:
         x: -0
         y: -0
-        z: -1.9747354
+        z: -2.4644096
       TangentOut:
         x: 0
         y: 0
-        z: 2.509542
+        z: 1.9887149
       Rotation:
         value:
-          x: 0.009544216
-          y: 0.8479035
-          z: -0.00055293384
-          w: -0.53006446
+          x: 0.01332017
+          y: 0.9181196
+          z: 0.0041808733
+          w: -0.3960574
     - Position:
         x: 4.6499996
         y: 0.2
@@ -173,17 +173,17 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -3.0200088
+        z: -2.6396067
       TangentOut:
         x: 0
         y: 0
-        z: 3.1222644
+        z: 3.0964646
       Rotation:
         value:
-          x: 0.00047618584
-          y: 0.9856736
-          z: 0.0076030316
-          w: -0.16849196
+          x: 0.0016436763
+          y: 0.99983233
+          z: 0.0064491634
+          w: -0.017055927
     - Position:
         x: 4.6499996
         y: 0.2
@@ -1463,6 +1463,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8643997627286021760}
   - component: {fileID: 4145116098852184554}
+  - component: {fileID: 3230754749271376551}
   m_Layer: 10
   m_Name: AutonomousCarsDestroyPoint
   m_TagString: DestroyPoint
@@ -1506,6 +1507,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3230754749271376551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3097288318175104605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9afff0af5ac40ceb42da5815597c515, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3419195770889049568
 GameObject:
   m_ObjectHideFlags: 0
@@ -2475,53 +2488,53 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -1.2993659
+        z: -1.2112211
       TangentOut:
         x: 0
         y: 0
-        z: 1.7356573
+        z: 1.6429704
       Rotation:
         value:
           x: 0
-          y: 0.91721207
+          y: 0.9002471
           z: 0
-          w: 0.39839935
+          w: 0.4353792
     - Position:
-        x: 8.610001
+        x: 8.800003
         y: 0
-        z: -3.5999985
+        z: -2.2599945
       TangentIn:
         x: -0
         y: -0
-        z: -2.2968643
+        z: -2.5039527
       TangentOut:
         x: 0
         y: 0
-        z: 1.7205374
+        z: 2.071235
       Rotation:
         value:
           x: 0
-          y: 0.7017104
+          y: 0.64220816
           z: 0
-          w: 0.71246237
+          w: 0.7665304
     - Position:
-        x: 13.12
+        x: 14.340004
         y: 0
-        z: -3.2999992
+        z: -0.9900055
       TangentIn:
         x: -0
         y: -0
-        z: -0.45199662
+        z: -0.5683703
       TangentOut:
         x: 0
         y: 0
-        z: 0.45199662
+        z: 0.5683703
       Rotation:
         value:
           x: 0
-          y: 0.6832378
+          y: 0.6231196
           z: 0
-          w: 0.7301959
+          w: 0.7821266
     m_MetaData:
     - Mode: 0
       Tension: 0.5
@@ -3891,21 +3904,21 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -0.9419283
+        z: -0.900555
       TangentOut:
         x: 0
         y: 0
-        z: 0.9807442
+        z: 0.9960925
       Rotation:
         value:
-          x: -0.00002677378
-          y: -0.48954013
-          z: 0.0000476901
-          w: 0.8719807
+          x: -0.000024073597
+          y: -0.4407009
+          z: 0.000049034985
+          w: 0.89765406
     - Position:
-        x: -4.5265627
-        y: 2.728484e-12
-        z: 3.6051226
+        x: -3.9300995
+        y: 0
+        z: 4.3213043
       TangentIn:
         x: -0.000000033527613
         y: 5.456968e-12
@@ -3921,23 +3934,23 @@ MonoBehaviour:
           z: 0.000054023392
           w: 0.986755
     - Position:
-        x: -4.8101044
+        x: -3.9701004
         y: 0
-        z: 7.251297
+        z: 7.501297
       TangentIn:
         x: -0
         y: -0
-        z: -0.36571825
+        z: -0.31802443
       TangentOut:
         x: 0
         y: 0
-        z: 0.36571825
+        z: 0.31802443
       Rotation:
         value:
-          x: 3.6901192e-13
-          y: -0.03879425
-          z: 1.1075867e-13
-          w: 0.99924725
+          x: -5.9945385e-16
+          y: -0.0062890933
+          z: 9.531453e-14
+          w: 0.9999802
     m_MetaData:
     - Mode: 0
       Tension: 0.5

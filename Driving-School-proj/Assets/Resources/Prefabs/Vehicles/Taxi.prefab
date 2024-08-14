@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5648143416474781244}
   - component: {fileID: 5799986949069435424}
   - component: {fileID: 6230380039459482742}
+  - component: {fileID: 1905145466181502354}
   m_Layer: 0
   m_Name: Taxi
   m_TagString: Car
@@ -147,6 +148,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToLiveSeconds: 120
+--- !u!114 &1905145466181502354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 130937907441185119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d51e9d07d34f43adb053c938cae7c685, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isMainCar: 0
 --- !u!1 &387501639071248612
 GameObject:
   m_ObjectHideFlags: 0

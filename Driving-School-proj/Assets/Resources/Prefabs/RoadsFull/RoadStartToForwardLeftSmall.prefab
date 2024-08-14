@@ -375,8 +375,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1431c4b0c0454b9484617cf8e88c65a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  carPrefab: {fileID: 4999463542614872390, guid: 8e047fa3cf7e74d85a2416848f2e3259,
-    type: 3}
+  vehiclesPrefabs: []
   splineContainers:
   - {fileID: 6223546816504154398}
   - {fileID: 7764505040298919893}
@@ -3290,6 +3289,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8961255035824040381}
   - component: {fileID: 4144496101477444118}
+  - component: {fileID: 538227655640667652}
   m_Layer: 10
   m_Name: AutonomousCarsDestroyPoint
   m_TagString: DestroyPoint
@@ -3333,6 +3333,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &538227655640667652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4625991865076149533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9afff0af5ac40ceb42da5815597c515, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5345043059128941559
 GameObject:
   m_ObjectHideFlags: 0

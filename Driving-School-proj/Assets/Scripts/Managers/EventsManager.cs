@@ -24,6 +24,8 @@ namespace Managers
         public UnityEvent<int> carExitedJunctionEvent = new UnityEvent<int>();
         public UnityEvent carDidNotGiveWayEvent = new UnityEvent();
         public UnityEvent carDidNotGiveWayToPedestrianEvent = new UnityEvent();
+        public UnityEvent carHitOtherCarEvent = new UnityEvent();
+        public UnityEvent carHitPedestrianEvent = new UnityEvent();
 
         void Awake()
         {
@@ -87,5 +89,14 @@ namespace Managers
             carDidNotGiveWayToPedestrianEvent?.Invoke();
         }
         
+        public void TriggerCarHitOtherCarEvent()
+        {
+            carHitOtherCarEvent?.Invoke();
+        }
+        
+        public void TriggerCarHitPedestrianEvent()
+        {
+            carHitPedestrianEvent?.Invoke();
+        }
     }
 }

@@ -38,16 +38,19 @@ namespace Managers
 
     public enum FeedbackScore
     {
+        CarHit = -100,
+        PedestrianHit = CarHit,
+
+        RedLight = -50,
+        
         NoEntry = -20,
-        RedLight = -100,
-        StopSign = -20,
+        StopSign = NoEntry,
+
         Speeding = -10,
-        GiveWay = -10,
-        GiveWayPedestrian = -10
-        // WrongLane = -20
+        GiveWay = Speeding,
+        GiveWayPedestrian = Speeding
         // OffRoad = -50
         // WrongDirection = -40
-        // Collision = -30
     }
 }
 
