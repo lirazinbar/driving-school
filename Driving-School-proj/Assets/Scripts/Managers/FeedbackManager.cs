@@ -11,6 +11,7 @@ namespace Managers
         [SerializeField] private int initialScore = 100;
         private int _currentScore;
         private List<FeedbackScore> _feedbackScores = new List<FeedbackScore>();
+        private int turnsAmount = 0;
 
         void Awake()
         {
@@ -20,6 +21,13 @@ namespace Managers
         private void Start()
         {
             _currentScore = initialScore;
+        }
+
+        public void increaseTurnsAmount()
+        {
+            turnsAmount++;
+            Debug.Log("turnsAmount: " + turnsAmount);
+            if (turnsAmount >= 3) GameManager.Instance.GameFinished(true, _feedbackScores);
         }
 
         public void UpdateScore(FeedbackScore feedbackScore)
@@ -48,9 +56,9 @@ namespace Managers
 
         Speeding = -10,
         GiveWay = Speeding,
-        GiveWayPedestrian = Speeding
+        GiveWayPedestrian = Speeding,
+        WrongDirection = -5
         // OffRoad = -50
-        // WrongDirection = -40
     }
 }
 

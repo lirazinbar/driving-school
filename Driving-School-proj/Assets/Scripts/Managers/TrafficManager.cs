@@ -20,6 +20,7 @@ namespace Managers
         {
             EventsManager.Instance.carReachedStopSignEvent.AddListener(OnCarReachedStopSign);
             EventsManager.Instance.carPassedStopSignEvent.AddListener(OnCarPassedStopSign);
+            EventsManager.Instance.carTookWrongTurnEvent.AddListener(OnCarTookWrongTurn);
             EventsManager.Instance.carStoppedBeforeStopSignEvent.AddListener(OnCarStoppedBeforeStopSign);
             EventsManager.Instance.carPassedNoEntrySignEvent.AddListener(OnCarPassedNoEntrySign);
             EventsManager.Instance.carPassedRedLightEvent.AddListener(OnCarPassedRedLight);
@@ -34,6 +35,7 @@ namespace Managers
         {
             EventsManager.Instance.carReachedStopSignEvent.RemoveListener(OnCarReachedStopSign);
             EventsManager.Instance.carPassedStopSignEvent.RemoveListener(OnCarPassedStopSign);
+            EventsManager.Instance.carTookWrongTurnEvent.RemoveListener(OnCarTookWrongTurn);
             EventsManager.Instance.carStoppedBeforeStopSignEvent.RemoveListener(OnCarStoppedBeforeStopSign);
             EventsManager.Instance.carPassedNoEntrySignEvent.RemoveListener(OnCarPassedNoEntrySign);
             EventsManager.Instance.carPassedRedLightEvent.RemoveListener(OnCarPassedRedLight);
@@ -61,6 +63,11 @@ namespace Managers
         {
             // Debug.Log("Car passed stop sign event triggered");
             _stopSignObjects[stopSignId] = (_stopSignObjects[stopSignId].carStopped, true);
+        }
+        
+        private void OnCarTookWrongTurn()
+        {
+            GameManager.Instance.UpdateCarTookWrongTurnEvent();
         }
 
         private void OnCarStoppedBeforeStopSign(int stopSignId)

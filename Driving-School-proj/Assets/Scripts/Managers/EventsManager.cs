@@ -15,6 +15,7 @@ namespace Managers
     
         public CarReachedStopSignEvent carReachedStopSignEvent = new CarReachedStopSignEvent();
         public UnityEvent<int> carPassedStopSignEvent = new UnityEvent<int>();
+        public UnityEvent carTookWrongTurnEvent = new UnityEvent();
         public UnityEvent<int> carStoppedBeforeStopSignEvent = new UnityEvent<int>();
         public UnityEvent<GearState> carGearStateChangedEvent = new UnityEvent<GearState>();
         public UnityEvent<CrossSectionDirections> carEnteredCrossSectionEvent = new UnityEvent<CrossSectionDirections>();
@@ -41,6 +42,11 @@ namespace Managers
         public void TriggerCarPassedStopSignEvent(int stopSignId)
         {
             carPassedStopSignEvent?.Invoke(stopSignId);
+        }
+        
+        public void TriggerCarTookWrongTurnEvent()
+        {
+            carTookWrongTurnEvent?.Invoke();
         }
 
         public void TriggerCarStoppedBeforeStopSignEvent(int stopSignId)

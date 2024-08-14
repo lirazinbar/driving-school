@@ -11,9 +11,12 @@ public class CrossSectionDitectorController : MonoBehaviour
     [SerializeField] private bool isLeftTurnOptional = true;
     [SerializeField] private bool isForwardTurnOptional = true;
     private List<CrossSectionDirections> optionalDirectionsArray = new List<CrossSectionDirections>();
+    public CrossSectionDirections selectedDirection = CrossSectionDirections.Forward;
+    public bool wasJunctionChecked = true;
 
     void Start()
     {
+        wasJunctionChecked = true;
         if (isRightTurnOptional)
         {
             optionalDirectionsArray.Add(CrossSectionDirections.Right);
@@ -35,7 +38,9 @@ public class CrossSectionDitectorController : MonoBehaviour
         // Debug.Log("enter junc");
         if (GameManager.Instance.IsMainCar(other.gameObject.GetInstanceID()))
         {
-           CrossSectionDirections selectedDirection = optionalDirectionsArray[rnd.Next(optionalDirectionsArray.Count)];
+           selectedDirection = optionalDirectionsArray[rnd.Next(optionalDirectionsArray.Count)];
+           Debug.Log("setToFalse");
+           wasJunctionChecked = false;
            EventsManager.Instance.TriggerCarEnteredCrossSectionEvent(selectedDirection);
         }
     }
