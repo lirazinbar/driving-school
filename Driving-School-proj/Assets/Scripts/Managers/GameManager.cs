@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using Audio;
+using Enums;
 using TMPro;
+using TrafficObjects.GiveWay;
 using UnityEngine;
 
 namespace Managers
@@ -14,6 +16,8 @@ namespace Managers
         [SerializeField] private GameObject gridContainerGameOverMenu;
         [SerializeField] private Canvas GameOverCanvas; 
         private AudioManager audioManager;
+        
+        private PedestrianDifficulty _pedestrianDifficulty;
 
         //private string playerName;
         void Awake()
@@ -26,6 +30,7 @@ namespace Managers
         void Start()
         {
             audioManager = FindObjectOfType<AudioManager>();
+            SetPedestrianDifficulty(PedestrianDifficulty.None);
         }
         
         public bool IsMainCar(int carId)
@@ -186,6 +191,22 @@ namespace Managers
         {
             // Debug.Log("mainnnn");
             UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+        }
+        
+        public void SetPedestrianDifficulty(PedestrianDifficulty pedestrianDifficulty)
+        {
+            _pedestrianDifficulty = pedestrianDifficulty;
+            JunctionGiveWayManager[] junctionManagers = FindObjectsOfType<JunctionGiveWayManager>();
+            
+            foreach (JunctionGiveWayManager junctionManager in junctionManagers)
+            {
+                junctionManager.SetPedestrianDifficulty(pedestrianDifficulty);
+            }
+        }
+
+        public PedestrianDifficulty GetPedestrianDifficulty()
+        {
+            return _pedestrianDifficulty;
         }
     }
 }

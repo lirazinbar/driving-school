@@ -32,7 +32,10 @@ namespace Pedestrian
             else
             {
                 // Ignored by all cars raycast
-                gameObject.layer = LayerMask.NameToLayer("PedestriansNotCrossing");
+                if (this != null)
+                {
+                    gameObject.layer = LayerMask.NameToLayer("PedestriansNotCrossing");
+                }
             }
         }
     }

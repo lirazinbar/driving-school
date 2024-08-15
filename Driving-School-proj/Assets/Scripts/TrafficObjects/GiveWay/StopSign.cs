@@ -135,12 +135,12 @@ namespace TrafficObjects.GiveWay
         {
             return _pedestrianIsCrossing;
         }
-
-        public void DoNotSpawnPedestrians()
+        
+        public void SetDifficulty(PedestrianDifficulty pedestrianDifficulty)
         {
             foreach (PedestrianSpawner pedestrianSpawner in pedestrianSpawners)
             {
-                pedestrianSpawner.enabled = false;
+                pedestrianSpawner.SetDifficulty(pedestrianDifficulty);
             }
         }
         
