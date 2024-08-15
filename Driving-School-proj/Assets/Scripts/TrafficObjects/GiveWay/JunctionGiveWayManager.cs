@@ -1,23 +1,28 @@
+using Enums;
+using Unity.AI.Navigation;
 using UnityEngine;
 
 namespace TrafficObjects.GiveWay {
     public class JunctionGiveWayManager: MonoBehaviour
     {
-        [SerializeField] StopSign[] stopSigns;
-        private bool _giveWayLock;
+        StopSign[] stopSigns;
+        private NavMeshSurface navMeshSurface;
+
         [SerializeField] private bool isVisible = true;
-        [SerializeField] private bool pedestriansSpawn = true;
+        
+        private bool _giveWayLock;
         
         public void Start()
         {
+            stopSigns = GetComponentsInChildren<StopSign>();
+            navMeshSurface = GetComponent<NavMeshSurface>();
+            
             foreach (StopSign stopSign in stopSigns)
             {
                 stopSign.SetIsVisible(isVisible);
-                if (!pedestriansSpawn)
-                {
-                    stopSign.DoNotSpawnPedestrians();
-                }
             }
+            
+            navMeshSurface.BuildNavMesh();
         }
         
         public bool TryTakeLock()
@@ -38,6 +43,19 @@ namespace TrafficObjects.GiveWay {
         public bool IsLockAvailable()
         {
             return !_giveWayLock;
+        }
+        
+        public void SetPedestrianDifficulty(PedestrianDifficulty pedestrianDifficulty)
+        {
+            if (stopSigns == null)
+            {
+                stopSigns = GetComponentsInChildren<StopSign>();
+            }
+
+            foreach (StopSign stopSign in stopSigns)
+            {
+                stopSign.SetDifficulty(pedestrianDifficulty);
+            }
         }
     }
 }
