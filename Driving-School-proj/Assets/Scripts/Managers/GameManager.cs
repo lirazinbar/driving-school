@@ -104,6 +104,12 @@ namespace Managers
             audioManager.Play("CarCrash");
             FeedbackManager.Instance.UpdateScore(FeedbackScore.PedestrianHit);
         }
+
+        public void UpdateCarTookWrongTurnEvent()
+        {
+            Debug.Log("Car took wrong turn");
+            FeedbackManager.Instance.UpdateScore(FeedbackScore.WrongDirection);
+        }
         
         public void GameFinished(bool success, List<FeedbackScore> _feedbackScores)
         {
