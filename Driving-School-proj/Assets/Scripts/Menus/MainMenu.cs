@@ -35,17 +35,19 @@ public class MainMenu : MonoBehaviour
             Destroy(gridContainerGameObject.transform.GetChild(i).gameObject);
         }
         
-        for (int index = 0; index < routeList.Count; index++)
+        if (routeList != null)
         {
-            MapMatrixObject route = routeList[index];
-            GameObject newComponent = Instantiate(routeComponentPrefab, gridContainerGameObject.transform);
-            newComponent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = route.name;
-            newComponent.name = "Route" + (index+1);
+            for (int index = 0; index < routeList.Count; index++)
+            {
+                MapMatrixObject route = routeList[index];
+                GameObject newComponent = Instantiate(routeComponentPrefab, gridContainerGameObject.transform);
+                newComponent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = route.name;
+                newComponent.name = "Route" + (index+1);
             
-            Button buttonComponent = newComponent.GetComponent<Button>();
-            buttonComponent.onClick.AddListener(() => OnChooseRoute(newComponent.name));
+                Button buttonComponent = newComponent.GetComponent<Button>();
+                buttonComponent.onClick.AddListener(() => OnChooseRoute(newComponent.name));
+            }
         }
-
         
         chooseRouteMenuCanvas.gameObject.SetActive(true);
     }
