@@ -149,10 +149,10 @@ public class EditorMenuManager : MonoBehaviour
             }
         }
     }
-    public void onGetBackToMainMenu()
+    /*public void onGetBackToMainMenu()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
-    }
+    }*/
     
     public void onGetBackToEditorMenu()
     {

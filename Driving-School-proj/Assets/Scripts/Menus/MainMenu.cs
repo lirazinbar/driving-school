@@ -10,15 +10,16 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Canvas playModeMenuCanvas;     
     [SerializeField] private TMP_InputField playerNameInput;     
     [SerializeField] private Canvas chooseRouteMenuCanvas;     
-    [SerializeField] private Canvas mainMenuCanvas;
+    //[SerializeField] private Canvas mainMenuCanvas;
     [SerializeField] private GameObject routeComponentPrefab;
     [SerializeField] private GameObject gridContainerGameObject;
 
-    public void EnterPlayModeMenu()
+    /*public void EnterPlayModeMenu()
     {
         mainMenuCanvas.gameObject.SetActive(false);
         playModeMenuCanvas.gameObject.SetActive(true);
     }
+    */
     public void SaveNameAndLoadRoutes()
     {
         PlayerPrefs.SetString("PlayerName", this.playerNameInput.text);
