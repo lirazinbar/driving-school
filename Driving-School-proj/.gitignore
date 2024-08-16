@@ -609,9 +609,9 @@ $RECYCLE.BIN/
 # *FirebaseCppApp*
 
 # Firebase SDK binary and cache files
-**/FirebaseCppApp/libs/
-**/FirebaseCppApp/cache/
-**/.firebase/
+# **/FirebaseCppApp/libs/
+# **/FirebaseCppApp/cache/
+# **/.firebase/
 
 # Exclude Firebase plugin binaries and platform-specific folders
 **/Firebase/Plugins/x86_64/
@@ -626,9 +626,9 @@ $RECYCLE.BIN/
 
 
 # Exclude cache or temporary files, if any
-**/Firebase/Plugins/x86_64/**/cache/
-**/Firebase/Plugins/x86_64/**/temp/
-**/Firebase/Plugins/x86_64/**/obj/
+# **/Firebase/Plugins/x86_64/**/cache/
+# **/Firebase/Plugins/x86_64/**/temp/
+# **/Firebase/Plugins/x86_64/**/obj/
 
 # Include necessary files (if needed)
 !**/Firebase/Plugins/x86_64/**/*.meta
