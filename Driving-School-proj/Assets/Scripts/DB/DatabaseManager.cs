@@ -92,14 +92,27 @@ public class DatabaseManager : MonoBehaviour
 
         yield return new WaitUntil(predicate: () => routesDate.IsCompleted);
 
-        if (routesDate != null)
+        if (routesDate.IsFaulted)
+        {
+            Debug.LogError("Error fetching data from Firebase: " + routesDate.Exception);
+            onCallBack?.Invoke(null);
+        }
+        else if (routesDate.IsCompleted)
         {
             DataSnapshot snapshot = routesDate.Result;
-            string json = snapshot.GetRawJsonValue();
-            List<MapMatrixObject> matrixList = JsonConvert.DeserializeObject<List<MapMatrixObject>>(json);
 
-            onCallBack.Invoke(matrixList);
+            if (snapshot.Exists)
+            {
+                string json = snapshot.GetRawJsonValue();
+                List<MapMatrixObject> matrixList = JsonConvert.DeserializeObject<List<MapMatrixObject>>(json);
+
+                onCallBack?.Invoke(matrixList);
+            }
+            else
+            {
+                Debug.LogWarning("No data found at the specified path.");
+                onCallBack?.Invoke(null);
+            }
         }
-
     }
 }

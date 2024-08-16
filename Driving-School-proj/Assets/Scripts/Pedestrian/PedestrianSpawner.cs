@@ -12,9 +12,9 @@ namespace Pedestrian
         [SerializeField] private GameObject[] pedestrianPrefabs;
         private List<SplineContainer> _splineContainers = new List<SplineContainer>();
         
-        private float _spawnInterval = (float)PedestrianDifficulty.Hard;
+        private float _spawnInterval = (float)PedestrianDifficulty.Easy;
         private float _timer;
-        private bool _isSpawning = true;
+        private bool _isSpawning = false;
 
         void Start()
         {
@@ -64,6 +64,7 @@ namespace Pedestrian
             else
             {
                 _spawnInterval = (float)pedestrianDifficulty;
+                _isSpawning = true;
             }
         }
     }

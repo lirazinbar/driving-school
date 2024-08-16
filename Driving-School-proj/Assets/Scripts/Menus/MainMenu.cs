@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Audio;
 using Managers;
 using TMPro;
 using UnityEngine;
@@ -13,6 +15,8 @@ public class MainMenu : MonoBehaviour
     //[SerializeField] private Canvas mainMenuCanvas;
     [SerializeField] private GameObject routeComponentPrefab;
     [SerializeField] private GameObject gridContainerGameObject;
+    
+    private const string MusicName = "Funshine";
 
     /*public void EnterPlayModeMenu()
     {
@@ -20,6 +24,13 @@ public class MainMenu : MonoBehaviour
         playModeMenuCanvas.gameObject.SetActive(true);
     }
     */
+
+    private void Start()
+    {
+        AudioManager.Instance.SetVolume(MusicName, 0.5f);
+        AudioManager.Instance.Play(MusicName);
+    }
+
     public void SaveNameAndLoadRoutes()
     {
         PlayerPrefs.SetString("PlayerName", this.playerNameInput.text);
@@ -35,17 +46,19 @@ public class MainMenu : MonoBehaviour
             Destroy(gridContainerGameObject.transform.GetChild(i).gameObject);
         }
         
-        for (int index = 0; index < routeList.Count; index++)
+        if (routeList != null)
         {
-            MapMatrixObject route = routeList[index];
-            GameObject newComponent = Instantiate(routeComponentPrefab, gridContainerGameObject.transform);
-            newComponent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = route.name;
-            newComponent.name = "Route" + (index+1);
+            for (int index = 0; index < routeList.Count; index++)
+            {
+                MapMatrixObject route = routeList[index];
+                GameObject newComponent = Instantiate(routeComponentPrefab, gridContainerGameObject.transform);
+                newComponent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = route.name;
+                newComponent.name = "Route" + (index+1);
             
-            Button buttonComponent = newComponent.GetComponent<Button>();
-            buttonComponent.onClick.AddListener(() => OnChooseRoute(newComponent.name));
+                Button buttonComponent = newComponent.GetComponent<Button>();
+                buttonComponent.onClick.AddListener(() => OnChooseRoute(newComponent.name));
+            }
         }
-
         
         chooseRouteMenuCanvas.gameObject.SetActive(true);
     }
