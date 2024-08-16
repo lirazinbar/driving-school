@@ -11,13 +11,14 @@ namespace TrafficObjects.TrafficLight
         {
             if (other.CompareTag("Car"))
             {
-                if (GameManager.Instance.IsMainCar(other.gameObject.GetInstanceID()))
-                {
-                    Debug.Log("Main car passed traffic light stop line");
-                }
                 string hitSide = TrafficObjectsUtils.CheckHitSide(transform, other);
-                if (hitSide.Equals("Back"))
+                Debug.Log("hitSide: " + hitSide);
+                if (hitSide.Equals("Back") || hitSide.Equals("Left"))
                 {
+                    if (GameManager.Instance.IsMainCar(other.gameObject.GetInstanceID()))
+                    {
+                        Debug.Log("Main car passed traffic light stop line");
+                    }
                     trafficLightController.OnCarPassedStopLine(other.gameObject.GetInstanceID());
                 }
             }
