@@ -21,12 +21,12 @@ namespace Audio
         private void Start()
         {
             _rb = GetComponent<Rigidbody>();
-            _carEngineAudio = AudioManager.Instance.GetAudioSource("CarEngine");
+            _carEngineAudio = AudioManager.Instance.GetAudioSource("carEngine");
             
             AudioManager.Instance.Play("CarIgnition");
             
             float carIgnitionAudioClipLength = AudioManager.Instance.GetAudioClipLength("CarIgnition");
-            StartCoroutine(PlaySoundAfterDelay(carIgnitionAudioClipLength, "CarEngine"));
+            StartCoroutine(PlaySoundAfterDelay(carIgnitionAudioClipLength, "carEngine"));
         }
 
         private void Update()
