@@ -30,7 +30,6 @@ namespace Managers
         void Start()
         {
             audioManager = FindObjectOfType<AudioManager>();
-            SetPedestrianDifficulty(PedestrianDifficulty.None);
         }
         
         public bool IsMainCar(int carId)
