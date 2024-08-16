@@ -13,26 +13,27 @@ namespace Pedestrian
         [SerializeField] private NavMeshAgent agent;
         [SerializeField] private Animator animator;
         
-        private GameObject pedestriansSpawner;
-        private float _minDistance = 1f;
+        private GameObject _pedestriansSpawner;
+        private const float MinDistance = 1f;
         private int _currentKnotIndex = 0;
         private readonly List<Vector3> _knotsPositions = new List<Vector3>();
         
         private float _timer = 0;
-        private readonly float _ttl = 10f;
+        private const float Ttl = 10f;
         
         private StopSign _stopSign;
         private bool _isCrossing;
 
-        private float frontSensorStartPoint = 0f;
-        private float sensorStopLength = 3f;
-        private float sensorsHight = 1f;
-        // private Dictionary<RaycastType, int> _bitmasks = new Dictionary<RaycastType, int>();
+        private const float FrontSensorsStartPoint = 0f;
+        private const float FrontSideSensorsPosition = FrontSensorsStartPoint;
+        private const float FrontSideSensorsAngle = 20f;
+        private const float SensorStopLength = 3f;
+        private const float SensorsHight = 1f;
 
         private void Update()
         {
             _timer += Time.deltaTime;
-            if (_timer < _ttl)
+            if (_timer < Ttl)
             {
                 Roam();
             }
@@ -73,7 +74,7 @@ namespace Pedestrian
             PathUtils.SetKnotsPositions(splineContainer, _knotsPositions, ref _currentKnotIndex);
             agent.SetDestination(_knotsPositions[_currentKnotIndex]);
             
-            pedestriansSpawner = spawner.gameObject;
+            _pedestriansSpawner = spawner.gameObject;
             animator.SetFloat("Vertical", !agent.isStopped ? 1 : 0);
         }
         
@@ -84,7 +85,7 @@ namespace Pedestrian
                 Destroy(gameObject);
             }
 
-            if (_currentKnotIndex < _knotsPositions.Count && Vector3.Distance(transform.position, _knotsPositions[_currentKnotIndex]) < _minDistance) 
+            if (Vector3.Distance(transform.position, _knotsPositions[_currentKnotIndex]) < MinDistance) 
             {
                 _currentKnotIndex++;
                 if (_currentKnotIndex < _knotsPositions.Count)
@@ -101,7 +102,7 @@ namespace Pedestrian
         
         public int SpawnerId()
         {
-            return pedestriansSpawner.GetInstanceID();
+            return _pedestriansSpawner.GetInstanceID();
         }
         
         private bool TryRaycast(out RaycastHit hit)
@@ -110,12 +111,32 @@ namespace Pedestrian
             Vector3 position = transform.position;
             Quaternion rotation = transform.rotation;
          
-            Vector3 frontCenterSensorPos = position + rotation * new Vector3(0, sensorsHight, frontSensorStartPoint);
+            Vector3 frontCenterSensorPos = position + rotation * new Vector3(0, SensorsHight, FrontSensorsStartPoint);
+            Vector3 frontRightSensorPos = position + rotation * new Vector3(FrontSideSensorsPosition, SensorsHight, FrontSensorsStartPoint);
+            Vector3 frontLeftSensorPos = position + rotation * new Vector3(-FrontSideSensorsPosition, SensorsHight, FrontSensorsStartPoint);
         
             // Front center sensor
-            if (Physics.Raycast(frontCenterSensorPos, transform.forward, out hit, sensorStopLength))
+            if (Physics.Raycast(frontCenterSensorPos, transform.forward, out hit, SensorStopLength))
             {
                 Debug.DrawLine(frontCenterSensorPos, hit.point, Color.red);
+                isHit = true;
+            }
+            
+            // Front right angle sensor
+            if (Physics.Raycast(frontRightSensorPos, 
+                    Quaternion.AngleAxis(FrontSideSensorsAngle, transform.up) * transform.forward,
+                    out hit, SensorStopLength / 10f))
+            {
+                Debug.DrawLine(frontRightSensorPos, hit.point, Color.red);
+                isHit = true;
+            }
+            
+            // Front left angle sensor
+            if (Physics.Raycast(frontLeftSensorPos, 
+                    Quaternion.AngleAxis(-FrontSideSensorsAngle, transform.up) * transform.forward,
+                    out hit, SensorStopLength / 10f))
+            {
+                Debug.DrawLine(frontLeftSensorPos, hit.point, Color.red);
                 isHit = true;
             }
         
