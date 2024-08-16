@@ -12,7 +12,7 @@ namespace Pedestrian
         [SerializeField] private GameObject[] pedestrianPrefabs;
         private List<SplineContainer> _splineContainers = new List<SplineContainer>();
         
-        private float _spawnInterval = (float)PedestrianDifficulty.Easy;
+        private float _spawnInterval = (float)PedestrianDifficulty.Hard;
         private float _timer;
         private bool _isSpawning = true;
 
@@ -43,7 +43,8 @@ namespace Pedestrian
                     // Instantiate a new pedestrian every SpawnInterval seconds randomly from the list of prefabs
                     GameObject pedestrianPrefab = pedestrianPrefabs[Random.Range(0, pedestrianPrefabs.Length)];
                 
-                    GameObject pedestrian = Instantiate(pedestrianPrefab, transform.position, transform.parent.rotation);
+                    GameObject pedestrian = Instantiate(pedestrianPrefab, transform.position,
+                        transform.rotation * Quaternion.Euler(0, 180, 0));
             
                     PedestrianController pedestrianController = pedestrian.GetComponent<PedestrianController>();
                     if (_splineContainers.Count > 0)
@@ -63,7 +64,6 @@ namespace Pedestrian
             else
             {
                 _spawnInterval = (float)pedestrianDifficulty;
-                Debug.Log("Pedestrian difficulty set to " + pedestrianDifficulty);
             }
         }
     }
