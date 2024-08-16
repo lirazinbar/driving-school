@@ -9,17 +9,17 @@ public class PlayModeMenu : MonoBehaviour
 {
     [SerializeField] private Canvas playModeMenuCanvas;     
     [SerializeField] private Canvas chooseRouteMenuCanvas;     
-    [SerializeField] private Canvas mainMenuCanvas;
+    //[SerializeField] private Canvas mainMenuCanvas;
     [SerializeField] private Canvas highScoreCanvas;
     [SerializeField] private GameObject scoreComponentPrefab;
     [SerializeField] private GameObject gridContainerGameOverMenu;
     
     public void onGetBackToMainMenu()
     {
-        playModeMenuCanvas.gameObject.SetActive(false);
+        //playModeMenuCanvas.gameObject.SetActive(false);
         highScoreCanvas.gameObject.SetActive(false);
         chooseRouteMenuCanvas.gameObject.SetActive(false);
-        mainMenuCanvas.gameObject.SetActive(true);
+        playModeMenuCanvas.gameObject.SetActive(true);
     }
 
     public int calcSumOfScoresInTable(List<FeedbackScore> _feedbackScores)

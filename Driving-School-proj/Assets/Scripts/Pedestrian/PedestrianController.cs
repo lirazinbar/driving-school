@@ -57,7 +57,7 @@ namespace Pedestrian
             }
             else
             {
-                if (agent.isStopped)
+                if (agent.isActiveAndEnabled && agent.enabled && agent.isOnNavMesh && agent.isStopped)
                 {
                     Resume();
                 }

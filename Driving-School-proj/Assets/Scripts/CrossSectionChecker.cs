@@ -40,7 +40,7 @@ public class CrossSectionChecker : MonoBehaviour
             { // add points
                 FeedbackManager.Instance.increaseTurnsAmount();
             }
-            GetComponent<CrossSectionDitectorController>().wasJunctionChecked = true;
+            junctionDetector.GetComponent<CrossSectionDitectorController>().wasJunctionChecked = true;
         }
     }
 }
