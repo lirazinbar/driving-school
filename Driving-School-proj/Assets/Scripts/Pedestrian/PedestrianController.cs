@@ -53,7 +53,7 @@ namespace Pedestrian
             }
             else
             {
-                if (agent.isStopped)
+                if (agent.isActiveAndEnabled && agent.enabled && agent.isOnNavMesh && agent.isStopped)
                 {
                     Resume();
                 }
@@ -84,7 +84,7 @@ namespace Pedestrian
                 Destroy(gameObject);
             }
 
-            if (Vector3.Distance(transform.position, _knotsPositions[_currentKnotIndex]) < _minDistance) 
+            if (_currentKnotIndex < _knotsPositions.Count && Vector3.Distance(transform.position, _knotsPositions[_currentKnotIndex]) < _minDistance) 
             {
                 _currentKnotIndex++;
                 if (_currentKnotIndex < _knotsPositions.Count)
