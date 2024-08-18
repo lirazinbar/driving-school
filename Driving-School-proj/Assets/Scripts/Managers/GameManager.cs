@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Audio;
+using Cars;
 using Enums;
 using TMPro;
 using TrafficObjects.GiveWay;
@@ -10,31 +11,35 @@ namespace Managers
     public class GameManager : MonoBehaviour
     {
         public static GameManager Instance { get; private set; }
+        
+        [SerializeField] private bool isDefaultRoute;
         [SerializeField] private GameObject mainCar;
         [SerializeField] private TMP_Text successStatus;
         [SerializeField] private GameObject scoreComponentPrefab;
         [SerializeField] private GameObject gridContainerGameOverMenu;
-        [SerializeField] private Canvas GameOverCanvas; 
-        private AudioManager audioManager;
+        [SerializeField] private Canvas gameOverCanvas;
         
-        private PedestrianDifficulty _pedestrianDifficulty;
+        private GameSettings.GameSettings gameSettings { get; set; }
 
         //private string playerName;
         void Awake()
         {
             // Singleton
             Instance = this;
+            
             Application.targetFrameRate = 90;
-        }
-        
-        void Start()
-        {
-            audioManager = FindObjectOfType<AudioManager>();
+            
+            SetGameSettings();
         }
         
         public bool IsMainCar(int carId)
         {
             return carId == mainCar.GetInstanceID();
+        }
+        
+        public bool IsDefaultRoute()
+        {
+            return isDefaultRoute;
         }
 
         //public void SetPlayerName(string playerNameInput)
@@ -97,14 +102,14 @@ namespace Managers
         public void UpdateCarHitOtherCarEvent()
         {
             Debug.Log("Main car hit another car");
-            audioManager.Play("CarCrash");
+            AudioManager.Instance.Play("CarCrash");
             FeedbackManager.Instance.UpdateScore(FeedbackScore.CarHit);
         }
         
         public void UpdateCarHitPedestrianEvent()
         {
             Debug.Log("Main car hit a pedestrian");
-            audioManager.Play("CarCrash");
+            AudioManager.Instance.Play("CarCrash");
             FeedbackManager.Instance.UpdateScore(FeedbackScore.PedestrianHit);
         }
 
@@ -154,7 +159,7 @@ namespace Managers
 
         private void DisplayGameOver(bool success, List<FeedbackScore> _feedbackScores)
         {
-            GameOverCanvas.gameObject.SetActive(true);
+            gameOverCanvas.gameObject.SetActive(true);
             int sumScores = 100;
             for (int index = 0; index < _feedbackScores.Count; index++)
             {
@@ -187,13 +192,31 @@ namespace Managers
 
         public void OnGoBackToMainMenu()
         {
-            // Debug.Log("mainnnn");
             UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+        }
+        
+        private void SetGameSettings()
+        {
+           // _gameSettings = GetGameSettingsFromPlayerPrefs();
+           gameSettings = new GameSettings.GameSettings(PedestrianDifficulty.Easy, CarsDifficulty.Hard, false, 3, 100);
+           
+           SetPedestrianDifficulty(gameSettings.GetPedestrianDifficulty());
+           SetCarsDifficulty(gameSettings.GetCarsDifficulty());
+        }
+        
+        private GameSettings.GameSettings GetGameSettingsFromPlayerPrefs()
+        {
+            PedestrianDifficulty pedestrianDifficulty = (PedestrianDifficulty) PlayerPrefs.GetInt("PedestrianDifficulty");
+            CarsDifficulty carsDifficulty = (CarsDifficulty) PlayerPrefs.GetInt("CarsDifficulty");
+            bool dayNightMode = PlayerPrefs.GetInt("DayNightMode") == 1;
+            int numberOfTurnsToWin = PlayerPrefs.GetInt("NumberOfTurnsToWin");
+            int mistakePoints = PlayerPrefs.GetInt("MistakePoints");
+            
+            return new GameSettings.GameSettings(pedestrianDifficulty, carsDifficulty, dayNightMode, numberOfTurnsToWin, mistakePoints);
         }
         
         public void SetPedestrianDifficulty(PedestrianDifficulty pedestrianDifficulty)
         {
-            _pedestrianDifficulty = pedestrianDifficulty;
             JunctionGiveWayManager[] junctionManagers = FindObjectsOfType<JunctionGiveWayManager>();
             
             foreach (JunctionGiveWayManager junctionManager in junctionManagers)
@@ -201,10 +224,15 @@ namespace Managers
                 junctionManager.SetPedestrianDifficulty(pedestrianDifficulty);
             }
         }
-
-        public PedestrianDifficulty GetPedestrianDifficulty()
+        
+        public void SetCarsDifficulty(CarsDifficulty carsDifficulty)
         {
-            return _pedestrianDifficulty;
+            AutonomousCarSpawn[] autonomousCarSpawns = FindObjectsOfType<AutonomousCarSpawn>();
+            
+            foreach (AutonomousCarSpawn autonomousCarSpawn in autonomousCarSpawns)
+            {
+                autonomousCarSpawn.SetSpawnInterval((float)carsDifficulty);
+            }
         }
     }
 }
