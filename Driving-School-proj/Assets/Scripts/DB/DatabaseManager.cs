@@ -30,7 +30,7 @@ public class DatabaseManager : MonoBehaviour
 {
     private FirebaseApp app;
     public static DatabaseManager Instance { get; private set; }
-    private string userId;
+    private const string userId = "5b233262a61ea01589e9b22ec51d1729f7afc953";
     private DatabaseReference dbReference;
 
     
@@ -68,7 +68,7 @@ public class DatabaseManager : MonoBehaviour
             FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
         });
         
-        userId = SystemInfo.deviceUniqueIdentifier;
+        // userId = SystemInfo.deviceUniqueIdentifier;
         dbReference = FirebaseDatabase.DefaultInstance.RootReference;
     }
 

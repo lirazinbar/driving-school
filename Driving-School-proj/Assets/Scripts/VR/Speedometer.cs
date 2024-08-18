@@ -45,14 +45,22 @@ namespace VR
             int labelAmount = 10;
             float totalAngleSize = ZERO_SPEED_ANGLE - MAX_SPEED_ANGLE;
             
+            Vector3 currentRotation = speedLabelTemplateTransform.localEulerAngles;
+            
             for (int i = 0; i <= labelAmount; i++)
             {
                 Transform speedLabelTransform = Instantiate(speedLabelTemplateTransform, transform);
+                
                 float labelSpeedNormalized = (float) i / labelAmount;
                 float speedLabelAngle = ZERO_SPEED_ANGLE - labelSpeedNormalized * totalAngleSize;
-                speedLabelTransform.eulerAngles = new Vector3(0, 0, speedLabelAngle);
+                
+                // Rotate around the Z axis for the circular layout
+                speedLabelTransform.localEulerAngles = new Vector3(currentRotation.x, currentRotation.y, speedLabelAngle);
+                
+                // Ensure the text itself is upright
                 speedLabelTransform.Find("SpeedText").GetComponent<TextMeshProUGUI>().text = Mathf.RoundToInt(labelSpeedNormalized * speedMax).ToString();
-                speedLabelTransform.Find("SpeedText").eulerAngles = Vector3.zero;
+                speedLabelTransform.Find("SpeedText").localEulerAngles = new Vector3(0, 0, -speedLabelAngle);
+                
                 speedLabelTransform.gameObject.SetActive(true);
             }
             

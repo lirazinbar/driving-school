@@ -58,7 +58,6 @@ namespace Managers
         GiveWay = Speeding,
         GiveWayPedestrian = Speeding,
         WrongDirection = -5
-        // OffRoad = -50
     }
 }
 

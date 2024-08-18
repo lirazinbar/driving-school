@@ -39,7 +39,7 @@ public class CrossSectionDitectorController : MonoBehaviour
         if (GameManager.Instance.IsMainCar(other.gameObject.GetInstanceID()))
         {
            selectedDirection = optionalDirectionsArray[rnd.Next(optionalDirectionsArray.Count)];
-           Debug.Log("setToFalse");
+           // Debug.Log("setToFalse");
            wasJunctionChecked = false;
            EventsManager.Instance.TriggerCarEnteredCrossSectionEvent(selectedDirection);
         }

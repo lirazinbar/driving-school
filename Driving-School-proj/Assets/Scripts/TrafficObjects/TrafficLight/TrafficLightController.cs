@@ -1,15 +1,16 @@
 using Enums;
 using Managers;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace TrafficObjects.TrafficLight
 {
     public class TrafficLightController : MonoBehaviour
     {
         [Header("Lights")]
-        [SerializeField] private Light redLight;
-        [SerializeField] private Light yellowLight;
-        [SerializeField] private Light greenLight;
+        [SerializeField] private Light[] redLights;
+        [SerializeField] private Light[] yellowLights;
+        [SerializeField] private Light[] greenLights;
     
         [SerializeField] private TrafficLightSurfaceDetector trafficLightSurfaceDetector;
         private JunctionTrafficLightsManager _junctionTrafficLightsManager;
@@ -27,10 +28,10 @@ namespace TrafficObjects.TrafficLight
         {
             _junctionTrafficLightsManager = GetComponentInParent<JunctionTrafficLightsManager>();
             // Start with red light
-            redLight.enabled = true;
-            yellowLight.enabled = false;
-            greenLight.enabled = false;
             _currentLightState = LightState.Red;
+            LightsToggle(LightState.Red, true);
+            LightsToggle(LightState.Yellow, false);
+            LightsToggle(LightState.Green, false);
         }
 
         void Update()
@@ -76,28 +77,28 @@ namespace TrafficObjects.TrafficLight
             _timer = 0f;
 
             // Disable all lights
-            redLight.enabled = false;
-            yellowLight.enabled = false;
-            greenLight.enabled = false;
+            LightsToggle(LightState.Red, false);
+            LightsToggle(LightState.Yellow, false);
+            LightsToggle(LightState.Green, false);
 
             // Enable the appropriate light based on the state
             switch (newState)
             {
                 case LightState.Red:
-                    redLight.enabled = true;
+                    LightsToggle(LightState.Red, true);
                     YieldTurn();
                     break;
                 case LightState.Yellow:
-                    yellowLight.enabled = true;
+                    LightsToggle(LightState.Yellow, true);
                     trafficLightSurfaceDetector.OnLightChanged(LightState.Yellow);
                     break;
                 case LightState.Green:
-                    greenLight.enabled = true;
+                    LightsToggle(LightState.Green, true);
                     trafficLightSurfaceDetector.OnLightChanged(LightState.Green);
                     break;
                 case LightState.RedAndYellow:
-                    redLight.enabled = true;
-                    yellowLight.enabled = true;
+                    LightsToggle(LightState.Red, true);
+                    LightsToggle(LightState.Yellow, true);
                     break;
             }
 
@@ -127,15 +128,35 @@ namespace TrafficObjects.TrafficLight
         {
             _junctionTrafficLightsManager.OnTrafficLightChangedToRed();
         }
-
-        public bool IsEmpty()
-        { 
-            return isEmpty;
-        }
         
         public void SetIsEmpty(bool value)
         {
             isEmpty = value;
+        }
+        
+        private void LightsToggle(LightState lightState, bool value)
+        {
+            switch (lightState)
+            {
+                case LightState.Red:
+                    foreach (var redLight in redLights)
+                    {
+                        redLight.enabled = value;
+                    }
+                    break;
+                case LightState.Yellow:
+                    foreach (var yellowLight in yellowLights)
+                    {
+                        yellowLight.enabled = value;
+                    }
+                    break;
+                case LightState.Green:
+                    foreach (var greenLight in greenLights)
+                    {
+                        greenLight.enabled = value;
+                    }
+                    break;
+            }
         }
     }
 }
