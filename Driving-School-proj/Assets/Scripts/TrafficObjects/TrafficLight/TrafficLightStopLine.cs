@@ -12,7 +12,6 @@ namespace TrafficObjects.TrafficLight
             if (other.CompareTag("Car"))
             {
                 string hitSide = TrafficObjectsUtils.CheckHitSide(transform, other);
-                Debug.Log("hitSide: " + hitSide);
                 if (hitSide.Equals("Back") || hitSide.Equals("Left"))
                 {
                     if (GameManager.Instance.IsMainCar(other.gameObject.GetInstanceID()))

@@ -70,7 +70,6 @@ namespace Managers
     
         public void UpdateCarPassedRedLightEvent(int carId)
         {
-            Debug.Log("red lightt");
             if (carId == mainCar.GetInstanceID())
             {
                 Debug.Log("Main car passed red light");

@@ -53,7 +53,6 @@ namespace Managers
 
         private async void OnCarReachedStopSign(int carId, int stopSignId)
         {
-            // Debug.Log("Car reached stop sign event triggered");
             _stopSignObjects[stopSignId] = (false, false);
         
             await WaitForConditionsAsync(carId, stopSignId);
@@ -61,18 +60,11 @@ namespace Managers
     
         private void OnCarPassedStopSign(int stopSignId)
         {
-            // Debug.Log("Car passed stop sign event triggered");
             _stopSignObjects[stopSignId] = (_stopSignObjects[stopSignId].carStopped, true);
-        }
-        
-        private void OnCarTookWrongTurn()
-        {
-            GameManager.Instance.UpdateCarTookWrongTurnEvent();
         }
 
         private void OnCarStoppedBeforeStopSign(int stopSignId)
         {
-            // Debug.Log("Car stopped at stop sign event triggered");
             _stopSignObjects[stopSignId] = (true, _stopSignObjects[stopSignId].carPassed);
         }
     
@@ -89,7 +81,6 @@ namespace Managers
     
         private void OnCarPassedNoEntrySign(int carId)
         {
-            // Debug.Log("Car passed the no entry sign event triggered");
             GameManager.Instance.UpdateNoEntrySignEvent(carId);
         }
     
@@ -127,6 +118,11 @@ namespace Managers
         {
             // Debug.Log("Car hit pedestrian event triggered");
             GameManager.Instance.UpdateCarHitPedestrianEvent();
+        }
+        
+        private void OnCarTookWrongTurn()
+        {
+            GameManager.Instance.UpdateCarTookWrongTurnEvent();
         }
     }
 }

@@ -7,19 +7,13 @@ using UnityEngine;
 
 public class CrossSectionChecker : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         // Debug.Log("enter junc");
         if (GameManager.Instance.IsMainCar(other.gameObject.GetInstanceID()))
         {
             Transform junctionDetector = transform.parent.GetChild(0);
-            Debug.Log("wasJunctionChecked: " + junctionDetector.GetComponent<CrossSectionDitectorController>().wasJunctionChecked);
+            // Debug.Log("wasJunctionChecked: " + junctionDetector.GetComponent<CrossSectionDitectorController>().wasJunctionChecked);
             if (junctionDetector.GetComponent<CrossSectionDitectorController>().wasJunctionChecked) return;
 
             CrossSectionDirections selectedDirection =
@@ -29,8 +23,8 @@ public class CrossSectionChecker : MonoBehaviour
 
             Enum.TryParse(transform.name, out checkerDirection);
             
-            Debug.Log("selectedDirection: " + selectedDirection);
-            Debug.Log("checkerDirection: " + checkerDirection);
+            // Debug.Log("selectedDirection: " + selectedDirection);
+            // Debug.Log("checkerDirection: " + checkerDirection);
 
             if ((int)selectedDirection != (int)checkerDirection) // minus points
             {

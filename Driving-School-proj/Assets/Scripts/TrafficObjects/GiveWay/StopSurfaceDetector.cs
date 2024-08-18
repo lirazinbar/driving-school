@@ -14,11 +14,6 @@ namespace TrafficObjects.GiveWay
         private bool _carReachedSign;
         private bool _isVisible;
 
-        private void Start()
-        {
-            _isVisible = stopSignObject.GetComponent<StopSign>().IsVisible();
-        }
-
         private void Update()
         {
             if (_carReachedSign)
@@ -45,18 +40,15 @@ namespace TrafficObjects.GiveWay
             if (other.CompareTag("Car"))
             {
                 _carStopped = false;
-                if (GameManager.Instance.IsMainCar(other.gameObject.GetInstanceID()))
-                {
-                    Debug.Log("Main car reached stop sign");
-                }
-                
                 string hitSide = TrafficObjectsUtils.CheckHitSide(transform, other);
-                if (hitSide.Equals("Front"))
+                if (hitSide.Equals("Front") && _isVisible)
                 {
-                    if (_isVisible)
+                    if (GameManager.Instance.IsMainCar(other.gameObject.GetInstanceID()))
                     {
-                        EventsManager.Instance.TriggerCarReachedStopSignEvent(other.gameObject.GetInstanceID(), stopSignObject.GetInstanceID());
+                        Debug.Log("Main car reached stop sign");
                     }
+                    EventsManager.Instance.TriggerCarReachedStopSignEvent(other.gameObject.GetInstanceID(), stopSignObject.GetInstanceID());
+                    
                     _car = other.gameObject.GetComponent<CarController>();
                     _carReachedSign = true;
                 }            
@@ -71,6 +63,11 @@ namespace TrafficObjects.GiveWay
         public CarController GetCar()
         {
             return _car;
+        }
+        
+        public void SetIsVisible(bool isVisible)
+        {
+            _isVisible = isVisible;
         }
     }
 }

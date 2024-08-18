@@ -14,12 +14,7 @@ namespace TrafficObjects.GiveWay
         private bool _carPassed;
         private bool _isVisible;
 
-
-        private void Start()
-        {
-            _isVisible = stopSignObject.GetComponent<StopSign>().IsVisible();
-        }
-
+        
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Car"))
@@ -46,7 +41,6 @@ namespace TrafficObjects.GiveWay
             {
                 if (GameManager.Instance.IsMainCar(other.gameObject.GetInstanceID()))
                 {
-                    Debug.Log("Main car completely passed StopLine");
                     // Check if main car entered the junction without giving way
                     StopSign stopSign = stopSignObject.GetComponent<StopSign>();
                     if (!stopSign.HasLock() && !stopSign.IsLockAvailable())
@@ -71,6 +65,11 @@ namespace TrafficObjects.GiveWay
         public bool IsCarPassed()
         {
             return _carPassed;
+        }
+        
+        public void SetIsVisible(bool isSignVisible)
+        {
+            _isVisible = isSignVisible;
         }
     }
 }
