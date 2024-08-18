@@ -59,7 +59,7 @@ namespace Managers
                 else
                 {
                     Debug.Log("Main car passed stop sign without stopping");
-                    FeedbackManager.Instance.UpdateScore(FeedbackScore.StopSign);
+                    FeedbackManager.Instance.UpdateScore("Stop Sign");
                 }
             }
         }
@@ -69,7 +69,7 @@ namespace Managers
             if (carId == mainCar.GetInstanceID())
             {
                 Debug.Log("Main car passed no entry sign");
-                FeedbackManager.Instance.UpdateScore(FeedbackScore.NoEntry);
+                FeedbackManager.Instance.UpdateScore("No Entry Sign");
             }
         }
     
@@ -78,49 +78,50 @@ namespace Managers
             if (carId == mainCar.GetInstanceID())
             {
                 Debug.Log("Main car passed red light");
-                FeedbackManager.Instance.UpdateScore(FeedbackScore.RedLight);
+                FeedbackManager.Instance.UpdateScore("Red Light");
             }
         }
     
         public void UpdateCarBrokeSpeedLimitEvent()
         {
             Debug.Log("Main car broke speed limit");
-            FeedbackManager.Instance.UpdateScore(FeedbackScore.Speeding);
+            FeedbackManager.Instance.UpdateScore("Speed Limit");
         }
         
         public void UpdateCarDidNotGiveWayEvent()
         {
             Debug.Log("Main car did not give way");
-            FeedbackManager.Instance.UpdateScore(FeedbackScore.GiveWay);
+            FeedbackManager.Instance.UpdateScore("Give Way");
         }
         
         public void UpdateCarDidNotGiveWayToPedestrianEvent()
         {
             Debug.Log("Main car did not give way to pedestrian");
-            FeedbackManager.Instance.UpdateScore(FeedbackScore.GiveWayPedestrian);
+            FeedbackManager.Instance.UpdateScore("Give Way Pedestrian");
         }
         public void UpdateCarHitOtherCarEvent()
         {
             Debug.Log("Main car hit another car");
             AudioManager.Instance.Play("CarCrash");
-            FeedbackManager.Instance.UpdateScore(FeedbackScore.CarHit);
+            FeedbackManager.Instance.UpdateScore("Car Hit");
         }
         
         public void UpdateCarHitPedestrianEvent()
         {
             Debug.Log("Main car hit a pedestrian");
             AudioManager.Instance.Play("CarCrash");
-            FeedbackManager.Instance.UpdateScore(FeedbackScore.PedestrianHit);
+            FeedbackManager.Instance.UpdateScore("Pedestrian Hit");
         }
 
         public void UpdateCarTookWrongTurnEvent()
         {
             Debug.Log("Car took wrong turn");
-            FeedbackManager.Instance.UpdateScore(FeedbackScore.WrongDirection);
+            FeedbackManager.Instance.UpdateScore("Wrong Direction");
         }
         
-        public void GameFinished(bool success, List<FeedbackScore> _feedbackScores)
+        public void GameFinished(bool success, List<string> feedbackScores)
         {
+            FeedbackManager.Instance.SetIsUpdatingScore(false);
             if (success)
             {
                 Debug.Log("Congratulations! You passed the test!");
@@ -146,7 +147,7 @@ namespace Managers
                 scoresObject = new ScoresObject(playerName, new List<FeedbackTable>()); 
             }
             
-            scoresObject._feedbackTables.Add(new FeedbackTable(_feedbackScores));
+            scoresObject._feedbackTables.Add(new FeedbackTable(feedbackScores));
 
             if (foundScoresObject == null)
             {
@@ -154,20 +155,21 @@ namespace Managers
             }
             XMLManager.Instance.SaveScores(scoresList);
             
-            StartCoroutine(DisplayGameOverAfterDelay(success, _feedbackScores));
+            StartCoroutine(DisplayGameOverAfterDelay(success, feedbackScores));
         }
 
-        private void DisplayGameOver(bool success, List<FeedbackScore> _feedbackScores)
+        private void DisplayGameOver(bool success, List<string> feedbackScores)
         {
             gameOverCanvas.gameObject.SetActive(true);
             int sumScores = 100;
-            for (int index = 0; index < _feedbackScores.Count; index++)
+            for (int index = 0; index < feedbackScores.Count; index++)
             {
-                FeedbackScore score = _feedbackScores[index];
+                string feedback = feedbackScores[index];
+                int score = FeedbackScore.Table[feedbackScores[index]];
                 GameObject newComponent = Instantiate(scoreComponentPrefab, gridContainerGameOverMenu.transform);
                 
-                newComponent.transform.GetComponent<TextMeshProUGUI>().text = score.ToString() + "    " + (int)score;
-                sumScores += (int)score;
+                newComponent.transform.GetComponent<TextMeshProUGUI>().text = feedback + "    " + score;
+                sumScores += score;
                 
                 newComponent.name = "ScoreLine" + (index+1);
             }
@@ -184,10 +186,10 @@ namespace Managers
             // Debug.Log("Enddd");
         }
         
-        private IEnumerator<WaitForSeconds> DisplayGameOverAfterDelay(bool success, List<FeedbackScore> _feedbackScores)
+        private IEnumerator<WaitForSeconds> DisplayGameOverAfterDelay(bool success, List<string> feedbackScores)
         {
             yield return new WaitForSeconds(2f);
-            DisplayGameOver(success, _feedbackScores);
+            DisplayGameOver(success, feedbackScores);
         }
 
         public void OnGoBackToMainMenu()
@@ -198,7 +200,7 @@ namespace Managers
         private void SetGameSettings()
         {
            // _gameSettings = GetGameSettingsFromPlayerPrefs();
-           gameSettings = new GameSettings.GameSettings(PedestrianDifficulty.Easy, CarsDifficulty.Hard, false, 3, 100);
+           gameSettings = new GameSettings.GameSettings(PedestrianDifficulty.Easy, CarsDifficulty.Easy, false, 3, 100);
            
            SetPedestrianDifficulty(gameSettings.GetPedestrianDifficulty());
            SetCarsDifficulty(gameSettings.GetCarsDifficulty());

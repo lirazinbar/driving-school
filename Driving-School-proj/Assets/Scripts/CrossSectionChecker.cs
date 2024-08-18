@@ -32,7 +32,7 @@ public class CrossSectionChecker : MonoBehaviour
             }
             else 
             { // add points
-                FeedbackManager.Instance.increaseTurnsAmount();
+                FeedbackManager.Instance.IncreaseTurnsAmount();
             }
             junctionDetector.GetComponent<CrossSectionDitectorController>().wasJunctionChecked = true;
         }
