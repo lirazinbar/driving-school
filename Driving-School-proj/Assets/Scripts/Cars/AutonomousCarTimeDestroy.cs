@@ -1,3 +1,4 @@
+using Managers;
 using UnityEngine;
 
 namespace Cars
@@ -5,8 +6,16 @@ namespace Cars
     public class AutonomousCarTimeDestroy: MonoBehaviour
     {
         [SerializeField] private float timeToLiveSeconds = 120f;
-        
-        // Destroy the car after 120 seconds
+
+        private void Start()
+        {
+            // Increase TTL if it's not default route
+            if (!GameManager.Instance.IsDefaultRoute())
+            {
+                timeToLiveSeconds += 120f;
+            }
+        }
+
         private void Update()
         {
             timeToLiveSeconds -= Time.deltaTime;

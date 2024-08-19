@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Enums;
 using TrafficObjects.GiveWay;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Splines;
@@ -25,9 +26,8 @@ namespace Pedestrian
         private bool _isCrossing;
 
         private const float FrontSensorsStartPoint = 0f;
-        private const float FrontSideSensorsPosition = FrontSensorsStartPoint;
         private const float FrontSideSensorsAngle = 20f;
-        private const float SensorStopLength = 3f;
+        private const float SensorStopLength = 2f;
         private const float SensorsHight = 1f;
 
         private void Update()
@@ -47,9 +47,12 @@ namespace Pedestrian
         {
             if (TryRaycast(out RaycastHit hit))
             {
-                if (!agent.isStopped && hit.collider.CompareTag("Car"))
+                if (!agent.isStopped)
                 {
-                    Stop();
+                    if (hit.collider.CompareTag("Car"))
+                    {
+                        Stop();
+                    }
                 }
             }
             else
@@ -72,6 +75,12 @@ namespace Pedestrian
         public void Initialize(SplineContainer splineContainer, GameObject spawner)
         {
             PathUtils.SetKnotsPositions(splineContainer, _knotsPositions, ref _currentKnotIndex);
+            if (_knotsPositions.Count == 0)
+            {
+                Debug.LogWarning("No knots found in the spline container for pedestrian");
+                Destroy(gameObject);
+            }
+            
             agent.SetDestination(_knotsPositions[_currentKnotIndex]);
             
             _pedestriansSpawner = spawner.gameObject;
@@ -80,11 +89,6 @@ namespace Pedestrian
         
         private void Roam()
         {
-            if (_knotsPositions.Count == 0)
-            {
-                Destroy(gameObject);
-            }
-
             if (Vector3.Distance(transform.position, _knotsPositions[_currentKnotIndex]) < MinDistance) 
             {
                 _currentKnotIndex++;
@@ -107,40 +111,37 @@ namespace Pedestrian
         
         private bool TryRaycast(out RaycastHit hit)
         {
-            bool isHit = false;
             Vector3 position = transform.position;
             Quaternion rotation = transform.rotation;
          
             Vector3 frontCenterSensorPos = position + rotation * new Vector3(0, SensorsHight, FrontSensorsStartPoint);
-            Vector3 frontRightSensorPos = position + rotation * new Vector3(FrontSideSensorsPosition, SensorsHight, FrontSensorsStartPoint);
-            Vector3 frontLeftSensorPos = position + rotation * new Vector3(-FrontSideSensorsPosition, SensorsHight, FrontSensorsStartPoint);
         
             // Front center sensor
             if (Physics.Raycast(frontCenterSensorPos, transform.forward, out hit, SensorStopLength))
             {
                 Debug.DrawLine(frontCenterSensorPos, hit.point, Color.red);
-                isHit = true;
+                return true;
             }
             
             // Front right angle sensor
-            if (Physics.Raycast(frontRightSensorPos, 
+            if (Physics.Raycast(frontCenterSensorPos, 
                     Quaternion.AngleAxis(FrontSideSensorsAngle, transform.up) * transform.forward,
-                    out hit, SensorStopLength / 10f))
+                    out hit, SensorStopLength))
             {
-                Debug.DrawLine(frontRightSensorPos, hit.point, Color.red);
-                isHit = true;
+                Debug.DrawLine(frontCenterSensorPos, hit.point, Color.red);
+                return true;
             }
             
             // Front left angle sensor
-            if (Physics.Raycast(frontLeftSensorPos, 
+            if (Physics.Raycast(frontCenterSensorPos, 
                     Quaternion.AngleAxis(-FrontSideSensorsAngle, transform.up) * transform.forward,
-                    out hit, SensorStopLength / 10f))
+                    out hit, SensorStopLength))
             {
-                Debug.DrawLine(frontLeftSensorPos, hit.point, Color.red);
-                isHit = true;
+                Debug.DrawLine(frontCenterSensorPos, hit.point, Color.red);
+                return true;
             }
         
-            return isHit;
+            return false;
         }
 
         private void Stop()

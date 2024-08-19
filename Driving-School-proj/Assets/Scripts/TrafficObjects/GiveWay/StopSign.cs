@@ -2,7 +2,6 @@ using Cars;
 using Enums;
 using Managers;
 using Pedestrian;
-using Roads;
 using UnityEngine;
 
 namespace TrafficObjects.GiveWay
@@ -20,7 +19,7 @@ namespace TrafficObjects.GiveWay
         private CarController _currentCar;
         private bool _isOccupied;
         private bool _hasLock;
-        bool isVisible;
+        private bool _isVisible;
 
         private int _pedestriansCrossingNumber;
         private bool _pedestrianIsCrossing;
@@ -62,14 +61,12 @@ namespace TrafficObjects.GiveWay
         
         public void SetIsVisible(bool isSignVisible)
         {
-            isVisible = isSignVisible;
-            stopSignRenderer.enabled = isVisible;
-            stopLineRenderer.enabled = isVisible;
-        }
-        
-        public bool IsVisible()
-        {
-            return isVisible;
+            _isVisible = isSignVisible;
+            stopSignRenderer.enabled = _isVisible;
+            stopLineRenderer.enabled = _isVisible;
+            
+            stopLine.SetIsVisible(_isVisible);
+            stopSurfaceDetector.SetIsVisible(_isVisible);
         }
         
         public bool HasLock()

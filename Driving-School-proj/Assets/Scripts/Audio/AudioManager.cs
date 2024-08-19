@@ -94,5 +94,16 @@ namespace Audio
             }
             return s.source;
         }
+        
+        public void SetVolume(string name, float volume)
+        {
+            Sound s = System.Array.Find(_sounds, sound => sound.name == name);
+            if (s == null)
+            {
+                Debug.LogWarning("Sound: " + name + " not found!");
+                return;
+            }
+            s.source.volume = volume;
+        }
     }
 }

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
-using Managers;
 using UnityEngine;
 
 namespace Managers
@@ -8,10 +7,14 @@ namespace Managers
     public class FeedbackManager : MonoBehaviour
     {
         public static FeedbackManager Instance { get; private set; }
+        
         [SerializeField] private int initialScore = 100;
         private int _currentScore;
-        private List<FeedbackScore> _feedbackScores = new List<FeedbackScore>();
-        private int turnsAmount = 0;
+        private bool _isUpdatingScore = true;
+        private List<string> _feedbackScores = new List<string>();
+        
+        private int _turnsToWin;
+        private int _turnsCounter;
 
         void Awake()
         {
@@ -22,44 +25,67 @@ namespace Managers
         {
             _currentScore = initialScore;
         }
-
-        public void increaseTurnsAmount()
+        
+        public void SetIsUpdatingScore(bool isUpdatingScore)
         {
-            turnsAmount++;
-            Debug.Log("turnsAmount: " + turnsAmount);
-            if (turnsAmount >= 3) GameManager.Instance.GameFinished(true, _feedbackScores);
+            _isUpdatingScore = isUpdatingScore;
         }
 
-        public void UpdateScore(FeedbackScore feedbackScore)
+        public void IncreaseTurnsAmount()
         {
-            _currentScore += (int) feedbackScore;
-            Debug.Log("You lost " + -(int) feedbackScore + " points! " + "Current score: " + _currentScore);
-            _feedbackScores.Add(feedbackScore);
-            CanvasDashboard.Instance.DisplayUpdateScore(feedbackScore);
-        
-            if (_currentScore <= 0)
+            _turnsCounter++;
+            Debug.Log("turnsAmount: " + _turnsCounter);
+            if (_turnsCounter >= 3) GameManager.Instance.GameFinished(true, _feedbackScores);
+        }
+
+        public void UpdateScore(string feedbackScore)
+        {
+            if (_isUpdatingScore)
             {
-                GameManager.Instance.GameFinished(false, _feedbackScores);
+                if (!IsValidFeedbackScore(feedbackScore))
+                {
+                    Debug.LogError("Invalid feedback score: " + feedbackScore);
+                    return;
+                }
+                _currentScore += FeedbackScore.Table[feedbackScore];
+                Debug.Log("You lost " + -FeedbackScore.Table[feedbackScore] + " points! " + "Current score: " + _currentScore);
+                _feedbackScores.Add(feedbackScore);
+                CanvasDashboard.Instance.DisplayUpdateScore(feedbackScore);
+        
+                if (_currentScore <= 0)
+                {
+                    GameManager.Instance.GameFinished(false, _feedbackScores);
+                }
             }
         }
-    }
-
-    public enum FeedbackScore
-    {
-        CarHit = -100,
-        PedestrianHit = CarHit,
-
-        RedLight = -50,
         
-        NoEntry = -20,
-        StopSign = NoEntry,
-
-        Speeding = -10,
-        GiveWay = Speeding,
-        GiveWayPedestrian = Speeding,
-        WrongDirection = -5
-        // OffRoad = -50
+        private bool IsValidFeedbackScore(string feedbackScore)
+        {
+            return FeedbackScore.Table.ContainsKey(feedbackScore);
+        }
+        
+        public void SetTurnsToWin(int turnsToWin)
+        {
+            _turnsToWin = turnsToWin;
+        }
     }
+}
+
+
+public static class FeedbackScore
+{
+    public static readonly Dictionary<string, int> Table = new Dictionary<string, int>
+    {
+        { "Car Hit", -100 },
+        { "Pedestrian Hit", -100 },
+        { "Red Light", -50 },
+        { "No Entry Sign", -20 },
+        { "Stop Sign", -20 },
+        { "Speed Limit", -10 },
+        { "Give Way", -10 },
+        { "Give Way Pedestrian", -10 },
+        { "Wrong Direction", -5 }
+    };
 }
 
 public class PlayersScores
@@ -102,13 +128,13 @@ public class FeedbackTable
 {
     [XmlArray("Table")]
     [XmlArrayItem("Score")]
-    public List<FeedbackScore> _feedbackScores;
+    public List<string> _feedbackScores;
 
     public FeedbackTable()
     {
     }
 
-    public FeedbackTable(List<FeedbackScore> _feedbackScores)
+    public FeedbackTable(List<string> _feedbackScores)
     {
         this._feedbackScores = _feedbackScores;
     }

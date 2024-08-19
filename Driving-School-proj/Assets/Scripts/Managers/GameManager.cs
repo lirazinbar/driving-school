@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Audio;
+using Cars;
 using Enums;
 using TMPro;
 using TrafficObjects.GiveWay;
@@ -10,32 +11,43 @@ namespace Managers
     public class GameManager : MonoBehaviour
     {
         public static GameManager Instance { get; private set; }
+        
+        [SerializeField] private bool isDefaultRoute;
         [SerializeField] private GameObject mainCar;
+        [SerializeField] private Light directionalLight;
+        
+        [Header("Game Over Menu")]
         [SerializeField] private TMP_Text successStatus;
         [SerializeField] private GameObject scoreComponentPrefab;
         [SerializeField] private GameObject gridContainerGameOverMenu;
-        [SerializeField] private Canvas GameOverCanvas; 
-        private AudioManager audioManager;
+        [SerializeField] private Canvas gameOverCanvas;
         
-        private PedestrianDifficulty _pedestrianDifficulty;
+        private GameSettings.GameSettings gameSettings { get; set; }
 
         //private string playerName;
         void Awake()
         {
             // Singleton
             Instance = this;
+            
             Application.targetFrameRate = 90;
+            
+            LoadGameSettings();
         }
-        
-        void Start()
+
+        private void Start()
         {
-            audioManager = FindObjectOfType<AudioManager>();
-            SetPedestrianDifficulty(PedestrianDifficulty.None);
+            SetGameSettings();
         }
-        
+
         public bool IsMainCar(int carId)
         {
             return carId == mainCar.GetInstanceID();
+        }
+        
+        public bool IsDefaultRoute()
+        {
+            return isDefaultRoute;
         }
 
         //public void SetPlayerName(string playerNameInput)
@@ -55,7 +67,7 @@ namespace Managers
                 else
                 {
                     Debug.Log("Main car passed stop sign without stopping");
-                    FeedbackManager.Instance.UpdateScore(FeedbackScore.StopSign);
+                    FeedbackManager.Instance.UpdateScore("Stop Sign");
                 }
             }
         }
@@ -65,62 +77,63 @@ namespace Managers
             if (carId == mainCar.GetInstanceID())
             {
                 Debug.Log("Main car passed no entry sign");
-                FeedbackManager.Instance.UpdateScore(FeedbackScore.NoEntry);
+                FeedbackManager.Instance.UpdateScore("No Entry Sign");
             }
         }
     
         public void UpdateCarPassedRedLightEvent(int carId)
         {
-            Debug.Log("red lightt");
             if (carId == mainCar.GetInstanceID())
             {
                 Debug.Log("Main car passed red light");
-                FeedbackManager.Instance.UpdateScore(FeedbackScore.RedLight);
+                FeedbackManager.Instance.UpdateScore("Red Light");
             }
         }
     
         public void UpdateCarBrokeSpeedLimitEvent()
         {
             Debug.Log("Main car broke speed limit");
-            FeedbackManager.Instance.UpdateScore(FeedbackScore.Speeding);
+            FeedbackManager.Instance.UpdateScore("Speed Limit");
         }
         
         public void UpdateCarDidNotGiveWayEvent()
         {
             Debug.Log("Main car did not give way");
-            FeedbackManager.Instance.UpdateScore(FeedbackScore.GiveWay);
+            FeedbackManager.Instance.UpdateScore("Give Way");
         }
         
         public void UpdateCarDidNotGiveWayToPedestrianEvent()
         {
             Debug.Log("Main car did not give way to pedestrian");
-            FeedbackManager.Instance.UpdateScore(FeedbackScore.GiveWayPedestrian);
+            FeedbackManager.Instance.UpdateScore("Give Way Pedestrian");
         }
         public void UpdateCarHitOtherCarEvent()
         {
             Debug.Log("Main car hit another car");
-            audioManager.Play("CarCrash");
-            FeedbackManager.Instance.UpdateScore(FeedbackScore.CarHit);
+            AudioManager.Instance.Play("CarCrash");
+            FeedbackManager.Instance.UpdateScore("Car Hit");
         }
         
         public void UpdateCarHitPedestrianEvent()
         {
             Debug.Log("Main car hit a pedestrian");
-            audioManager.Play("CarCrash");
-            FeedbackManager.Instance.UpdateScore(FeedbackScore.PedestrianHit);
+            AudioManager.Instance.Play("CarCrash");
+            FeedbackManager.Instance.UpdateScore("Pedestrian Hit");
         }
 
         public void UpdateCarTookWrongTurnEvent()
         {
             Debug.Log("Car took wrong turn");
-            FeedbackManager.Instance.UpdateScore(FeedbackScore.WrongDirection);
+            FeedbackManager.Instance.UpdateScore("Wrong Direction");
         }
         
-        public void GameFinished(bool success, List<FeedbackScore> _feedbackScores)
+        public void GameFinished(bool success, List<string> feedbackScores)
         {
+            FeedbackManager.Instance.SetIsUpdatingScore(false);
             if (success)
             {
                 Debug.Log("Congratulations! You passed the test!");
+                AudioManager.Instance.Play("Arrive");
             }
             else
             {
@@ -132,7 +145,6 @@ namespace Managers
             ScoresObject foundScoresObject = scoresList.Find((scoresObj => scoresObj.playerName == playerName));
             ScoresObject scoresObject;
             
-            
             Debug.Log("finish - "+ playerName);
             if (foundScoresObject != null)
             {
@@ -143,7 +155,7 @@ namespace Managers
                 scoresObject = new ScoresObject(playerName, new List<FeedbackTable>()); 
             }
             
-            scoresObject._feedbackTables.Add(new FeedbackTable(_feedbackScores));
+            scoresObject._feedbackTables.Add(new FeedbackTable(feedbackScores));
 
             if (foundScoresObject == null)
             {
@@ -151,20 +163,21 @@ namespace Managers
             }
             XMLManager.Instance.SaveScores(scoresList);
             
-            StartCoroutine(DisplayGameOverAfterDelay(success, _feedbackScores));
+            StartCoroutine(DisplayGameOverAfterDelay(success, feedbackScores));
         }
 
-        private void DisplayGameOver(bool success, List<FeedbackScore> _feedbackScores)
+        private void DisplayGameOver(bool success, List<string> feedbackScores)
         {
-            GameOverCanvas.gameObject.SetActive(true);
+            gameOverCanvas.gameObject.SetActive(true);
             int sumScores = 100;
-            for (int index = 0; index < _feedbackScores.Count; index++)
+            for (int index = 0; index < feedbackScores.Count; index++)
             {
-                FeedbackScore score = _feedbackScores[index];
+                string feedback = feedbackScores[index];
+                int score = FeedbackScore.Table[feedbackScores[index]];
                 GameObject newComponent = Instantiate(scoreComponentPrefab, gridContainerGameOverMenu.transform);
                 
-                newComponent.transform.GetComponent<TextMeshProUGUI>().text = score.ToString() + "    " + (int)score;
-                sumScores += (int)score;
+                newComponent.transform.GetComponent<TextMeshProUGUI>().text = feedback + "    " + score;
+                sumScores += score;
                 
                 newComponent.name = "ScoreLine" + (index+1);
             }
@@ -181,21 +194,49 @@ namespace Managers
             // Debug.Log("Enddd");
         }
         
-        private IEnumerator<WaitForSeconds> DisplayGameOverAfterDelay(bool success, List<FeedbackScore> _feedbackScores)
+        private IEnumerator<WaitForSeconds> DisplayGameOverAfterDelay(bool success, List<string> feedbackScores)
         {
             yield return new WaitForSeconds(2f);
-            DisplayGameOver(success, _feedbackScores);
+            DisplayGameOver(success, feedbackScores);
         }
 
         public void OnGoBackToMainMenu()
         {
-            // Debug.Log("mainnnn");
             UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+        }
+
+        private void LoadGameSettings()
+        {
+            // _gameSettings = GetGameSettingsFromPlayerPrefs();
+            gameSettings = new GameSettings.GameSettings(PedestrianDifficulty.Easy, CarsDifficulty.Easy, true, 3, 100);
+        }
+        
+        private void SetGameSettings()
+        {
+           SetPedestrianDifficulty(gameSettings.GetPedestrianDifficulty());
+           
+           SetCarsDifficulty(gameSettings.GetCarsDifficulty());
+           
+           SetNightMode(gameSettings.GetNightMode());
+
+           SetTurnsToWin(gameSettings.GetTurnsToWin());
+           
+           SetMistakePoints(gameSettings.GetMistakePoints());
+        }
+        
+        private GameSettings.GameSettings GetGameSettingsFromPlayerPrefs()
+        {
+            PedestrianDifficulty pedestrianDifficulty = (PedestrianDifficulty) PlayerPrefs.GetInt("PedestrianDifficulty");
+            CarsDifficulty carsDifficulty = (CarsDifficulty) PlayerPrefs.GetInt("CarsDifficulty");
+            bool nightMode = PlayerPrefs.GetInt("NightMode") == 1;
+            int numberOfTurnsToWin = PlayerPrefs.GetInt("NumberOfTurnsToWin");
+            int mistakePoints = PlayerPrefs.GetInt("MistakePoints");
+            
+            return new GameSettings.GameSettings(pedestrianDifficulty, carsDifficulty, nightMode, numberOfTurnsToWin, mistakePoints);
         }
         
         public void SetPedestrianDifficulty(PedestrianDifficulty pedestrianDifficulty)
         {
-            _pedestrianDifficulty = pedestrianDifficulty;
             JunctionGiveWayManager[] junctionManagers = FindObjectsOfType<JunctionGiveWayManager>();
             
             foreach (JunctionGiveWayManager junctionManager in junctionManagers)
@@ -203,10 +244,46 @@ namespace Managers
                 junctionManager.SetPedestrianDifficulty(pedestrianDifficulty);
             }
         }
-
-        public PedestrianDifficulty GetPedestrianDifficulty()
+        
+        public void SetCarsDifficulty(CarsDifficulty carsDifficulty)
         {
-            return _pedestrianDifficulty;
+            AutonomousCarSpawn[] autonomousCarSpawns = FindObjectsOfType<AutonomousCarSpawn>();
+            
+            foreach (AutonomousCarSpawn autonomousCarSpawn in autonomousCarSpawns)
+            {
+                autonomousCarSpawn.SetSpawnInterval((float)carsDifficulty);
+            }
+        }
+        
+        private void SetNightMode(bool nightMode)
+        {
+            if (nightMode)
+            {
+                directionalLight.gameObject.SetActive(false);
+                RenderSettings.skybox = null;
+                DynamicGI.UpdateEnvironment();
+
+                StreetLight[] streetLights = FindObjectsOfType<StreetLight>();
+                foreach (StreetLight streetLight in streetLights)
+                {
+                    streetLight.TurnOn();
+                }
+            }
+        }
+        
+        public bool IsNightMode()
+        {
+            return gameSettings.GetNightMode();
+        }
+        
+        private void SetTurnsToWin(int turnsToWin)
+        {
+            FeedbackManager.Instance.SetTurnsToWin(turnsToWin);
+        }
+        
+        private void SetMistakePoints(int mistakePoints)
+        {
+            // Set the number of mistake points
         }
     }
 }

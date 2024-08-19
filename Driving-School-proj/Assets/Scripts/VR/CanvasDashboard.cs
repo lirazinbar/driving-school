@@ -95,9 +95,9 @@ public class CanvasDashboard : MonoBehaviour
         // turnDirection.enabled = false;
     }
 
-    public void DisplayUpdateScore(FeedbackScore feedbackScore)
+    public void DisplayUpdateScore(string feedbackScore)
     {
-        score.SetText(feedbackScore.ToString() + " " + (int)feedbackScore);
+        score.SetText(feedbackScore + " " + FeedbackScore.Table[feedbackScore]);
         StartCoroutine(CleanScoreAfterDelay());
     }
     

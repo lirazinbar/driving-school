@@ -2,6 +2,7 @@ using System.Collections;
 using Enums;
 using Managers;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Cars
 {
@@ -14,29 +15,54 @@ namespace Cars
         private GearState _currentGearState = GearState.Drive;
         private bool _isCheckingSpeed = true;
         private bool _isShowingSpeed = true;
+        private float _currentMaxSteerAngle;
 
         [SerializeField] private Rigidbody rb;
 
         [SerializeField] private GameObject SteeringWheel;
     
         [SerializeField] private GameObject GearStick;
-
+        
         // Settings
-        [SerializeField] private float motorForce, breakForce, maxSteerAngle, acceleration;
-        [SerializeField] private bool isAutonomous, keyboardControlled;
-        private float _currentMaxSteerAngle;
+        [Header("Car Performance Settings")]
+        [SerializeField] private float motorForce;
+        [SerializeField] private float breakForce;
+        [SerializeField] private float maxSteerAngle;
+        [SerializeField] private float acceleration;
 
+        [Header("Control Settings")]
+        [SerializeField] private bool isAutonomous;
+        [SerializeField] private bool keyboardControlled;
+        
         // Wheel Colliders
-        [SerializeField] private WheelCollider frontLeftWheelCollider, frontRightWheelCollider;
-        [SerializeField] private WheelCollider rearLeftWheelCollider, rearRightWheelCollider;
+        [Header("Front Wheel Colliders")]
+        [SerializeField] private WheelCollider frontLeftWheelCollider;
+        [SerializeField] private WheelCollider frontRightWheelCollider;
+
+        [Header("Rear Wheel Colliders")]
+        [SerializeField] private WheelCollider rearLeftWheelCollider;
+        [SerializeField] private WheelCollider rearRightWheelCollider;
 
         // Wheels
-        [SerializeField] private Transform frontLeftWheelTransform, frontRightWheelTransform;
-        [SerializeField] private Transform rearLeftWheelTransform, rearRightWheelTransform;
+        [Header("Wheel Transforms")]
+        [SerializeField] private Transform frontLeftWheelTransform;
+        [SerializeField] private Transform frontRightWheelTransform;
+        [SerializeField] private Transform rearLeftWheelTransform;
+        [SerializeField] private Transform rearRightWheelTransform;
+
+        // Front Lights
+        [Header("Front Lights")]
+        [SerializeField] private Light frontRightLight;
+        [SerializeField] private Light frontRightLightPoint;
+        [SerializeField] private Light frontLeftLight;
+        [SerializeField] private Light frontLeftLightPoint;
+        
         
         private void Start()
         {
             _speedLimit = TrafficManager.Instance.GetSpeedLimit();
+            
+            FrontLightsToggle(GameManager.Instance.IsNightMode());
         }
 
         private void FixedUpdate()
@@ -215,6 +241,14 @@ namespace Cars
             EventsManager.Instance.TriggerCarGearStateChangedEvent(newGearState);
         }
         _currentGearState = newGearState;
+    }
+    
+    private void FrontLightsToggle(bool state)
+    {
+        frontLeftLight.enabled = true;
+        frontRightLightPoint.enabled = state;
+        frontRightLight.enabled = state;
+        frontLeftLightPoint.enabled = state;
     }
 }
 
