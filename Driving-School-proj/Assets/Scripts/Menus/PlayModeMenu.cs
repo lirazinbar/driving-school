@@ -10,6 +10,7 @@ namespace Menus
     public class PlayModeMenu : MonoBehaviour
     {
         [SerializeField] private Canvas playModeMenuCanvas;     
+        [SerializeField] private Canvas keyboard;     
         [SerializeField] private Canvas chooseRouteMenuCanvas;     
         //[SerializeField] private Canvas mainMenuCanvas;
         [SerializeField] private Canvas highScoreCanvas;
@@ -22,6 +23,7 @@ namespace Menus
             highScoreCanvas.gameObject.SetActive(false);
             chooseRouteMenuCanvas.gameObject.SetActive(false);
             playModeMenuCanvas.gameObject.SetActive(true);
+            keyboard.gameObject.SetActive(true);
         }
 
         public int CalcSumOfScoresInTable(List<string> feedbackScores)
@@ -39,6 +41,7 @@ namespace Menus
         public void OnGoToHighScore()
         {
             playModeMenuCanvas.gameObject.SetActive(false);
+            keyboard.gameObject.SetActive(false);
 
             foreach (Transform child in gridContainerGameOverMenu.transform)
             {

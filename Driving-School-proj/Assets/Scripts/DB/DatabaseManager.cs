@@ -68,7 +68,7 @@ public class DatabaseManager : MonoBehaviour
             FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
         });
         
-        // userId = SystemInfo.deviceUniqueIdentifier;
+        //userId = SystemInfo.deviceUniqueIdentifier;
         dbReference = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
@@ -95,7 +95,7 @@ public class DatabaseManager : MonoBehaviour
         if (routesDate.IsFaulted)
         {
             Debug.LogError("Error fetching data from Firebase: " + routesDate.Exception);
-            onCallBack?.Invoke(null);
+            onCallBack?.Invoke(new List<MapMatrixObject>());
         }
         else if (routesDate.IsCompleted)
         {
@@ -111,7 +111,7 @@ public class DatabaseManager : MonoBehaviour
             else
             {
                 Debug.LogWarning("No data found at the specified path.");
-                onCallBack?.Invoke(null);
+                onCallBack?.Invoke(new List<MapMatrixObject>());
             }
         }
     }
