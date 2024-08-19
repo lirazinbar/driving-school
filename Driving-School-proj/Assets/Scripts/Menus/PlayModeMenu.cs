@@ -8,6 +8,7 @@ using UnityEngine;
 public class PlayModeMenu : MonoBehaviour
 {
     [SerializeField] private Canvas playModeMenuCanvas;     
+    [SerializeField] private Canvas keyboard;     
     [SerializeField] private Canvas chooseRouteMenuCanvas;     
     //[SerializeField] private Canvas mainMenuCanvas;
     [SerializeField] private Canvas highScoreCanvas;
@@ -20,6 +21,7 @@ public class PlayModeMenu : MonoBehaviour
         highScoreCanvas.gameObject.SetActive(false);
         chooseRouteMenuCanvas.gameObject.SetActive(false);
         playModeMenuCanvas.gameObject.SetActive(true);
+        keyboard.gameObject.SetActive(true);
     }
 
     public int calcSumOfScoresInTable(List<FeedbackScore> _feedbackScores)
@@ -37,6 +39,7 @@ public class PlayModeMenu : MonoBehaviour
     public void onGoToHighScore()
     {
         playModeMenuCanvas.gameObject.SetActive(false);
+        keyboard.gameObject.SetActive(false);
 
         foreach (Transform child in gridContainerGameOverMenu.transform)
         {

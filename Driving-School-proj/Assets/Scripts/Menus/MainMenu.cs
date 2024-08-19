@@ -7,7 +7,8 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    [SerializeField] private Canvas playModeMenuCanvas;     
+    [SerializeField] private Canvas playModeMenuCanvas;  
+    [SerializeField] private Canvas keyboard;     
     [SerializeField] private TMP_InputField playerNameInput;     
     [SerializeField] private Canvas chooseRouteMenuCanvas;     
     //[SerializeField] private Canvas mainMenuCanvas;
@@ -23,9 +24,13 @@ public class MainMenu : MonoBehaviour
     public void SaveNameAndLoadRoutes()
     {
         PlayerPrefs.SetString("PlayerName", this.playerNameInput.text);
+
         playModeMenuCanvas.gameObject.SetActive(false);
+        keyboard.gameObject.SetActive(false);
         
-        StartCoroutine(DatabaseManager.Instance.GetRoutes(OnRoutesFetched));
+        // TODO:
+        // StartCoroutine(DatabaseManager.Instance.GetRoutes(OnRoutesFetched));
+        OnRoutesFetched(new List<MapMatrixObject>());
     }
 
     private void OnRoutesFetched(List<MapMatrixObject> routeList)

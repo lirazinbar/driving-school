@@ -30,7 +30,7 @@ public class DatabaseManager : MonoBehaviour
 {
     private FirebaseApp app;
     public static DatabaseManager Instance { get; private set; }
-    private string userId;
+    private const string userId = "5b233262a61ea01589e9b22ec51d1729f7afc953";
     private DatabaseReference dbReference;
 
     
@@ -68,7 +68,7 @@ public class DatabaseManager : MonoBehaviour
             FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
         });
         
-        userId = SystemInfo.deviceUniqueIdentifier;
+        //userId = SystemInfo.deviceUniqueIdentifier;
         dbReference = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
@@ -92,14 +92,27 @@ public class DatabaseManager : MonoBehaviour
 
         yield return new WaitUntil(predicate: () => routesDate.IsCompleted);
 
-        if (routesDate != null)
+        if (routesDate.IsFaulted)
+        {
+            Debug.LogError("Error fetching data from Firebase: " + routesDate.Exception);
+            onCallBack?.Invoke(new List<MapMatrixObject>());
+        }
+        else if (routesDate.IsCompleted)
         {
             DataSnapshot snapshot = routesDate.Result;
-            string json = snapshot.GetRawJsonValue();
-            List<MapMatrixObject> matrixList = JsonConvert.DeserializeObject<List<MapMatrixObject>>(json);
 
-            onCallBack.Invoke(matrixList);
+            if (snapshot.Exists)
+            {
+                string json = snapshot.GetRawJsonValue();
+                List<MapMatrixObject> matrixList = JsonConvert.DeserializeObject<List<MapMatrixObject>>(json);
+
+                onCallBack?.Invoke(matrixList);
+            }
+            else
+            {
+                Debug.LogWarning("No data found at the specified path.");
+                onCallBack?.Invoke(new List<MapMatrixObject>());
+            }
         }
-
     }
 }
