@@ -13,7 +13,8 @@ namespace Managers
         private bool _isUpdatingScore = true;
         private List<string> _feedbackScores = new List<string>();
         
-        private int _turnsAmount;
+        private int _turnsToWin;
+        private int _turnsCounter;
 
         void Awake()
         {
@@ -32,9 +33,9 @@ namespace Managers
 
         public void IncreaseTurnsAmount()
         {
-            _turnsAmount++;
-            Debug.Log("turnsAmount: " + _turnsAmount);
-            if (_turnsAmount >= 3) GameManager.Instance.GameFinished(true, _feedbackScores);
+            _turnsCounter++;
+            Debug.Log("turnsAmount: " + _turnsCounter);
+            if (_turnsCounter >= 3) GameManager.Instance.GameFinished(true, _feedbackScores);
         }
 
         public void UpdateScore(string feedbackScore)
@@ -61,6 +62,11 @@ namespace Managers
         private bool IsValidFeedbackScore(string feedbackScore)
         {
             return FeedbackScore.Table.ContainsKey(feedbackScore);
+        }
+        
+        public void SetTurnsToWin(int turnsToWin)
+        {
+            _turnsToWin = turnsToWin;
         }
     }
 }
