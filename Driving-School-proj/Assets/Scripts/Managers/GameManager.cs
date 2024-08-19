@@ -14,6 +14,9 @@ namespace Managers
         
         [SerializeField] private bool isDefaultRoute;
         [SerializeField] private GameObject mainCar;
+        [SerializeField] private Light directionalLight;
+        
+        [Header("Game Over Menu")]
         [SerializeField] private TMP_Text successStatus;
         [SerializeField] private GameObject scoreComponentPrefab;
         [SerializeField] private GameObject gridContainerGameOverMenu;
@@ -29,9 +32,14 @@ namespace Managers
             
             Application.targetFrameRate = 90;
             
+            LoadGameSettings();
+        }
+
+        private void Start()
+        {
             SetGameSettings();
         }
-        
+
         public bool IsMainCar(int carId)
         {
             return carId == mainCar.GetInstanceID();
@@ -125,6 +133,7 @@ namespace Managers
             if (success)
             {
                 Debug.Log("Congratulations! You passed the test!");
+                AudioManager.Instance.Play("Arrive");
             }
             else
             {
@@ -135,7 +144,6 @@ namespace Managers
             List<ScoresObject> scoresList = XMLManager.Instance.LoadScores();
             ScoresObject foundScoresObject = scoresList.Find((scoresObj => scoresObj.playerName == playerName));
             ScoresObject scoresObject;
-            
             
             Debug.Log("finish - "+ playerName);
             if (foundScoresObject != null)
@@ -196,25 +204,35 @@ namespace Managers
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
         }
+
+        private void LoadGameSettings()
+        {
+            // _gameSettings = GetGameSettingsFromPlayerPrefs();
+            gameSettings = new GameSettings.GameSettings(PedestrianDifficulty.Easy, CarsDifficulty.Easy, true, 3, 100);
+        }
         
         private void SetGameSettings()
         {
-           // _gameSettings = GetGameSettingsFromPlayerPrefs();
-           gameSettings = new GameSettings.GameSettings(PedestrianDifficulty.Easy, CarsDifficulty.Easy, false, 3, 100);
-           
            SetPedestrianDifficulty(gameSettings.GetPedestrianDifficulty());
+           
            SetCarsDifficulty(gameSettings.GetCarsDifficulty());
+           
+           SetNightMode(gameSettings.GetNightMode());
+
+           SetTurnsToWin(gameSettings.GetTurnsToWin());
+           
+           SetMistakePoints(gameSettings.GetMistakePoints());
         }
         
         private GameSettings.GameSettings GetGameSettingsFromPlayerPrefs()
         {
             PedestrianDifficulty pedestrianDifficulty = (PedestrianDifficulty) PlayerPrefs.GetInt("PedestrianDifficulty");
             CarsDifficulty carsDifficulty = (CarsDifficulty) PlayerPrefs.GetInt("CarsDifficulty");
-            bool dayNightMode = PlayerPrefs.GetInt("DayNightMode") == 1;
+            bool nightMode = PlayerPrefs.GetInt("NightMode") == 1;
             int numberOfTurnsToWin = PlayerPrefs.GetInt("NumberOfTurnsToWin");
             int mistakePoints = PlayerPrefs.GetInt("MistakePoints");
             
-            return new GameSettings.GameSettings(pedestrianDifficulty, carsDifficulty, dayNightMode, numberOfTurnsToWin, mistakePoints);
+            return new GameSettings.GameSettings(pedestrianDifficulty, carsDifficulty, nightMode, numberOfTurnsToWin, mistakePoints);
         }
         
         public void SetPedestrianDifficulty(PedestrianDifficulty pedestrianDifficulty)
@@ -235,6 +253,37 @@ namespace Managers
             {
                 autonomousCarSpawn.SetSpawnInterval((float)carsDifficulty);
             }
+        }
+        
+        private void SetNightMode(bool nightMode)
+        {
+            if (nightMode)
+            {
+                directionalLight.gameObject.SetActive(false);
+                RenderSettings.skybox = null;
+                DynamicGI.UpdateEnvironment();
+
+                StreetLight[] streetLights = FindObjectsOfType<StreetLight>();
+                foreach (StreetLight streetLight in streetLights)
+                {
+                    streetLight.TurnOn();
+                }
+            }
+        }
+        
+        public bool IsNightMode()
+        {
+            return gameSettings.GetNightMode();
+        }
+        
+        private void SetTurnsToWin(int turnsToWin)
+        {
+            FeedbackManager.Instance.SetTurnsToWin(turnsToWin);
+        }
+        
+        private void SetMistakePoints(int mistakePoints)
+        {
+            // Set the number of mistake points
         }
     }
 }

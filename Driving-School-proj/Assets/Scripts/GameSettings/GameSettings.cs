@@ -6,21 +6,21 @@ namespace GameSettings
     {
         private PedestrianDifficulty _pedestrianDifficulty;
         private CarsDifficulty _carsDifficulty;
-        private bool _dayNightMode;
-        private int _numberOfTurnsToWin;
+        private bool _nightMode;
+        private int _turnsToWin;
         private int _mistakePoints;
 
         public GameSettings(
             PedestrianDifficulty pedestrianDifficulty, 
             CarsDifficulty carsDifficulty, 
-            bool dayNightMode, 
-            int numberOfTurnsToWin, 
+            bool nightMode, 
+            int turnsToWin, 
             int mistakePoints)
         {
             _pedestrianDifficulty = pedestrianDifficulty;
             _carsDifficulty = carsDifficulty;
-            _dayNightMode = dayNightMode;
-            _numberOfTurnsToWin = numberOfTurnsToWin;
+            _nightMode = nightMode;
+            _turnsToWin = turnsToWin;
             _mistakePoints = mistakePoints;
         }
         
@@ -34,14 +34,14 @@ namespace GameSettings
             return _carsDifficulty;
         }
         
-        public bool GetDayNightMode()
+        public bool GetNightMode()
         {
-            return _dayNightMode;
+            return _nightMode;
         }
         
-        public int GetNumberOfTurnsToWin()
+        public int GetTurnsToWin()
         {
-            return _numberOfTurnsToWin;
+            return _turnsToWin;
         }
         
         public int GetMistakePoints()
@@ -59,14 +59,14 @@ namespace GameSettings
             _carsDifficulty = carsDifficulty;
         }
         
-        public void SetDayNightMode(bool dayNightMode)
+        public void SetNightMode(bool dayNightMode)
         {
-            _dayNightMode = dayNightMode;
+            _nightMode = dayNightMode;
         }
         
-        public void SetNumberOfTurnsToWin(int numberOfTurnsToWin)
+        public void SetTurnsToWin(int turnsToWin)
         {
-            _numberOfTurnsToWin = numberOfTurnsToWin;
+            _turnsToWin = turnsToWin;
         }
         
         public void SetMistakePoints(int mistakePoints)
