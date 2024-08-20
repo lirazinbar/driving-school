@@ -63,7 +63,8 @@ public class RouteEditorConvertor : MonoBehaviour
         
         // TODO
         // StartCoroutine(DatabaseManager.Instance.GetRoutes(OnRoutesFetched));
-        DatabaseManager.Instance.GetData(OnRoutesFetched);
+        
+        StartCoroutine(DatabaseManager.Instance.GetData(OnRoutesFetched));
 
         /* MapMatrixObject mapMatrixObject = new MapMatrixObject(MapName.GetComponent<TMP_InputField>().text, cellsList);
         

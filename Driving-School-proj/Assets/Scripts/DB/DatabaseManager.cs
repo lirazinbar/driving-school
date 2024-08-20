@@ -79,6 +79,7 @@ public class DatabaseManager : MonoBehaviour
     
     public void CreateRoutes(List<MapMatrixObject> matrixListToSave)
     {
+        Debug.Log("createee");
         string json =  JsonConvert.SerializeObject(matrixListToSave, Formatting.Indented);
         
         Debug.Log("json: "+ json);

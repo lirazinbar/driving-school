@@ -13,7 +13,7 @@ public class CreateRouteMap : MonoBehaviour
 
         // TODO
         // StartCoroutine(DatabaseManager.Instance.GetRoutes(OnRoutesFetched));
-        DatabaseManager.Instance.GetData(OnRoutesFetched);
+        StartCoroutine(DatabaseManager.Instance.GetData(OnRoutesFetched));
 
         //int routeNumber = int.Parse(PlayerPrefs.GetString("RouteNumber"));
 
