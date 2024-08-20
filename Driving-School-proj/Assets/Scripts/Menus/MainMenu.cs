@@ -17,7 +17,6 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject routeComponentPrefab;
     [SerializeField] private GameObject gridContainerGameObject;
     
-    private const string MusicName = "Funshine";
 
     /*public void EnterPlayModeMenu()
     {
@@ -28,8 +27,9 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
-        AudioManager.Instance.SetVolume(MusicName, 0.5f);
-        AudioManager.Instance.Play(MusicName);
+        string backgroundMusicName = AudioManager.Instance.GetBackgroundMusicName();
+        AudioManager.Instance.SetVolume(backgroundMusicName, 0.5f);
+        AudioManager.Instance.Play(backgroundMusicName);
     }
 
     public void SaveNameAndLoadRoutes()

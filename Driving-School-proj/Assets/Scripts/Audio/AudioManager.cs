@@ -8,12 +8,14 @@ namespace Audio
         private Sound[] _sounds;
         
         private const string AudioPath = "Audio";
+        private const string BackgroundMusicName = "Funshine";
         
         void Awake()
         {
             if (Instance == null)
             {
                 Instance = this;
+                DontDestroyOnLoad(gameObject);
             }
             else
             {
@@ -104,6 +106,23 @@ namespace Audio
                 return;
             }
             s.source.volume = volume;
+        }
+        
+        public string GetBackgroundMusicName()
+        {
+            return BackgroundMusicName;
+        }
+        
+        public void OnBackgroundMusicButtonClicked()
+        {
+            if (IsPlaying(BackgroundMusicName))
+            {
+                Stop(BackgroundMusicName);
+            }
+            else
+            {
+                Play(BackgroundMusicName);
+            }
         }
     }
 }
