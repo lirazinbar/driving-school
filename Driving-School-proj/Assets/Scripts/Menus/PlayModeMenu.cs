@@ -63,7 +63,7 @@ namespace Menus
                         maxScoreOfPlayer = currentTableScore;
                     }
                 }
-                Debug.Log(scoresObject.playerName + ": " + maxScoreOfPlayer.ToString());
+                Debug.Log(scoresObject.playerName + ": " + maxScoreOfPlayer);
                 players.Add(new PlayersScores(scoresObject.playerName, maxScoreOfPlayer));
             }
 
@@ -73,14 +73,13 @@ namespace Menus
             for (int topPlayerIndex = 0; topPlayerIndex < topPlayers.Count; topPlayerIndex++)
             {
                 GameObject newComponent = Instantiate(scoreComponentPrefab, gridContainerGameOverMenu.transform);
-
-                newComponent.transform.GetComponent<TextMeshProUGUI>().text = topPlayers[topPlayerIndex].playerName + ":    " + topPlayers[topPlayerIndex].score.ToString();
+                
+                newComponent.transform.GetComponent<TextMeshProUGUI>().text = topPlayers[topPlayerIndex].playerName + ":    " + topPlayers[topPlayerIndex].score;
                 
                 newComponent.name = "ScoreLine" + (topPlayerIndex+1);
             }
 
             highScoreCanvas.gameObject.SetActive(true);
         }
-        
     }
 }
