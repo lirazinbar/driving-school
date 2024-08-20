@@ -50,7 +50,7 @@ namespace Menus
             
             // TODO:
             // StartCoroutine(DatabaseManager.Instance.GetRoutes(OnRoutesFetched));
-            OnRoutesFetched(new List<MapMatrixObject>());
+            StartCoroutine(DatabaseManager.Instance.GetData(OnRoutesFetched));
         }
 
         private void OnRoutesFetched(List<MapMatrixObject> routeList)
