@@ -9,6 +9,7 @@ using Firebase.Extensions;
 using TMPro;
 using UnityEngine.UI;
 using Newtonsoft.Json;
+using UnityEngine.Networking;
 
 
 /*Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task => {
@@ -32,6 +33,9 @@ public class DatabaseManager : MonoBehaviour
     public static DatabaseManager Instance { get; private set; }
     private const string userId = "5b233262a61ea01589e9b22ec51d1729f7afc953";
     private DatabaseReference dbReference;
+
+    private string url =
+        "https://driving-school-mta-default-rtdb.firebaseio.com/Routes/5b233262a61ea01589e9b22ec51d1729f7afc953.json";
 
     
     void Awake()
@@ -83,7 +87,7 @@ public class DatabaseManager : MonoBehaviour
         dbReference.Child("Routes").Child(userId).SetRawJsonValueAsync(json);
     }
 
-    public IEnumerator GetRoutes(Action<List<MapMatrixObject>> onCallBack)
+    /*public IEnumerator GetRoutes(Action<List<MapMatrixObject>> onCallBack)
     {
         Debug.Log("dbReference: "+ dbReference);
         Debug.Log("userId: "+ userId);
@@ -113,6 +117,30 @@ public class DatabaseManager : MonoBehaviour
                 Debug.LogWarning("No data found at the specified path.");
                 onCallBack?.Invoke(new List<MapMatrixObject>());
             }
+        }
+    }
+    */
+    
+    public IEnumerator GetData(Action<List<MapMatrixObject>> onCallBack)
+    {
+        Debug.Log("GetData!1");
+        UnityWebRequest request = UnityWebRequest.Get(url);
+
+        yield return request.SendWebRequest();
+        Debug.Log("GetData!2");
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            Debug.Log("success!!!");
+            string json = request.downloadHandler.text;
+            Debug.Log(json);
+            List<MapMatrixObject> matrixList = JsonConvert.DeserializeObject<List<MapMatrixObject>>(json);
+            onCallBack?.Invoke(matrixList);
+        }
+        else
+        {
+            Debug.LogError($"Error fetching data: {request.error}");
+            onCallBack?.Invoke(new List<MapMatrixObject>());
         }
     }
 }

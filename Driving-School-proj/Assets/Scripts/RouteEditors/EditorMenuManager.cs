@@ -59,7 +59,9 @@ public class EditorMenuManager : MonoBehaviour
     {
         menuCanvas.gameObject.SetActive(false);
         
-        StartCoroutine(DatabaseManager.Instance.GetRoutes(OnRoutesFetched1));
+        // TODO
+        // StartCoroutine(DatabaseManager.Instance.GetRoutes(OnRoutesFetched1));
+        DatabaseManager.Instance.GetData(OnRoutesFetched1);
     }
 
     private void OnRoutesFetched1(List<MapMatrixObject> routeList)
@@ -100,7 +102,10 @@ public class EditorMenuManager : MonoBehaviour
     public void LoadChosenRouteIntoMatrix(int index)
     {
         chosenRouteIndex = index;
-        StartCoroutine(DatabaseManager.Instance.GetRoutes(OnRoutesFetched2));
+        
+        // TODO
+        //StartCoroutine(DatabaseManager.Instance.GetRoutes(OnRoutesFetched2));
+        DatabaseManager.Instance.GetData(OnRoutesFetched2);
     }
 
     private void OnRoutesFetched2(List<MapMatrixObject> routeList)

@@ -11,15 +11,13 @@ namespace Menus
     {
         [SerializeField] private Canvas playModeMenuCanvas;     
         [SerializeField] private Canvas keyboard;     
-        [SerializeField] private Canvas chooseRouteMenuCanvas;     
-        //[SerializeField] private Canvas mainMenuCanvas;
+        [SerializeField] private Canvas chooseRouteMenuCanvas;   
         [SerializeField] private Canvas highScoreCanvas;
         [SerializeField] private GameObject scoreComponentPrefab;
         [SerializeField] private GameObject gridContainerGameOverMenu;
     
         public void OnGetBackToMainMenu()
         {
-            //playModeMenuCanvas.gameObject.SetActive(false);
             highScoreCanvas.gameObject.SetActive(false);
             chooseRouteMenuCanvas.gameObject.SetActive(false);
             playModeMenuCanvas.gameObject.SetActive(true);
@@ -68,22 +66,21 @@ namespace Menus
                 Debug.Log(scoresObject.playerName + ": " + maxScoreOfPlayer.ToString());
                 players.Add(new PlayersScores(scoresObject.playerName, maxScoreOfPlayer));
             }
-        
+
             List<PlayersScores> topPlayers = players.OrderByDescending(p => p.score).ToList();
             // List<PlayersScores> topPlayers = players.OrderByDescending(p => p.score).Take(3).ToList();
 
             for (int topPlayerIndex = 0; topPlayerIndex < topPlayers.Count; topPlayerIndex++)
             {
                 GameObject newComponent = Instantiate(scoreComponentPrefab, gridContainerGameOverMenu.transform);
-                
+
                 newComponent.transform.GetComponent<TextMeshProUGUI>().text = topPlayers[topPlayerIndex].playerName + ":    " + topPlayers[topPlayerIndex].score.ToString();
                 
                 newComponent.name = "ScoreLine" + (topPlayerIndex+1);
             }
-        
+
             highScoreCanvas.gameObject.SetActive(true);
         }
-    
-    
+        
     }
 }
