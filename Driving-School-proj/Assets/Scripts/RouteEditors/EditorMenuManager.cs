@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Audio;
 using Managers;
 using TMPro;
 using UnityEngine;
@@ -14,8 +16,20 @@ public class EditorMenuManager : MonoBehaviour
     [SerializeField] private GameObject gridContainerGameObject;   
     [SerializeField] private GameObject MapName; // of the editor screen
     [SerializeField] private GameObject Grid; // of the editor screen
-    [SerializeField] private GameObject Item; // of the editor screen
+    [SerializeField] private GameObject Item;
+    
+    [SerializeField] private Image soundOnImage;
+    private string _backgroundMusicName;
+
+    // of the editor screen
     private int chosenRouteIndex;
+
+    private void Start()
+    {
+        _backgroundMusicName = AudioManager.Instance.GetBackgroundMusicName();
+        AudioManager.Instance.SetVolume(_backgroundMusicName, 0.5f);
+        AudioManager.Instance.Play(_backgroundMusicName);
+    }
 
     public void OnCreateNewRoute()
     {
@@ -158,5 +172,19 @@ public class EditorMenuManager : MonoBehaviour
     {
         chooseRouteCanvas.gameObject.SetActive(false);
         menuCanvas.gameObject.SetActive(true);
+    }
+    
+    public void OnBackgroundMusicButtonClicked()
+    {
+        if (AudioManager.Instance.IsPlaying(_backgroundMusicName))
+        {
+            AudioManager.Instance.Stop(_backgroundMusicName);
+            soundOnImage.enabled = false;
+        }
+        else
+        {
+            AudioManager.Instance.Play(_backgroundMusicName);
+            soundOnImage.enabled = true;
+        }
     }
 }
