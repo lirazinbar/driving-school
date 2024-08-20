@@ -77,13 +77,14 @@ namespace Menus
             chooseRouteMenuCanvas.gameObject.SetActive(true);
         }
     
-        public void LoadEnvironmentEditor()
+        /*public void LoadEnvironmentEditor()
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene("RoutesEditor");
-        }
+        }*/
     
         public void OnChooseRoute(string name)
         {
+            chooseRouteMenuCanvas.gameObject.SetActive(false);
             AudioManager.Instance.Stop(_backgroundMusicName);
         
             int routeIndex = int.Parse(name.Substring(5));
