@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
-using Enums;
 using TrafficObjects.GiveWay;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Splines;
@@ -19,7 +16,7 @@ namespace Pedestrian
         private int _currentKnotIndex = 0;
         private readonly List<Vector3> _knotsPositions = new List<Vector3>();
         
-        private float _timer = 0;
+        private float _timer;
         private const float Ttl = 10f;
         
         private StopSign _stopSign;

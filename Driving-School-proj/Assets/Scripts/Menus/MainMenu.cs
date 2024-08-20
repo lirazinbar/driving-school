@@ -16,6 +16,9 @@ public class MainMenu : MonoBehaviour
     //[SerializeField] private Canvas mainMenuCanvas;
     [SerializeField] private GameObject routeComponentPrefab;
     [SerializeField] private GameObject gridContainerGameObject;
+    [SerializeField] private Image soundOnImage;
+
+    private string _backgroundMusicName;
     
 
     /*public void EnterPlayModeMenu()
@@ -27,9 +30,9 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
-        string backgroundMusicName = AudioManager.Instance.GetBackgroundMusicName();
-        AudioManager.Instance.SetVolume(backgroundMusicName, 0.5f);
-        AudioManager.Instance.Play(backgroundMusicName);
+        _backgroundMusicName = AudioManager.Instance.GetBackgroundMusicName();
+        AudioManager.Instance.SetVolume(_backgroundMusicName, 0.5f);
+        AudioManager.Instance.Play(_backgroundMusicName);
     }
 
     public void SaveNameAndLoadRoutes()
@@ -75,6 +78,8 @@ public class MainMenu : MonoBehaviour
     
     public void OnChooseRoute(string name)
     {
+        AudioManager.Instance.Stop(_backgroundMusicName);
+        
         int routeIndex = int.Parse(name.Substring(5));
 
         if (routeIndex == 0)
@@ -85,6 +90,20 @@ public class MainMenu : MonoBehaviour
         {
             PlayerPrefs.SetString("RouteNumber", (routeIndex-1)+"");
             UnityEngine.SceneManagement.SceneManager.LoadScene("RoutesCreatorEnv");
+        }
+    }
+
+    public void OnBackgroundMusicButtonClicked()
+    {
+        if (AudioManager.Instance.IsPlaying(_backgroundMusicName))
+        {
+            AudioManager.Instance.Stop(_backgroundMusicName);
+            soundOnImage.enabled = false;
+        }
+        else
+        {
+            AudioManager.Instance.Play(_backgroundMusicName);
+            soundOnImage.enabled = true;
         }
     }
 }

@@ -245,7 +245,7 @@ namespace Cars
     
     private void FrontLightsToggle(bool state)
     {
-        frontLeftLight.enabled = true;
+        frontLeftLight.enabled = state;
         frontRightLightPoint.enabled = state;
         frontRightLight.enabled = state;
         frontLeftLightPoint.enabled = state;
