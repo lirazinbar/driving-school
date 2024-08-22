@@ -10,18 +10,18 @@ namespace Menus
     public class PlayModeMenu : MonoBehaviour
     {
         [SerializeField] private Canvas playModeMenuCanvas;     
+        [SerializeField] private Canvas routeSettingsCanvas;     
         [SerializeField] private Canvas keyboard;     
-        [SerializeField] private Canvas chooseRouteMenuCanvas;     
-        //[SerializeField] private Canvas mainMenuCanvas;
+        [SerializeField] private Canvas chooseRouteMenuCanvas;   
         [SerializeField] private Canvas highScoreCanvas;
         [SerializeField] private GameObject scoreComponentPrefab;
         [SerializeField] private GameObject gridContainerGameOverMenu;
     
         public void OnGetBackToMainMenu()
         {
-            //playModeMenuCanvas.gameObject.SetActive(false);
             highScoreCanvas.gameObject.SetActive(false);
             chooseRouteMenuCanvas.gameObject.SetActive(false);
+            routeSettingsCanvas.gameObject.SetActive(false);
             playModeMenuCanvas.gameObject.SetActive(true);
             keyboard.gameObject.SetActive(true);
         }
@@ -68,7 +68,7 @@ namespace Menus
                 Debug.Log(scoresObject.playerName + ": " + maxScoreOfPlayer);
                 players.Add(new PlayersScores(scoresObject.playerName, maxScoreOfPlayer));
             }
-        
+
             List<PlayersScores> topPlayers = players.OrderByDescending(p => p.score).ToList();
             // List<PlayersScores> topPlayers = players.OrderByDescending(p => p.score).Take(3).ToList();
 
@@ -80,7 +80,7 @@ namespace Menus
                 
                 newComponent.name = "ScoreLine" + (topPlayerIndex+1);
             }
-        
+
             highScoreCanvas.gameObject.SetActive(true);
         }
     }

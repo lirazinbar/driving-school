@@ -12,6 +12,7 @@ namespace Menus
         
         [Header("Canvas")]
         [SerializeField] private Canvas playModeMenuCanvas;  
+        [SerializeField] private Canvas routeSettingsCanvas;     
         [SerializeField] private Canvas keyboard;     
         [SerializeField] private TMP_InputField playerNameInput;     
         [SerializeField] private Canvas chooseRouteMenuCanvas;     
@@ -20,7 +21,15 @@ namespace Menus
         [SerializeField] private Image soundOnImage;
         //[SerializeField] private Canvas mainMenuCanvas;
 
+        
+        [Header("RouteSettings")]
+        [SerializeField] private Slider pedestrianDifficulty;
+        [SerializeField] private Slider autoCarsDifficulty;
+        [SerializeField] private UISwitcher.UISwitcher nightMode;
+        [SerializeField] private Slider numberOfTurnsToWin;
+        
         private string _backgroundMusicName;
+        private string routeName;
     
 
         /*public void EnterPlayModeMenu()
@@ -50,7 +59,7 @@ namespace Menus
             
             // TODO:
             // StartCoroutine(DatabaseManager.Instance.GetRoutes(OnRoutesFetched));
-            OnRoutesFetched(new List<MapMatrixObject>());
+            StartCoroutine(DatabaseManager.Instance.GetData(OnRoutesFetched));
         }
 
         private void OnRoutesFetched(List<MapMatrixObject> routeList)
@@ -77,16 +86,61 @@ namespace Menus
             chooseRouteMenuCanvas.gameObject.SetActive(true);
         }
     
-        public void LoadEnvironmentEditor()
+        /*public void LoadEnvironmentEditor()
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene("RoutesEditor");
-        }
+        }*/
     
         public void OnChooseRoute(string name)
         {
+            chooseRouteMenuCanvas.gameObject.SetActive(false);
+            routeName = name;
+            routeSettingsCanvas.gameObject.SetActive(true);
+        }
+
+        public void OnSaveRouteSettings()
+        {
+            routeSettingsCanvas.gameObject.SetActive(false);
+            
             AudioManager.Instance.Stop(_backgroundMusicName);
         
-            int routeIndex = int.Parse(name.Substring(5));
+            int routeIndex = int.Parse(routeName.Substring(5));
+            
+            switch (pedestrianDifficulty.value)
+            {
+                case 1:
+                    PlayerPrefs.SetInt("PedestrianDifficulty", 0);
+                    break;
+                case 2:
+                    PlayerPrefs.SetInt("PedestrianDifficulty", 60);
+                    break;
+                case 3:
+                    PlayerPrefs.SetInt("PedestrianDifficulty", 40);
+                    break;
+                default:
+                    PlayerPrefs.SetInt("PedestrianDifficulty", 20);
+                    break;
+            }
+            
+            switch (autoCarsDifficulty.value)
+            {
+                case 1:
+                    PlayerPrefs.SetInt("CarsDifficulty", 0);
+                    break;
+                case 2:
+                    PlayerPrefs.SetInt("CarsDifficulty", 15);
+                    break;
+                case 3:
+                    PlayerPrefs.SetInt("CarsDifficulty", 10);
+                    break;
+                default:
+                    PlayerPrefs.SetInt("CarsDifficulty", 5);
+                    break;
+            }
+            
+            PlayerPrefs.SetInt("NightMode", nightMode.isOn ? 1 : 0);
+            PlayerPrefs.SetInt("NumberOfTurnsToWin", (int)numberOfTurnsToWin.value);
+            PlayerPrefs.SetInt("MistakePoints", 100);
 
             if (routeIndex == 0)
             {
