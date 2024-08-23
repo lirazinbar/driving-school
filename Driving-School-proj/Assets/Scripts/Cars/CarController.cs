@@ -1,6 +1,7 @@
 using System.Collections;
 using Enums;
 using Managers;
+using ParkingTest;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -18,9 +19,7 @@ namespace Cars
         private float _currentMaxSteerAngle;
 
         [SerializeField] private Rigidbody rb;
-
         [SerializeField] private GameObject SteeringWheel;
-    
         [SerializeField] private GameObject GearStick;
         
         // Settings
@@ -33,6 +32,7 @@ namespace Cars
         [Header("Control Settings")]
         [SerializeField] private bool isAutonomous;
         [SerializeField] private bool keyboardControlled;
+        [SerializeField] private bool isParkingTest;
         
         // Wheel Colliders
         [Header("Front Wheel Colliders")]
@@ -60,6 +60,8 @@ namespace Cars
         
         private void Start()
         {
+            if (isParkingTest) return;
+            
             _speedLimit = TrafficManager.Instance.GetSpeedLimit();
             
             FrontLightsToggle(GameManager.Instance.IsNightMode());
@@ -89,7 +91,7 @@ namespace Cars
             HandleSteering();
             UpdateWheels();
             // ShowCurrentSpeed();
-            if (!isAutonomous)
+            if (!isAutonomous && !isParkingTest)
             {
                 IsCarBrokeSpeedLimit();
             }
