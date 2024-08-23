@@ -153,7 +153,7 @@ namespace Cars
         {
             if (!isAutonomous && !keyboardControlled)
             {
-                _currentSteerAngle = SteeringWheel.transform.rotation.eulerAngles.z - 180;
+                _currentSteerAngle = (SteeringWheel.transform.rotation.eulerAngles.z)/3 - 60;
             }
             else
             {
