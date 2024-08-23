@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 
 public class InstructorAnimationController : MonoBehaviour
 {
+    [SerializeField] private bool isParkingTest;
     private Animator _animator;
     private bool _isTalking;
     private static readonly int IsTalking = Animator.StringToHash("isTalking");
@@ -21,14 +22,20 @@ public class InstructorAnimationController : MonoBehaviour
         LoadAudioClips();
         _animator = GetComponent<Animator>();
         
-        EventsManager.Instance.carEnteredCrossSectionEvent.AddListener(OnCarEnteredCrossSectionEvent);
+        if (!isParkingTest)
+        {
+            EventsManager.Instance.carEnteredCrossSectionEvent.AddListener(OnCarEnteredCrossSectionEvent);
+        }
         
         StartCoroutine(PlaySoundAfterDelay(3f, _audioClipsStartDrive[Random.Range(0, _audioClipsStartDrive.Length)].name));
     }
     
     void OnDestroy()
     {
-        EventsManager.Instance.carEnteredCrossSectionEvent.RemoveListener(OnCarEnteredCrossSectionEvent);
+        if (!isParkingTest)
+        {
+            EventsManager.Instance.carEnteredCrossSectionEvent.RemoveListener(OnCarEnteredCrossSectionEvent);
+        }
     }
     
     private void LoadAudioClips()
