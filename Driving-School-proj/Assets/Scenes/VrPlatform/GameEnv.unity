@@ -412,8 +412,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278199295
-  m_fontColor: {r: 1, g: 0.13746116, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -430,8 +430,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 44.77
-  m_fontSizeBase: 44.77
+  m_fontSize: 52
+  m_fontSizeBase: 52
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -7434,8 +7434,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294966297
-  m_fontColor: {r: 0.0990566, g: 0.9892118, b: 1, a: 1}
+    rgba: 4289901234
+  m_fontColor: {r: 0.6981132, g: 0.6981132, b: 0.6981132, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -7458,7 +7458,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -12783,7 +12783,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.46666667}
+  m_Color: {r: 0.7176471, g: 1, b: 0.7694629, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -18518,6 +18518,11 @@ PrefabInstance:
       propertyPath: isAutonomous
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9027228897524893145, guid: 401be852464fb406181f48a709fe95a5,
+        type: 3}
+      propertyPath: keyboardControlled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -18529,11 +18534,7 @@ PrefabInstance:
         type: 3}
       insertIndex: 0
       addedObject: {fileID: 815921907}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4709141435559772754, guid: 401be852464fb406181f48a709fe95a5,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1426432075}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 401be852464fb406181f48a709fe95a5, type: 3}
 --- !u!1 &927658199 stripped
 GameObject:
@@ -27549,33 +27550,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2018023625241990704}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1426432064 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4709141435559772754, guid: 401be852464fb406181f48a709fe95a5,
-    type: 3}
-  m_PrefabInstance: {fileID: 926153253}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1426432075
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1426432064}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b80644816ce922468d6e1dc8c12daff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _pivotTransform: {fileID: 0}
-  _rotationAxis: 2
-  _constraints:
-    MinAngle:
-      Constrain: 0
-      Value: 0
-    MaxAngle:
-      Constrain: 0
-      Value: 0
 --- !u!1 &1426604289 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: e1d9101af5d96d94ca99efe2de0bac21,
