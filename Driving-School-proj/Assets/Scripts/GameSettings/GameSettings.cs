@@ -8,20 +8,20 @@ namespace GameSettings
         private CarsDifficulty _carsDifficulty;
         private bool _nightMode;
         private int _turnsToWin;
-        private int _mistakePoints;
+        private bool _instructor;
 
         public GameSettings(
             PedestrianDifficulty pedestrianDifficulty, 
             CarsDifficulty carsDifficulty, 
             bool nightMode, 
-            int turnsToWin, 
-            int mistakePoints)
+            int turnsToWin,
+            bool instructor)
         {
             _pedestrianDifficulty = pedestrianDifficulty;
             _carsDifficulty = carsDifficulty;
             _nightMode = nightMode;
             _turnsToWin = turnsToWin;
-            _mistakePoints = mistakePoints;
+            _instructor = instructor;
         }
         
         public PedestrianDifficulty GetPedestrianDifficulty()
@@ -44,9 +44,9 @@ namespace GameSettings
             return _turnsToWin;
         }
         
-        public int GetMistakePoints()
+        public bool GetInstructor()
         {
-            return _mistakePoints;
+            return _instructor;
         }
         
         public void SetPedestrianDifficulty(PedestrianDifficulty pedestrianDifficulty)
@@ -69,9 +69,9 @@ namespace GameSettings
             _turnsToWin = turnsToWin;
         }
         
-        public void SetMistakePoints(int mistakePoints)
+        public void SetInstructor(bool instructor)
         {
-            _mistakePoints = mistakePoints;
+            _instructor = instructor;
         }
     }
 }
