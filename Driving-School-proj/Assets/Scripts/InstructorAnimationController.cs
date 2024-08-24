@@ -26,8 +26,6 @@ public class InstructorAnimationController : MonoBehaviour
         {
             EventsManager.Instance.carEnteredCrossSectionEvent.AddListener(OnCarEnteredCrossSectionEvent);
         }
-        
-        StartCoroutine(PlaySoundAfterDelay(3f, _audioClipsStartDrive[Random.Range(0, _audioClipsStartDrive.Length)].name));
     }
     
     void OnDestroy()
@@ -87,5 +85,10 @@ public class InstructorAnimationController : MonoBehaviour
         {
             Talk(audioClipName);
         }
+    }
+
+    public void StartDriveTalk()
+    {
+        StartCoroutine(PlaySoundAfterDelay(3f, _audioClipsStartDrive[Random.Range(0, _audioClipsStartDrive.Length)].name));
     }
 }
