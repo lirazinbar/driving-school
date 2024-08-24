@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ParkingTest
 {
-    public class ParkingSlot : MonoBehaviour
+    public abstract class ParkingSlot : MonoBehaviour
     {
         [SerializeField] private GameObject parkingBeam;
         [SerializeField] private Collider parkingSlotCollider;
@@ -29,6 +29,8 @@ namespace ParkingTest
         {
             DetectCarInSlot();
         }
+        
+        public abstract string GetSlotType();
 
         public void SetSlotAsTarget(bool isTarget)
         {
@@ -106,11 +108,11 @@ namespace ParkingTest
         bool IsCarAngleCorrect()
         {
             float carAngle = NormalizeAngle(_carTransform.eulerAngles.y);
-            float slotAngle
+            float slotAngle = GetSlotType() == "Parallel" ? ParallelAngle : PerpendicularAngle;
             
             // Calculate the angle difference
             float angleDifference = Mathf.Abs(carAngle - slotAngle);
-            float angDifference180 = Mathf.Abs(180f - angleDifference - s);
+            float angDifference180 = Mathf.Abs(180f - angleDifference);
             
             // Check if the angle difference is within the tolerance
             return angleDifference <= AngleTolerance || angDifference180 <= AngleTolerance;
