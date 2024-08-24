@@ -153,7 +153,11 @@ namespace Cars
         {
             if (!isAutonomous && !keyboardControlled)
             {
-                _currentSteerAngle = (SteeringWheel.transform.rotation.eulerAngles.z)/3 - 60;
+                float steeringWheelAngle = SteeringWheel.transform.rotation.eulerAngles.z + 180;
+                
+                if (steeringWheelAngle > 180) steeringWheelAngle -= 360;
+                steeringWheelAngle = Mathf.Clamp(steeringWheelAngle, -60, 60);
+                _currentSteerAngle = (steeringWheelAngle) / 4;
             }
             else
             {
