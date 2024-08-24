@@ -11,6 +11,9 @@ namespace ParkingTest
 
         private bool _isOccupied;
         private bool _isTarget;
+
+        private const float ParallelAngle = 0f;
+        private const float PerpendicularAngle = 90f;
         
         private Transform _carTransform;
         private Rigidbody _carRigidbody;
@@ -103,11 +106,11 @@ namespace ParkingTest
         bool IsCarAngleCorrect()
         {
             float carAngle = NormalizeAngle(_carTransform.eulerAngles.y);
-            float slotAngle = NormalizeAngle(transform.eulerAngles.y);
+            float slotAngle
             
             // Calculate the angle difference
             float angleDifference = Mathf.Abs(carAngle - slotAngle);
-            float angDifference180 = Mathf.Abs(180f - angleDifference);
+            float angDifference180 = Mathf.Abs(180f - angleDifference - s);
             
             // Check if the angle difference is within the tolerance
             return angleDifference <= AngleTolerance || angDifference180 <= AngleTolerance;
