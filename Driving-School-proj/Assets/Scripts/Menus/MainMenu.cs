@@ -12,7 +12,9 @@ namespace Menus
         
         [Header("Canvas")]
         [SerializeField] private Canvas playModeMenuCanvas;  
+        [SerializeField] private Canvas choosePracticeMenuCanvas;  
         [SerializeField] private Canvas routeSettingsCanvas;     
+        [SerializeField] private Canvas parkingSettingsCanvas;     
         [SerializeField] private Canvas keyboard;     
         [SerializeField] private TMP_InputField playerNameInput;     
         [SerializeField] private Canvas chooseRouteMenuCanvas;     
@@ -28,6 +30,10 @@ namespace Menus
         [SerializeField] private UISwitcher.UISwitcher nightMode;
         [SerializeField] private Slider numberOfTurnsToWin;
         [SerializeField] private UISwitcher.UISwitcher instructor;
+        
+        [Header("ParkSettings")]
+        [SerializeField] private Slider parkType;
+        [SerializeField] private Slider numberOfParksToWin;
         
         private string _backgroundMusicName;
         private string routeName;
@@ -48,7 +54,7 @@ namespace Menus
             Debug.Log("Background music is playing: " + AudioManager.Instance.IsPlaying(_backgroundMusicName));
         }
 
-        public void SaveNameAndLoadRoutes()
+        public void SaveNameAndChoosePractice()
         {
             PlayerPrefs.SetString("PlayerName", this.playerNameInput.text);
 
@@ -58,9 +64,38 @@ namespace Menus
                 keyboard.gameObject.SetActive(false);
             }
             
-            // TODO:
-            // StartCoroutine(DatabaseManager.Instance.GetRoutes(OnRoutesFetched));
+            choosePracticeMenuCanvas.gameObject.SetActive(true);
+        }
+
+        public void OnChooseDrivingTest()
+        {
+            choosePracticeMenuCanvas.gameObject.SetActive(false);
+            
             StartCoroutine(DatabaseManager.Instance.GetData(OnRoutesFetched));
+        }
+        
+        public void OnChooseParkingTest()
+        {
+            choosePracticeMenuCanvas.gameObject.SetActive(false);
+            
+            parkingSettingsCanvas.gameObject.SetActive(true);
+        }
+        
+        public void OnSetParkingTestSettings()
+        {
+            choosePracticeMenuCanvas.gameObject.SetActive(false);
+            
+            PlayerPrefs.SetInt("ParkingsToWin", (int)numberOfParksToWin.value);
+            int parkingTypeVal = 0;
+            
+            if ((int)parkType.value == 1) parkingTypeVal = 2;
+            else if ((int)parkType.value == 2) parkingTypeVal = 1;
+            
+            PlayerPrefs.SetInt("ParkingType", parkingTypeVal);
+            
+            UnityEngine.SceneManagement.SceneManager.LoadScene("ParkingTest");
+            
+            AudioManager.Instance.Stop(_backgroundMusicName);
         }
 
         private void OnRoutesFetched(List<MapMatrixObject> routeList)
