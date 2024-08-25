@@ -27,6 +27,7 @@ namespace Menus
         [SerializeField] private Slider autoCarsDifficulty;
         [SerializeField] private UISwitcher.UISwitcher nightMode;
         [SerializeField] private Slider numberOfTurnsToWin;
+        [SerializeField] private UISwitcher.UISwitcher instructor;
         
         private string _backgroundMusicName;
         private string routeName;
@@ -140,7 +141,7 @@ namespace Menus
             
             PlayerPrefs.SetInt("NightMode", nightMode.isOn ? 1 : 0);
             PlayerPrefs.SetInt("NumberOfTurnsToWin", (int)numberOfTurnsToWin.value);
-            PlayerPrefs.SetInt("MistakePoints", 100);
+            PlayerPrefs.SetInt("Instructor", instructor.isOn ? 1 : 0);
 
             if (routeIndex == 0)
             {

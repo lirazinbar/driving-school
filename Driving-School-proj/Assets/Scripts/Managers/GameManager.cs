@@ -15,6 +15,7 @@ namespace Managers
         [SerializeField] private bool isDefaultRoute;
         [SerializeField] private GameObject mainCar;
         [SerializeField] private Light directionalLight;
+        [SerializeField] private InstructorAnimationController instructorAnimationController;
         
         [Header("Game Over Menu")]
         [SerializeField] private TMP_Text successStatus;
@@ -221,7 +222,7 @@ namespace Managers
 
            SetTurnsToWin(gameSettings.GetTurnsToWin());
            
-           SetMistakePoints(gameSettings.GetMistakePoints());
+           SetInstructor(gameSettings.GetInstructor());
         }
         
         private GameSettings.GameSettings GetGameSettingsFromPlayerPrefs()
@@ -230,9 +231,9 @@ namespace Managers
             CarsDifficulty carsDifficulty = (CarsDifficulty) PlayerPrefs.GetInt("CarsDifficulty");
             bool nightMode = PlayerPrefs.GetInt("NightMode") == 1;
             int numberOfTurnsToWin = PlayerPrefs.GetInt("NumberOfTurnsToWin");
-            int mistakePoints = PlayerPrefs.GetInt("MistakePoints");
+            bool instructor = PlayerPrefs.GetInt("Instructor") == 1;
             
-            return new GameSettings.GameSettings(pedestrianDifficulty, carsDifficulty, nightMode, numberOfTurnsToWin, mistakePoints);
+            return new GameSettings.GameSettings(pedestrianDifficulty, carsDifficulty, nightMode, numberOfTurnsToWin, instructor);
         }
         
         public void SetPedestrianDifficulty(PedestrianDifficulty pedestrianDifficulty)
@@ -281,9 +282,16 @@ namespace Managers
             FeedbackManager.Instance.SetTurnsToWin(turnsToWin);
         }
         
-        private void SetMistakePoints(int mistakePoints)
+        private void SetInstructor(bool instructor)
         {
-            // Set the number of mistake points
+            if (instructor)
+            {
+                instructorAnimationController.StartDriveTalk();
+            }
+            else
+            {
+                instructorAnimationController.gameObject.SetActive(false);
+            }
         }
     }
 }
