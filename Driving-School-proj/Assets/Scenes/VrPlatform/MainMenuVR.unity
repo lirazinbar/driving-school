@@ -36682,6 +36682,8 @@ MonoBehaviour:
   routeSettingsCanvas: {fileID: 981803213}
   keyboard: {fileID: 2112863776}
   chooseRouteMenuCanvas: {fileID: 49720727}
+  choosePracticeMenuCanvas: {fileID: 1431470935}
+  parkingSettingsCanvas: {fileID: 167083859}
   highScoreCanvas: {fileID: 928304938}
   scoreComponentPrefab: {fileID: 6965615838443102639, guid: c8b99a26ecdca954ab00ab5f457988d1,
     type: 3}
@@ -54403,8 +54405,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b33113bf619f4151aaad37bd716fd7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  routesCollection:
-    list: []
   scoresCollection:
     list: []
 --- !u!4 &977810602
@@ -62846,7 +62846,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
-  m_DragThreshold: 10
+  m_DragThreshold: 40
 --- !u!4 &1120711843
 Transform:
   m_ObjectHideFlags: 0
