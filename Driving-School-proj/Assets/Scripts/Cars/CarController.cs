@@ -9,7 +9,8 @@ namespace Cars
     public class CarController : MonoBehaviour
     {
         private float _horizontalInput, _verticalInput;
-        private float _currentSteerAngle, _currentBreakForce;
+        private static float _currentSteerAngle;
+        private float _currentBreakForce;
         private bool _isBreaking;
         private int _speedLimit;
         private GearState _currentGearState = GearState.Drive;
@@ -18,11 +19,10 @@ namespace Cars
         private float _currentMaxSteerAngle;
 
         [SerializeField] private Rigidbody rb;
-
-        [SerializeField] private GameObject SteeringWheel;
-    
-        [SerializeField] private GameObject GearStick;
         
+
+        [SerializeField] private GameObject GearStick;
+    
         // Settings
         [Header("Car Performance Settings")]
         [SerializeField] private float motorForce;
@@ -62,7 +62,7 @@ namespace Cars
         {
             _speedLimit = TrafficManager.Instance.GetSpeedLimit();
             
-            FrontLightsToggle(GameManager.Instance.IsNightMode());
+            FrontLightsToggle(GameManager.Instance.IsNightMode());            
         }
 
         private void FixedUpdate()
@@ -149,23 +149,18 @@ namespace Cars
             rearRightWheelCollider.brakeTorque = _currentBreakForce;
         }
 
+        public static void setCurrentSteerAngle(float currentSteerAngle)
+        {
+            _currentSteerAngle = currentSteerAngle;
+        }
+
         private void HandleSteering()
         {
-            if (!isAutonomous && !keyboardControlled)
-            {
-                float steeringWheelAngle = SteeringWheel.transform.rotation.eulerAngles.z + 180;
-                
-                if (steeringWheelAngle > 180) steeringWheelAngle -= 360;
-                steeringWheelAngle = Mathf.Clamp(steeringWheelAngle, -60, 60);
-                _currentSteerAngle = (steeringWheelAngle) / 4;
-            }
-            else
+            if (isAutonomous || keyboardControlled)
             {
                 _currentSteerAngle = _horizontalInput * maxSteerAngle;
             }
         
-            // _currentSteerAngle += 180f;
-            // _currentSteerAngle = maxSteerAngle * _horizontalInput;
         
             frontLeftWheelCollider.steerAngle = _currentSteerAngle;
             frontRightWheelCollider.steerAngle = _currentSteerAngle;

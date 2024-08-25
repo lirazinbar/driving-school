@@ -18565,6 +18565,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9027228897524893145, guid: 401be852464fb406181f48a709fe95a5,
         type: 3}
+      propertyPath: maxRotation
+      value: 530
+      objectReference: {fileID: 0}
+    - target: {fileID: 9027228897524893145, guid: 401be852464fb406181f48a709fe95a5,
+        type: 3}
+      propertyPath: minRotation
+      value: -530
+      objectReference: {fileID: 0}
+    - target: {fileID: 9027228897524893145, guid: 401be852464fb406181f48a709fe95a5,
+        type: 3}
       propertyPath: isAutonomous
       value: 0
       objectReference: {fileID: 0}
@@ -27663,10 +27673,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0176292a19f579f4a846fb1e162023b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minRotation: -60
-  maxRotation: 60
-  returnSpeed: 1.5
+  returnSpeed: 50
   grabbable: {fileID: 1426432071}
+  carRatio: 6
 --- !u!114 &1426432077
 MonoBehaviour:
   m_ObjectHideFlags: 0
