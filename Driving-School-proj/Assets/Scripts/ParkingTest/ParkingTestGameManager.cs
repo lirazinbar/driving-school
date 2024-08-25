@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 namespace ParkingTest
@@ -11,6 +12,10 @@ namespace ParkingTest
         
         private ParkingTestSettings _settings;
         private int _parkingsCompleted;
+        [SerializeField] private Canvas gameOverCanvas; 
+        [SerializeField] TMP_Text gameStatus;
+        [SerializeField] Transform gameOverCanvasPosition;
+        [SerializeField] GameObject PlayerCar;
 
         private void Awake()
         {
@@ -31,8 +36,7 @@ namespace ParkingTest
         
         private void LoadGameSettings()
         {
-            // settings = GetSettingsFromPlayerPrefs();
-            _settings = new ParkingTestSettings(1, ParkingType.Perpendicular);
+            _settings = GetSettingsFromPlayerPrefs();
         }
 
         private ParkingTestSettings GetSettingsFromPlayerPrefs()
@@ -79,9 +83,15 @@ namespace ParkingTest
         public void OnCarParkedSuccessfully()
         {
             _parkingsCompleted++;
+            CanvasDashboard.Instance.OnCarParkedSuccessfully(_settings.GetParkingsToWin() - _parkingsCompleted);
             if (_parkingsCompleted >= _settings.GetParkingsToWin())
             {
                 // Game Won
+                gameOverCanvas.gameObject.SetActive(true);
+                
+                gameOverCanvas.transform.position = gameOverCanvasPosition.transform.position;
+                gameOverCanvas.transform.rotation = gameOverCanvasPosition.transform.rotation;
+                gameStatus.SetText("You Win! Good Job!");
                 Debug.Log("Game Over - You Win!");
             }
             else
@@ -93,7 +103,17 @@ namespace ParkingTest
         public void OnCarHitOtherCar()
         {
             // Game Over
+            gameOverCanvas.gameObject.SetActive(true);
+            gameOverCanvas.transform.position = gameOverCanvasPosition.transform.position;
+            gameOverCanvas.transform.rotation = gameOverCanvasPosition.transform.rotation;
+            gameStatus.SetText("You Lost! You need more practice...");
             Debug.Log("Game Over - You Hit Another Car!");
+        }
+
+        public void OnGetBackToMainMenu()
+        {
+            gameOverCanvas.gameObject.SetActive(false);
+            UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenuVR");
         }
     }
 }

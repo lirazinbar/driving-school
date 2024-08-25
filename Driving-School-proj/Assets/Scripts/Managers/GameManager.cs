@@ -203,7 +203,7 @@ namespace Managers
 
         public void OnGoBackToMainMenu()
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenuVR");
         }
 
         private void LoadGameSettings()
