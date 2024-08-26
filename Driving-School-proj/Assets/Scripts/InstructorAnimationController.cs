@@ -16,12 +16,16 @@ public class InstructorAnimationController : MonoBehaviour
     private const string AudioInstructorPath = "Audio/Instructor";
     private AudioClip[] _audioClipsMisc;
     private AudioClip[] _audioClipsStartDrive;
-
-    void Start()
+    
+    
+    void Awake()
     {
         LoadAudioClips();
         _animator = GetComponent<Animator>();
-        
+    }
+    
+    void Start()
+    {
         if (!isParkingTest)
         {
             EventsManager.Instance.carEnteredCrossSectionEvent.AddListener(OnCarEnteredCrossSectionEvent);
@@ -41,13 +45,13 @@ public class InstructorAnimationController : MonoBehaviour
         _audioClipsMisc = Resources.LoadAll<AudioClip>(AudioInstructorPath + "/Misc");
         _audioClipsStartDrive = Resources.LoadAll<AudioClip>(AudioInstructorPath + "/StartDrive");
         
-        if (_audioClipsMisc.Length == 0 || _audioClipsStartDrive.Length == 0)
+        if (_audioClipsStartDrive.Length == 0)
         {
-            if (_audioClipsMisc.Length == 0)
-            {
-                throw new Exception("No audio clips found in " + AudioInstructorPath + "/Misc");
-            }
             throw new Exception("No audio clips found in " + AudioInstructorPath + "/StartDrive");
+        }
+        if (_audioClipsMisc.Length == 0)
+        {
+            throw new Exception("No audio clips found in " + AudioInstructorPath + "/Misc");
         }
     }
     

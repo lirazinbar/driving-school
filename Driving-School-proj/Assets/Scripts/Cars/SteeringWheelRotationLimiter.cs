@@ -70,7 +70,7 @@ public class SteeringWheelRotationLimiter : MonoBehaviour
             // Update the last Z angle for the next frame
             lastZAngle = cumulativeRotation;
 
-            Debug.Log("cumulativeRotation_2: " + cumulativeRotation);
+            // Debug.Log("cumulativeRotation_2: " + cumulativeRotation);
 
         }
 
