@@ -22,6 +22,7 @@ namespace Managers
         [SerializeField] private GameObject scoreComponentPrefab;
         [SerializeField] private GameObject gridContainerGameOverMenu;
         [SerializeField] private Canvas gameOverCanvas;
+        [SerializeField] private GameObject gameOverCanvasPosition;
         
         private GameSettings.GameSettings gameSettings { get; set; }
 
@@ -170,6 +171,10 @@ namespace Managers
         private void DisplayGameOver(bool success, List<string> feedbackScores)
         {
             gameOverCanvas.gameObject.SetActive(true);
+            
+            gameOverCanvas.transform.position = gameOverCanvasPosition.transform.position;
+            gameOverCanvas.transform.rotation = gameOverCanvasPosition.transform.rotation;
+            
             int sumScores = 100;
             for (int index = 0; index < feedbackScores.Count; index++)
             {
@@ -191,8 +196,7 @@ namespace Managers
             {
                 successStatus.SetText("You Lost!  scores: " + sumScores);
             }
-            Time.timeScale = 0f; // Pause the game
-            // Debug.Log("Enddd");
+            // Time.timeScale = 0f; // Pause the game
         }
         
         private IEnumerator<WaitForSeconds> DisplayGameOverAfterDelay(bool success, List<string> feedbackScores)
@@ -203,7 +207,8 @@ namespace Managers
 
         public void OnGoBackToMainMenu()
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+            gameOverCanvas.gameObject.SetActive(false);
+            UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenuVR");
         }
 
         private void LoadGameSettings()

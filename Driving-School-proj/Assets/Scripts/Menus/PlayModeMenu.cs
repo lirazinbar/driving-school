@@ -13,6 +13,8 @@ namespace Menus
         [SerializeField] private Canvas routeSettingsCanvas;     
         [SerializeField] private Canvas keyboard;     
         [SerializeField] private Canvas chooseRouteMenuCanvas;   
+        [SerializeField] private Canvas choosePracticeMenuCanvas;   
+        [SerializeField] private Canvas parkingSettingsCanvas;   
         [SerializeField] private Canvas highScoreCanvas;
         [SerializeField] private GameObject scoreComponentPrefab;
         [SerializeField] private GameObject gridContainerGameOverMenu;
@@ -22,6 +24,8 @@ namespace Menus
             highScoreCanvas.gameObject.SetActive(false);
             chooseRouteMenuCanvas.gameObject.SetActive(false);
             routeSettingsCanvas.gameObject.SetActive(false);
+            choosePracticeMenuCanvas.gameObject.SetActive(false);
+            parkingSettingsCanvas.gameObject.SetActive(false);
             playModeMenuCanvas.gameObject.SetActive(true);
             keyboard.gameObject.SetActive(true);
         }

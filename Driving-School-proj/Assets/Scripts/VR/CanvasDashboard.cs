@@ -14,11 +14,12 @@ public class CanvasDashboard : MonoBehaviour
     public TMP_Text gearState; 
     [SerializeField] TMP_Text score; 
     public Image turnDirection;
-    
+    public Image parkStatus;
+    [SerializeField] TMP_Text remainsParks; 
+
     public Sprite leftTurnImage;
     public Sprite rightTurnImage;
     public Sprite forwardTurnImage;
-
     void Awake()
     {
         // Singleton
@@ -30,6 +31,8 @@ public class CanvasDashboard : MonoBehaviour
         gearState.SetText("P");
         EventsManager.Instance.carGearStateChangedEvent.AddListener(OnCarGearStateChangedEvent);
         EventsManager.Instance.carEnteredCrossSectionEvent.AddListener(OnCarEnteredCrossSectionEvent);
+        parkStatus.gameObject.SetActive(false);
+        remainsParks.gameObject.SetActive(false);
     }
     
     private void OnDestroy()
@@ -95,6 +98,14 @@ public class CanvasDashboard : MonoBehaviour
         // turnDirection.enabled = false;
     }
 
+    public void OnCarParkedSuccessfully(int remainingParks)
+    {
+        parkStatus.gameObject.SetActive(true);
+        remainsParks.gameObject.SetActive(true);
+        remainsParks.SetText("You Have More " + remainingParks + " Parkings Left!");
+        StartCoroutine(CleanParkAfterDelay());
+    }
+
     public void DisplayUpdateScore(string feedbackScore)
     {
         score.SetText(feedbackScore + " " + FeedbackScore.Table[feedbackScore]);
@@ -111,6 +122,13 @@ public class CanvasDashboard : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
         turnDirection.enabled = false;
+    }
+    
+    private IEnumerator<WaitForSeconds> CleanParkAfterDelay()
+    {
+        yield return new WaitForSeconds(3f);
+        parkStatus.enabled = false;
+        remainsParks.enabled = false;
     }
 
     /* void FixedUpdate()

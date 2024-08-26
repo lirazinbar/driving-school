@@ -9,18 +9,12 @@ namespace Managers
     public class XMLManager: MonoBehaviour
     {
         public static XMLManager Instance { get; private set; }
-        public RoutesCollection routesCollection;
         public ScoresCollection scoresCollection;
     
         private void Awake()
         {
             // Singleton
             Instance = this;
-            
-            if (!Directory.Exists(Application.persistentDataPath + "/Routes/"))
-            {
-                Directory.CreateDirectory(Application.persistentDataPath + "/Routes/");
-            }
             if (!Directory.Exists(Application.persistentDataPath + "/Scores/"))
             {
                 Directory.CreateDirectory(Application.persistentDataPath + "/Scores/");
@@ -51,16 +45,6 @@ namespace Managers
     }
 }
 
-[System.Serializable]
-public class RoutesCollection
-{
-    [XmlElement("MatrixObject")]
-    public List<MapMatrixObject> list = new List<MapMatrixObject>();
-
-    public RoutesCollection()
-    {
-    }
-}
 
 [System.Serializable]
 public class ScoresCollection
