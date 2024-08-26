@@ -35217,7 +35217,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 216.5, y: -134.99892}
+  m_AnchoredPosition: {x: 216.5, y: -134.99953}
   m_SizeDelta: {x: 433, y: 270}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &622680906
@@ -36687,7 +36687,7 @@ MonoBehaviour:
   highScoreCanvas: {fileID: 928304938}
   scoreComponentPrefab: {fileID: 6965615838443102639, guid: c8b99a26ecdca954ab00ab5f457988d1,
     type: 3}
-  gridContainerGameOverMenu: {fileID: 622680904}
+  gridContainerHighScoreMenu: {fileID: 622680904}
 --- !u!4 &657822560
 Transform:
   m_ObjectHideFlags: 0
@@ -76995,11 +76995,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 493492294566449155, guid: e096c4f4710e64420b83f646127801c9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7076571446546402033, guid: e096c4f4710e64420b83f646127801c9,
         type: 3}
       propertyPath: mainCar
       value: 
       objectReference: {fileID: 1437904830}
+    - target: {fileID: 7076571446546402033, guid: e096c4f4710e64420b83f646127801c9,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
