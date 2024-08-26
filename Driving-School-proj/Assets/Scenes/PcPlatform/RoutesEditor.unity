@@ -39600,7 +39600,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 1011461982}
-  SteeringWheel: {fileID: 359154606}
   GearStick: {fileID: 1120298255}
   motorForce: 700
   breakForce: 1000
@@ -39608,6 +39607,7 @@ MonoBehaviour:
   acceleration: 0
   isAutonomous: 0
   keyboardControlled: 0
+  isParkingTest: 0
   frontLeftWheelCollider: {fileID: 2023917947}
   frontRightWheelCollider: {fileID: 700231605}
   rearLeftWheelCollider: {fileID: 892806183}
@@ -74499,6 +74499,8 @@ MonoBehaviour:
   gearState: {fileID: 1450666993}
   score: {fileID: 0}
   turnDirection: {fileID: 896607352}
+  parkStatus: {fileID: 0}
+  remainsParks: {fileID: 0}
   leftTurnImage: {fileID: 21300000, guid: 2d454c1ead3982749b215350d756c8e5, type: 3}
   rightTurnImage: {fileID: 21300000, guid: d0efb29eed65fb042b6d12ae4430f2a7, type: 3}
   forwardTurnImage: {fileID: 21300000, guid: 60feab134ea6ce246b00e592746c9d95, type: 3}

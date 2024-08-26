@@ -4,6 +4,7 @@ using Enums;
 using Managers;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Menus
 {
@@ -17,7 +18,7 @@ namespace Menus
         [SerializeField] private Canvas parkingSettingsCanvas;   
         [SerializeField] private Canvas highScoreCanvas;
         [SerializeField] private GameObject scoreComponentPrefab;
-        [SerializeField] private GameObject gridContainerGameOverMenu;
+        [SerializeField] private GameObject gridContainerHighScoreMenu;
     
         public void OnGetBackToMainMenu()
         {
@@ -47,7 +48,7 @@ namespace Menus
             playModeMenuCanvas.gameObject.SetActive(false);
             keyboard.gameObject.SetActive(false);
 
-            foreach (Transform child in gridContainerGameOverMenu.transform)
+            foreach (Transform child in gridContainerHighScoreMenu.transform)
             {
                 Destroy(child.gameObject);
             }
@@ -78,7 +79,7 @@ namespace Menus
 
             for (int topPlayerIndex = 0; topPlayerIndex < topPlayers.Count; topPlayerIndex++)
             {
-                GameObject newComponent = Instantiate(scoreComponentPrefab, gridContainerGameOverMenu.transform);
+                GameObject newComponent = Instantiate(scoreComponentPrefab, gridContainerHighScoreMenu.transform);
                 
                 newComponent.transform.GetComponent<TextMeshProUGUI>().text = topPlayers[topPlayerIndex].playerName + ":    " + topPlayers[topPlayerIndex].score;
                 
