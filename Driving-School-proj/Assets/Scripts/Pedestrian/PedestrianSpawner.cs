@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Enums;
-using Managers;
 using UnityEngine;
 using UnityEngine.Splines;
 using Random = UnityEngine.Random;
