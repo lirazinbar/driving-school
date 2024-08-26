@@ -196,7 +196,6 @@ namespace Managers
             {
                 successStatus.SetText("You Lost!  scores: " + sumScores);
             }
-            // Time.timeScale = 0f; // Pause the game
         }
         
         private IEnumerator<WaitForSeconds> DisplayGameOverAfterDelay(bool success, List<string> feedbackScores)
