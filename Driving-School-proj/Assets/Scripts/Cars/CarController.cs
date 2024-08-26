@@ -140,7 +140,10 @@ namespace Cars
                 frontRightWheelCollider.motorTorque = _verticalInput * motorForce;
             }
 
-            rb.AddForce(_verticalInput * acceleration * transform.forward, ForceMode.VelocityChange);
+            if (_currentGearState != GearState.Park)
+            {
+                rb.AddForce(_verticalInput * acceleration * transform.forward, ForceMode.VelocityChange);
+            }
             _currentBreakForce = _isBreaking ? breakForce : 0f;
             ApplyBreaking();
         }
