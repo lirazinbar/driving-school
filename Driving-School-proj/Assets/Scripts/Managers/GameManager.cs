@@ -23,6 +23,10 @@ namespace Managers
         [SerializeField] private GameObject gridContainerGameOverMenu;
         [SerializeField] private Canvas gameOverCanvas;
         [SerializeField] private GameObject gameOverCanvasPosition;
+
+        private int radioSoundIndex = -1;
+
+        private List<string> radioSounds = new List<string> { "happy-mood-ukulele", "sunny-jamboree", "ShakeItOff" };
         
         private GameSettings.GameSettings gameSettings { get; set; }
 
@@ -295,6 +299,19 @@ namespace Managers
             else
             {
                 instructorAnimationController.gameObject.SetActive(false);
+            }
+        }
+
+        public void OnRadioClicked()
+        {
+            if (radioSoundIndex != radioSounds.Count && radioSoundIndex != -1)
+            {
+                AudioManager.Instance.Stop(radioSounds[radioSoundIndex]);
+            }
+            radioSoundIndex = (radioSoundIndex+1)%(radioSounds.Count+1);
+            if (radioSoundIndex != radioSounds.Count)
+            {
+                AudioManager.Instance.Play(radioSounds[radioSoundIndex]);
             }
         }
     }
