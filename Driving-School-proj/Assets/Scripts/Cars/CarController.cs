@@ -115,7 +115,7 @@ namespace Cars
             // Acceleration and Breaking Input
             if (!keyboardControlled)
             {
-                _verticalInput = OVRInput.Get(OVRInput.RawButton.RIndexTrigger) ? 1 : 0 ;
+                _verticalInput =  OVRInput.Get(OVRInput.RawAxis1D.RIndexTrigger);
                 _isBreaking = OVRInput.Get(OVRInput.RawButton.LIndexTrigger);
             }
             else
