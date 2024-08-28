@@ -12334,7 +12334,7 @@ GameObject:
   - component: {fileID: 732908862}
   - component: {fileID: 732908861}
   - component: {fileID: 732908860}
-  - component: {fileID: 732908859}
+  - component: {fileID: 732908863}
   m_Layer: 6
   m_Name: LeftChecker
   m_TagString: Untagged
@@ -12357,23 +12357,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 632828387}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &732908859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 732908857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68e44ce4b53ab0a4b92dcb548f1437cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isRightTurnOptional: 1
-  isLeftTurnOptional: 1
-  isForwardTurnOptional: 1
-  selectedDirection: 2
-  wasJunctionChecked: 0
 --- !u!65 &732908860
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12445,6 +12428,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 732908857}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &732908863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 732908857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fca6c4804deb6f245aff8f36631f42c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &737059657 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 8b3eca4c34b9e1148a3c4d42a48dd5b8,
@@ -25795,7 +25790,7 @@ GameObject:
   - component: {fileID: 1454616370}
   - component: {fileID: 1454616369}
   - component: {fileID: 1454616368}
-  - component: {fileID: 1454616367}
+  - component: {fileID: 1454616371}
   m_Layer: 6
   m_Name: RightChecker
   m_TagString: Untagged
@@ -25818,23 +25813,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 632828387}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1454616367
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1454616365}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68e44ce4b53ab0a4b92dcb548f1437cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isRightTurnOptional: 1
-  isLeftTurnOptional: 1
-  isForwardTurnOptional: 1
-  selectedDirection: 2
-  wasJunctionChecked: 0
 --- !u!65 &1454616368
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -25906,6 +25884,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1454616365}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1454616371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1454616365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fca6c4804deb6f245aff8f36631f42c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1455593944 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: 93d0d450ec8b42e46b724bf2bbee330b,
