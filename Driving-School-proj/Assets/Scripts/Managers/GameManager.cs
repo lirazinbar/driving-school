@@ -24,9 +24,7 @@ namespace Managers
         [SerializeField] private Canvas gameOverCanvas;
         [SerializeField] private GameObject gameOverCanvasPosition;
 
-        private int radioSoundIndex = -1;
 
-        private List<string> radioSounds = new List<string> { "happy-mood-ukulele", "sunny-jamboree", "ShakeItOff" };
         
         private GameSettings.GameSettings gameSettings { get; set; }
 
@@ -216,8 +214,9 @@ namespace Managers
 
         private void LoadGameSettings()
         {
-            gameSettings = GetGameSettingsFromPlayerPrefs();
-            // gameSettings = new GameSettings.GameSettings(PedestrianDifficulty.Medium, CarsDifficulty.Medium, false, 3, true);
+            // gameSettings = GetGameSettingsFromPlayerPrefs();
+            // dev: 
+            gameSettings = new GameSettings.GameSettings(PedestrianDifficulty.Medium, CarsDifficulty.Medium, false, 3, true);
         }
         
         private void SetGameSettings()
@@ -302,17 +301,5 @@ namespace Managers
             }
         }
 
-        public void OnRadioClicked()
-        {
-            if (radioSoundIndex != radioSounds.Count && radioSoundIndex != -1)
-            {
-                AudioManager.Instance.Stop(radioSounds[radioSoundIndex]);
-            }
-            radioSoundIndex = (radioSoundIndex+1)%(radioSounds.Count+1);
-            if (radioSoundIndex != radioSounds.Count)
-            {
-                AudioManager.Instance.Play(radioSounds[radioSoundIndex]);
-            }
-        }
     }
 }
