@@ -214,9 +214,9 @@ namespace Managers
 
         private void LoadGameSettings()
         {
-            // gameSettings = GetGameSettingsFromPlayerPrefs();
+            gameSettings = GetGameSettingsFromPlayerPrefs();
             // dev: 
-            gameSettings = new GameSettings.GameSettings(PedestrianDifficulty.Medium, CarsDifficulty.Medium, false, 3, true);
+            // gameSettings = new GameSettings.GameSettings(PedestrianDifficulty.Medium, CarsDifficulty.Medium, false, 3, true);
         }
         
         private void SetGameSettings()
