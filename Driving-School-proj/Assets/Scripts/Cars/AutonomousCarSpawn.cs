@@ -15,13 +15,14 @@ namespace Cars
         private float _timer;
         private bool _isSpawning;
 
-        private void Start()
+        private void Awake()
         {
             // Load prefabs form directory
             vehiclesPrefabs = Resources.LoadAll<GameObject>("Prefabs/Vehicles");
             
             // Load materials from all directories under Materials/Vehicles
-            string[] materialsDirectoriesPaths = Directory.GetDirectories("Assets/Resources/Materials/Vehicles");
+            // string[] materialsDirectoriesPaths = Directory.GetDirectories("Assets/Resources/Materials/Vehicles");
+            string[] materialsDirectoriesPaths = {"Bus", "Container", "PickupTruck", "PrivateCar", "SUV", "Truck"};
             foreach (string directoryPath in materialsDirectoriesPaths)
             {
                 string directoryName = Path.GetFileNameWithoutExtension(directoryPath);

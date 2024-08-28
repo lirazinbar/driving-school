@@ -66,15 +66,16 @@ public class DatabaseManager : MonoBehaviour
     }
     void Start()
     {
-        
+        /*
         FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
         {
             app = FirebaseApp.DefaultInstance;
             FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
         });
+        */
         
         //userId = SystemInfo.deviceUniqueIdentifier;
-        dbReference = FirebaseDatabase.DefaultInstance.RootReference;
+       // dbReference = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
     

@@ -10,7 +10,6 @@ namespace Cars
     public class CarController : MonoBehaviour
     {
         private float _horizontalInput, _verticalInput;
-        private static float _currentSteerAngle;
         private float _currentBreakForce;
         private bool _isBreaking;
         private int _speedLimit;
@@ -156,21 +155,17 @@ namespace Cars
             rearRightWheelCollider.brakeTorque = _currentBreakForce;
         }
 
-        public static void setCurrentSteerAngle(float currentSteerAngle)
-        {
-            _currentSteerAngle = currentSteerAngle;
-        }
 
         private void HandleSteering()
         {
             if (isAutonomous || keyboardControlled)
             {
-                _currentSteerAngle = _horizontalInput * maxSteerAngle;
+                float _currentSteerAngle = _horizontalInput * maxSteerAngle;
+
+                frontLeftWheelCollider.steerAngle = _currentSteerAngle;
+                frontRightWheelCollider.steerAngle = _currentSteerAngle;
             }
         
-        
-            frontLeftWheelCollider.steerAngle = _currentSteerAngle;
-            frontRightWheelCollider.steerAngle = _currentSteerAngle;
         }
 
         private void UpdateWheels()
