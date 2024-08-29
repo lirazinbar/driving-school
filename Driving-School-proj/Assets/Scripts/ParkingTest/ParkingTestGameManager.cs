@@ -1,3 +1,4 @@
+using Cars;
 using TMPro;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace ParkingTest
         private ParkingTestSettings _settings;
         private int _parkingsCompleted;
         [SerializeField] private Canvas gameOverCanvas; 
+        [SerializeField] private Canvas gamePauseCanvas; 
         [SerializeField] TMP_Text gameStatus;
         [SerializeField] Transform gameOverCanvasPosition;
         [SerializeField] GameObject PlayerCar;
@@ -32,6 +34,21 @@ namespace ParkingTest
             FindAllFreeParkingSlots();
 
             SetRandomParkingSlotAsTarget(_settings.GetParkingType());
+        }
+        
+        private void Update()
+        {
+            if (OVRInput.GetUp(OVRInput.RawButton.X))
+            {
+                PlayerCar.gameObject.GetComponent<CarController>().SetIsGamePause(true);
+                gamePauseCanvas.gameObject.SetActive(true);
+            }
+        }
+        
+        public void OnCloseGamePause()
+        {
+            gamePauseCanvas.gameObject.SetActive(false);
+            PlayerCar.gameObject.GetComponent<CarController>().SetIsGamePause(false);
         }
         
         private void LoadGameSettings()
@@ -88,6 +105,7 @@ namespace ParkingTest
             {
                 // Game Won
                 gameOverCanvas.gameObject.SetActive(true);
+                PlayerCar.gameObject.GetComponent<CarController>().SetIsGamePause(true);
                 
                 gameOverCanvas.transform.position = gameOverCanvasPosition.transform.position;
                 gameOverCanvas.transform.rotation = gameOverCanvasPosition.transform.rotation;
@@ -104,6 +122,8 @@ namespace ParkingTest
         {
             // Game Over
             gameOverCanvas.gameObject.SetActive(true);
+            PlayerCar.gameObject.GetComponent<CarController>().SetIsGamePause(true);
+            
             gameOverCanvas.transform.position = gameOverCanvasPosition.transform.position;
             gameOverCanvas.transform.rotation = gameOverCanvasPosition.transform.rotation;
             gameStatus.SetText("You Lost! You need more practice...");
@@ -113,6 +133,7 @@ namespace ParkingTest
         public void OnGetBackToMainMenu()
         {
             gameOverCanvas.gameObject.SetActive(false);
+            gamePauseCanvas.gameObject.SetActive(false);
             UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenuVR");
         }
     }

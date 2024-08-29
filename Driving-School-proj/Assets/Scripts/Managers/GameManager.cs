@@ -23,10 +23,11 @@ namespace Managers
         [SerializeField] private GameObject scoreComponentPrefab;
         [SerializeField] private GameObject gridContainerGameOverMenu;
         [SerializeField] private Canvas gameOverCanvas;
+        [SerializeField] private Canvas gamePauseCanvas;
         [SerializeField] private GameObject gameOverCanvasPosition;
-
-
         
+
+        private bool isGamePause = false;
         private GameSettings.GameSettings gameSettings { get; set; }
 
         //private string playerName;
@@ -43,6 +44,16 @@ namespace Managers
         private void Start()
         {
             SetGameSettings();
+        }
+
+        private void Update()
+        {
+            if (OVRInput.GetUp(OVRInput.RawButton.X))
+            {
+                isGamePause = true;
+                mainCar.gameObject.GetComponent<CarController>().SetIsGamePause(true);
+                gamePauseCanvas.gameObject.SetActive(true);
+            }
         }
 
         public bool IsMainCar(int carId)
@@ -181,6 +192,8 @@ namespace Managers
         private void DisplayGameOver(bool success, List<string> feedbackScores)
         {
             gameOverCanvas.gameObject.SetActive(true);
+            isGamePause = true;
+            mainCar.gameObject.GetComponent<CarController>().SetIsGamePause(true);
             
             gameOverCanvas.transform.position = gameOverCanvasPosition.transform.position;
             gameOverCanvas.transform.rotation = gameOverCanvasPosition.transform.rotation;
@@ -217,7 +230,15 @@ namespace Managers
         public void OnGoBackToMainMenu()
         {
             gameOverCanvas.gameObject.SetActive(false);
+            gamePauseCanvas.gameObject.SetActive(false);
             UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenuVR");
+        }
+
+        public void OnCloseGamePause()
+        {
+            gamePauseCanvas.gameObject.SetActive(false);
+            isGamePause = false;
+            mainCar.gameObject.GetComponent<CarController>().SetIsGamePause(false);
         }
 
         private void LoadGameSettings()
