@@ -17,6 +17,7 @@ namespace Cars
         private bool _isCheckingSpeed = true;
         private bool _isShowingSpeed = true;
         private float _currentMaxSteerAngle;
+        private bool isGamePause = false;
 
         [SerializeField] private Rigidbody rb;
         
@@ -97,6 +98,11 @@ namespace Cars
                 IsCarBrokeSpeedLimit();
             }
         }
+
+        public void SetIsGamePause(bool isPause)
+        {
+            isGamePause = isPause;
+        }
     
         // For autonomous control
         public void SetInputs( float verticalInput, float horizontalInput, bool isBreaking)
@@ -113,7 +119,12 @@ namespace Cars
             _horizontalInput = Input.GetAxis("Horizontal");
 
             // Acceleration and Breaking Input
-            if (!keyboardControlled)
+            if (isGamePause)
+            {
+                _verticalInput = 0;
+                _isBreaking = true;
+            }
+            else if (!keyboardControlled)
             {
                 _verticalInput =  OVRInput.Get(OVRInput.RawAxis1D.RIndexTrigger);
                 _isBreaking = OVRInput.Get(OVRInput.RawButton.LIndexTrigger);
