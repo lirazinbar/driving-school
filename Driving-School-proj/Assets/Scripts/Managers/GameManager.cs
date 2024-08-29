@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Audio;
 using Cars;
@@ -123,6 +124,13 @@ namespace Managers
             Debug.Log("Main car hit a pedestrian");
             AudioManager.Instance.Play("CarCrash");
             FeedbackManager.Instance.UpdateScore("Pedestrian Hit");
+        }
+
+        public void UpdateCarHitObstacleEvent()
+        {
+            Debug.Log("Main car hit an obstacle");
+            AudioManager.Instance.Play("CarCrash");
+            FeedbackManager.Instance.UpdateScore("Obstacle Hit");
         }
 
         public void UpdateCarTookWrongTurnEvent()
