@@ -37,6 +37,13 @@ namespace Cars
                     Destroy(gameObject);
                 }
             }
+            if (other.gameObject.CompareTag("Obstacle"))
+            {
+                if (isMainCar)
+                {
+                    EventsManager.Instance.TriggerCarHitObstacleEvent();
+                }
+            }
         }
     }
 }

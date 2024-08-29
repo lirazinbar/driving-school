@@ -20,7 +20,7 @@ namespace ParkingTest
         private Collider _carCollider;
         private LayerMask _carLayer; 
         
-        private const float AngleTolerance = 8f; // Allowed tolerance for angle
+        private const float AngleTolerance = 12f; // Allowed tolerance for angle
         private const float StopThreshold = 0.1f; // Minimum speed to consider the car as stopped
         private const float CheckInterval = 0.2f; // Time interval for checking the conditions
 

@@ -29,6 +29,7 @@ namespace Managers
             EventsManager.Instance.carDidNotGiveWayToPedestrianEvent.AddListener(OnCarDidNotGiveWayToPedestrian);
             EventsManager.Instance.carHitOtherCarEvent.AddListener(OnCarHitOtherCar);
             EventsManager.Instance.carHitPedestrianEvent.AddListener(OnCarHitPedestrian);
+            EventsManager.Instance.carHitObstacleEvent.AddListener(OnCarHitObstacle);
         }
 
         private void OnDestroy()
@@ -44,6 +45,7 @@ namespace Managers
             EventsManager.Instance.carDidNotGiveWayToPedestrianEvent.RemoveListener(OnCarDidNotGiveWayToPedestrian);
             EventsManager.Instance.carHitOtherCarEvent.RemoveListener(OnCarHitOtherCar);
             EventsManager.Instance.carHitPedestrianEvent.RemoveListener(OnCarHitPedestrian);
+            EventsManager.Instance.carHitObstacleEvent.RemoveListener(OnCarHitObstacle);
         }
     
         public int GetSpeedLimit()
@@ -123,6 +125,11 @@ namespace Managers
         private void OnCarTookWrongTurn()
         {
             GameManager.Instance.UpdateCarTookWrongTurnEvent();
+        }
+        
+        private void OnCarHitObstacle()
+        {
+            GameManager.Instance.UpdateCarHitObstacleEvent();
         }
     }
 }
