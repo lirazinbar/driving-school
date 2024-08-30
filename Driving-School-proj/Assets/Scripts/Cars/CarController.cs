@@ -37,11 +37,9 @@ namespace Cars
         [SerializeField] private bool isParkingTest;
         
         // Wheel Colliders
-        [Header("Front Wheel Colliders")]
+        [Header("Wheel Colliders")]
         [SerializeField] private WheelCollider frontLeftWheelCollider;
         [SerializeField] private WheelCollider frontRightWheelCollider;
-
-        [Header("Rear Wheel Colliders")]
         [SerializeField] private WheelCollider rearLeftWheelCollider;
         [SerializeField] private WheelCollider rearRightWheelCollider;
 
