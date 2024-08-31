@@ -17,6 +17,8 @@ namespace Cars
         public float carRatio = 6f; // Ratio of steering wheel rotation to wheel turn
         private const float initialOffset = 180; // Initial offset for the starting position
         private float _currentSteerAngle;
+        
+        private bool _isKeyboardControl;
 
         // Wheel Colliders
         [Header("Front Wheel Colliders")]
@@ -26,10 +28,13 @@ namespace Cars
         private void Start()
         {
             lastZAngle = transform.localEulerAngles.z - initialOffset;
+            _isKeyboardControl = GetComponentInParent<CarController>().IsKeyboardControlled();
         }
 
         void FixedUpdate()
         {
+            if (_isKeyboardControl) return;
+            
             // if the wheel is not grabbed
             if (grabbable.SelectingPointsCount == 0)
             {
