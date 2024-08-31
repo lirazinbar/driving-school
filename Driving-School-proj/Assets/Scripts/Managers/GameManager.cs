@@ -150,6 +150,12 @@ namespace Managers
             FeedbackManager.Instance.UpdateScore("Wrong Direction");
         }
         
+        public void UpdateCarTurnedOverEvent()
+        {
+            Debug.Log("Car turned over");
+            FeedbackManager.Instance.UpdateScore("Car Turned Over");
+        }
+        
         public void GameFinished(bool success, List<string> feedbackScores)
         {
             FeedbackManager.Instance.SetIsUpdatingScore(false);

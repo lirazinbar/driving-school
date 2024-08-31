@@ -18,6 +18,8 @@ namespace Cars
         private bool _isShowingSpeed = true;
         private float _currentMaxSteerAngle;
         private bool isGamePause = false;
+        private const float UpSideDownThresholdAngle = 120f;
+
 
         [SerializeField] private Rigidbody rb;
         
@@ -90,6 +92,7 @@ namespace Cars
             HandleMotor();
             HandleSteering();
             UpdateWheels();
+            IsUpSideDown();
             // ShowCurrentSpeed();
             if (!isAutonomous && !isParkingTest)
             {
@@ -163,18 +166,16 @@ namespace Cars
             rearLeftWheelCollider.brakeTorque = _currentBreakForce;
             rearRightWheelCollider.brakeTorque = _currentBreakForce;
         }
-
-
+        
         private void HandleSteering()
         {
             if (isAutonomous || keyboardControlled)
             {
-                float _currentSteerAngle = _horizontalInput * maxSteerAngle;
+                float currentSteerAngle = _horizontalInput * maxSteerAngle;
 
-                frontLeftWheelCollider.steerAngle = _currentSteerAngle;
-                frontRightWheelCollider.steerAngle = _currentSteerAngle;
+                frontLeftWheelCollider.steerAngle = currentSteerAngle;
+                frontRightWheelCollider.steerAngle = currentSteerAngle;
             }
-        
         }
 
         private void UpdateWheels()
@@ -259,6 +260,32 @@ namespace Cars
         frontRightLightPoint.enabled = state;
         frontRightLight.enabled = state;
         frontLeftLightPoint.enabled = state;
+    }
+    
+    public bool IsKeyboardControlled()
+    {
+        return keyboardControlled;
+    }
+    
+    private void IsUpSideDown()
+    {
+        // Calculate the angle between the up vector of the Transform and the world's up vector
+        float angle = Vector3.Angle(transform.up, Vector3.up);
+
+        // If the angle is greater than the threshold, consider it upside down
+        bool isUpsideDown = angle > UpSideDownThresholdAngle;
+        if (isUpsideDown)
+        {
+            if (!isAutonomous)
+            {
+                EventsManager.Instance.TriggerCarTurnedOverEvent();
+            }
+            else
+            {
+                Debug.Log("Upside down!");
+                Destroy(gameObject);
+            }
+        }
     }
 }
 

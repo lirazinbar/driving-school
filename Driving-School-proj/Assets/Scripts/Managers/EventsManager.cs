@@ -28,6 +28,7 @@ namespace Managers
         public UnityEvent carHitOtherCarEvent = new UnityEvent();
         public UnityEvent carHitPedestrianEvent = new UnityEvent();
         public UnityEvent carHitObstacleEvent = new UnityEvent();
+        public UnityEvent carTurnedOverEvent = new UnityEvent();
 
         void Awake()
         {
@@ -109,6 +110,11 @@ namespace Managers
         public void TriggerCarHitObstacleEvent()
         {
             carHitObstacleEvent?.Invoke();
+        }
+        
+        public void TriggerCarTurnedOverEvent()
+        {
+            carTurnedOverEvent?.Invoke();
         }
     }
 }

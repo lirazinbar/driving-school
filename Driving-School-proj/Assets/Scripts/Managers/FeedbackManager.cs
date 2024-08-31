@@ -79,6 +79,7 @@ public static class FeedbackScore
         { "Car Hit", -100 },
         { "Pedestrian Hit", -100 },
         { "Obstacle Hit", -100 },
+        { "Car Turned Over", -100 },
         { "Red Light", -50 },
         { "No Entry Sign", -20 },
         { "Stop Sign", -20 },
