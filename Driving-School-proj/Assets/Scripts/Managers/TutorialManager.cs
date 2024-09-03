@@ -55,17 +55,19 @@ public class TutorialManager : MonoBehaviour
             descriptionText.SetText(description4);
         }
         
-        if (AudioManager.Instance.IsPlaying("Tutorial") && audioTime > 18 && audioTime < 20)
+        if (AudioManager.Instance.IsPlaying("Tutorial") && audioTime > 18 && audioTime < 22)
         {
             rightLight.enabled = true;
+            leftLight.enabled = true;
         }
         
         if (
             (AudioManager.Instance.IsPlaying("Tutorial") && 
-             (audioTime > 20 || audioTime < 18)) || 
+             (audioTime > 22 || audioTime < 18)) || 
             !AudioManager.Instance.IsPlaying("Tutorial"))
         {
             rightLight.enabled = false;
+            leftLight.enabled = false;
         }
         
         if (OVRInput.GetUp(OVRInput.RawButton.A))

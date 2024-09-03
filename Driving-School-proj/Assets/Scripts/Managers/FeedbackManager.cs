@@ -35,7 +35,7 @@ namespace Managers
         {
             _turnsCounter++;
             Debug.Log("turnsAmount: " + _turnsCounter);
-            if (_turnsCounter >= 3) GameManager.Instance.GameFinished(true, _feedbackScores);
+            if (_turnsCounter >= _turnsToWin) GameManager.Instance.GameFinished(true, _feedbackScores);
         }
 
         public void UpdateScore(string feedbackScore)
