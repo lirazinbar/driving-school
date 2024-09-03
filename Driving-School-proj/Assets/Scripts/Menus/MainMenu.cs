@@ -94,7 +94,9 @@ namespace Menus
             
             PlayerPrefs.SetInt("ParkingType", parkingTypeVal);
             
-            UnityEngine.SceneManagement.SceneManager.LoadScene("ParkingTest");
+            // UnityEngine.SceneManagement.SceneManager.LoadScene("ParkingTest");
+            PlayerPrefs.SetString("NextScene", "ParkingTest");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Tutorial");
             
             AudioManager.Instance.Stop(_backgroundMusicName);
         }
@@ -181,12 +183,16 @@ namespace Menus
 
             if (routeIndex == 0)
             {
-                UnityEngine.SceneManagement.SceneManager.LoadScene("GameEnv");
+                // UnityEngine.SceneManagement.SceneManager.LoadScene("GameEnv");
+                PlayerPrefs.SetString("NextScene", "GameEnv");
+                UnityEngine.SceneManagement.SceneManager.LoadScene("Tutorial");
             }
             else
             {
                 PlayerPrefs.SetString("RouteNumber", (routeIndex-1)+"");
-                UnityEngine.SceneManagement.SceneManager.LoadScene("RoutesCreatorEnv");
+                // UnityEngine.SceneManagement.SceneManager.LoadScene("RoutesCreatorEnv");
+                PlayerPrefs.SetString("NextScene", "RoutesCreatorEnv");
+                UnityEngine.SceneManagement.SceneManager.LoadScene("Tutorial");
             }
         }
 
