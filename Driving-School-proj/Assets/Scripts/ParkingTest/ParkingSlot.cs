@@ -90,6 +90,8 @@ namespace ParkingTest
                 {
                     Debug.Log("Car parked successfully!");
                     ParkingTestGameManager.Instance.OnCarParkedSuccessfully();
+                    _isTarget = false;
+                    _isOccupied = true; // In order not to choose it again
                     yield break;
                 }
 

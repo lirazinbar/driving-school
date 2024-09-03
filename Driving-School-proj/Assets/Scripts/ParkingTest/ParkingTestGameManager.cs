@@ -54,6 +54,8 @@ namespace ParkingTest
         private void LoadGameSettings()
         {
             _settings = GetSettingsFromPlayerPrefs();
+            // Dev
+            // _settings = new ParkingTestSettings(3, ParkingType.Perpendicular);
         }
 
         private ParkingTestSettings GetSettingsFromPlayerPrefs()
@@ -68,12 +70,10 @@ namespace ParkingTest
         {
             _parkingSlotsPerpendicular = FindObjectsOfType<ParkingSlotPerpendicular>();
             _parkingSlotsParallel = FindObjectsOfType<ParkingSlotParallel>();
-            // Debug.Log("Perpendicular Parking Slots: " + _parkingSlotsPerpendicular.Length);
             
             // Filter out the occupied parking slots
             _parkingSlotsPerpendicular = System.Array.FindAll(_parkingSlotsPerpendicular, slot => !slot.IsOccupied());
             _parkingSlotsParallel = System.Array.FindAll(_parkingSlotsParallel, slot => !slot.IsOccupied());
-            // Debug.Log("Free Perpendicular Parking Slots: " + _parkingSlotsPerpendicular.Length);
         }
         
         private void SetRandomParkingSlotAsTarget(ParkingType parkingType)
