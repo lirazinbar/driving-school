@@ -32,15 +32,31 @@ namespace Managers
 
         public List<ScoresObject> LoadScores()
         {
-            if (File.Exists(Application.persistentDataPath + "/Scores/scores.xml"))
+            string filePath = Path.Combine(Application.persistentDataPath, "Scores/scores.xml");
+            if (File.Exists(filePath))
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(ScoresCollection));
-                FileStream stream = new FileStream(Application.persistentDataPath + "/Scores/scores.xml", FileMode.Open);
-                scoresCollection = serializer.Deserialize(stream) as ScoresCollection;
-                stream.Close();
+                try
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(ScoresCollection));
+                    using (FileStream stream = new FileStream(filePath, FileMode.Open))
+                    {
+                        scoresCollection = serializer.Deserialize(stream) as ScoresCollection;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"Failed to load scores from {filePath}: {ex.Message}");
+                    // Optionally, handle the exception (e.g., return an empty list or rethrow)
+                    return new List<ScoresObject>();
+                }
             }
-
-            return scoresCollection.list;
+            else
+            {
+                Debug.LogWarning($"Scores file not found at {filePath}");
+                return new List<ScoresObject>();
+            }
+            
+            return scoresCollection?.list ?? new List<ScoresObject>();
         }
     }
 }
