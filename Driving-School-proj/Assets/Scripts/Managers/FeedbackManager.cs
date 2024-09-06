@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using Audio;
 using UnityEngine;
 
 namespace Managers
@@ -35,6 +36,7 @@ namespace Managers
         {
             _turnsCounter++;
             Debug.Log("turnsAmount: " + _turnsCounter);
+            AudioManager.Instance.Play("SuccessAction");
             if (_turnsCounter >= _turnsToWin) GameManager.Instance.GameFinished(true, _feedbackScores);
         }
 
@@ -50,6 +52,8 @@ namespace Managers
                 _currentScore += FeedbackScore.Table[feedbackScore];
                 Debug.Log("You lost " + -FeedbackScore.Table[feedbackScore] + " points! " + "Current score: " + _currentScore);
                 _feedbackScores.Add(feedbackScore);
+                
+                AudioManager.Instance.Play("FailureAction");
                 CanvasDashboard.Instance.DisplayUpdateScore(feedbackScore);
         
                 if (_currentScore <= 0)

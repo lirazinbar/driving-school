@@ -1,3 +1,4 @@
+using Audio;
 using Cars;
 using TMPro;
 using UnityEngine;
@@ -100,6 +101,7 @@ namespace ParkingTest
         public void OnCarParkedSuccessfully()
         {
             _parkingsCompleted++;
+            AudioManager.Instance.Play("SuccessAction");
             CanvasDashboard.Instance.OnCarParkedSuccessfully(_settings.GetParkingsToWin() - _parkingsCompleted);
             if (_parkingsCompleted >= _settings.GetParkingsToWin())
             {
@@ -109,6 +111,7 @@ namespace ParkingTest
                 
                 gameOverCanvas.transform.position = gameOverCanvasPosition.transform.position;
                 gameOverCanvas.transform.rotation = gameOverCanvasPosition.transform.rotation;
+                AudioManager.Instance.Play("GameWon");
                 gameStatus.SetText("You Win! Good Job!");
                 Debug.Log("Game Over - You Win!");
             }
@@ -126,6 +129,7 @@ namespace ParkingTest
             
             gameOverCanvas.transform.position = gameOverCanvasPosition.transform.position;
             gameOverCanvas.transform.rotation = gameOverCanvasPosition.transform.rotation;
+            AudioManager.Instance.Play("GameLost");
             gameStatus.SetText("You Lost! You need more practice...");
             Debug.Log("Game Over - You Hit Another Car!");
         }

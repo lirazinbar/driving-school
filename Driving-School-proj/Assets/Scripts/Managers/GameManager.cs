@@ -219,10 +219,12 @@ namespace Managers
 
             if (success)
             {
+                AudioManager.Instance.Play("GameWon");
                 successStatus.SetText("You Win!  scores: " + sumScores);
             }
             else
             {
+                AudioManager.Instance.Play("GameLost");
                 successStatus.SetText("You Lost!  scores: " + sumScores);
             }
         }
