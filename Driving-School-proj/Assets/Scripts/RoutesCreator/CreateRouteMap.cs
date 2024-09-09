@@ -7,7 +7,8 @@ using UnityEngine;
 public class CreateRouteMap : MonoBehaviour
 {
     [SerializeField] private List<GameObject> componentsPrefabs;
-    private void Start()
+    private bool _routeCreationFinished = false;
+    private void Awake()
     {
         // List<MapMatrixObject> routeList = XMLManager.Instance.LoadRoutes();
         // XMLManager.Instance.LoadRoutes(OnRoutesFetched);
@@ -61,5 +62,12 @@ public class CreateRouteMap : MonoBehaviour
                 }
             
         }
+        
+        _routeCreationFinished = true;
+    }
+    
+    public bool RouteCreationFinished()
+    {
+        return _routeCreationFinished;
     }
 }

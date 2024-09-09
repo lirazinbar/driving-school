@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Audio;
 using Cars;
@@ -17,6 +18,7 @@ namespace Managers
         [SerializeField] private GameObject mainCar;
         [SerializeField] private Light directionalLight;
         [SerializeField] private InstructorAnimationController instructorAnimationController;
+        [SerializeField] private CreateRouteMap routeMap;
         
         [Header("Game Over Menu")]
         [SerializeField] private TMP_Text successStatus;
@@ -43,7 +45,14 @@ namespace Managers
 
         private void Start()
         {
-            SetGameSettings();
+            if (isDefaultRoute)
+            {
+                SetGameSettings();
+            }
+            else
+            {
+                StartCoroutine(WaitForComponentsCreationAndSetSettings());
+            }
         }
 
         private void Update()
@@ -267,6 +276,18 @@ namespace Managers
            SetTurnsToWin(gameSettings.GetTurnsToWin());
            
            SetInstructor(gameSettings.GetInstructor());
+        }
+        
+        private IEnumerator WaitForComponentsCreationAndSetSettings()
+        {
+            bool conditionMet = routeMap.RouteCreationFinished();
+            while (!conditionMet)
+            {
+                yield return new WaitForSeconds(0.1f);
+                conditionMet = routeMap.RouteCreationFinished();
+            }
+            
+            SetGameSettings();
         }
         
         private GameSettings.GameSettings GetGameSettingsFromPlayerPrefs()
