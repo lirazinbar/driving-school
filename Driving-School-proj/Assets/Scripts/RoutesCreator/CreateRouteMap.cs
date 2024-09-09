@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using Managers;
 using RouteEditors;
 using UnityEngine;
+using Newtonsoft.Json;
 
 public class CreateRouteMap : MonoBehaviour
 {
     [SerializeField] private List<GameObject> componentsPrefabs;
     private bool _routeCreationFinished = false;
+    
     private void Awake()
     {
         // List<MapMatrixObject> routeList = XMLManager.Instance.LoadRoutes();
@@ -15,7 +17,12 @@ public class CreateRouteMap : MonoBehaviour
 
         // TODO
         // StartCoroutine(DatabaseManager.Instance.GetRoutes(OnRoutesFetched));
-        StartCoroutine(DatabaseManager.Instance.GetData(OnRoutesFetched));
+        // StartCoroutine(DatabaseManager.Instance.GetData(OnRoutesFetched));
+        
+        string jsonMatrix = PlayerPrefs.GetString("RouteMatrix");
+        MapMatrixObject matrix = JsonConvert.DeserializeObject<MapMatrixObject>(jsonMatrix);
+
+        OnRouteMapSave(matrix);
 
         //int routeNumber = int.Parse(PlayerPrefs.GetString("RouteNumber"));
 

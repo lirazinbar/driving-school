@@ -4,6 +4,8 @@ using RouteEditors;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Menus
 {
@@ -38,6 +40,8 @@ namespace Menus
         
         private string _backgroundMusicName;
         private string routeName;
+
+        private List<MapMatrixObject> routesList;
     
 
         /*public void EnterPlayModeMenu()
@@ -103,6 +107,7 @@ namespace Menus
 
         private void OnRoutesFetched(List<MapMatrixObject> routeList)
         {
+            routesList = routeList;
             for (int i = gridContainerGameObject.transform.childCount - 1; i > 0; i--)
             {
                 Destroy(gridContainerGameObject.transform.GetChild(i).gameObject);
@@ -190,6 +195,8 @@ namespace Menus
             else
             {
                 PlayerPrefs.SetString("RouteNumber", (routeIndex-1)+"");
+                string jsonString = JsonConvert.SerializeObject(routesList[routeIndex-1]);
+                PlayerPrefs.SetString("RouteMatrix", jsonString);
                 // UnityEngine.SceneManagement.SceneManager.LoadScene("RoutesCreatorEnv");
                 PlayerPrefs.SetString("NextScene", "RoutesCreatorEnv");
                 UnityEngine.SceneManagement.SceneManager.LoadScene("Tutorial");
