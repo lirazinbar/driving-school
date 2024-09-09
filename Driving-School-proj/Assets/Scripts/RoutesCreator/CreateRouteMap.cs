@@ -8,6 +8,8 @@ using Newtonsoft.Json;
 public class CreateRouteMap : MonoBehaviour
 {
     [SerializeField] private List<GameObject> componentsPrefabs;
+    private bool _routeCreationFinished = false;
+    
     private void Awake()
     {
         // List<MapMatrixObject> routeList = XMLManager.Instance.LoadRoutes();
@@ -67,5 +69,12 @@ public class CreateRouteMap : MonoBehaviour
                 }
             
         }
+        
+        _routeCreationFinished = true;
+    }
+    
+    public bool RouteCreationFinished()
+    {
+        return _routeCreationFinished;
     }
 }

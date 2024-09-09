@@ -22,6 +22,7 @@ namespace Audio
         {
             _rb = GetComponent<Rigidbody>();
             _carEngineAudio = AudioManager.Instance.GetAudioSource("CarEngine");
+            _carEngineAudio.loop = true;
             
             AudioManager.Instance.Play("CarIgnition");
             

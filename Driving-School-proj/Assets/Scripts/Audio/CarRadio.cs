@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +7,7 @@ namespace Audio
     {
         private int radioSoundIndex = -1;
 
-        private List<string> radioSounds = new List<string> { "happy-mood-ukulele", "sunny-jamboree", "ShakeItOff" };
+        private List<string> radioSounds = new List<string> {"GreasedLightning", "ShakeItOff", "happy-mood-ukulele"};
         
         public void OnRadioClicked()
         {
