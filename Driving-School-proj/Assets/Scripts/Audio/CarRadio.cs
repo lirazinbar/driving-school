@@ -21,5 +21,14 @@ namespace Audio
                 AudioManager.Instance.Play(radioSounds[radioSoundIndex]);
             }
         }
+
+        void OnDestroy()
+        {
+            if (radioSoundIndex != radioSounds.Count && radioSoundIndex != -1)
+            {
+                AudioManager.Instance.Stop(radioSounds[radioSoundIndex]);
+            }
+        }
+
     }
 }
