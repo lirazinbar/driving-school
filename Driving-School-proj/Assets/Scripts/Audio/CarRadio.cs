@@ -7,7 +7,7 @@ namespace Audio
     {
         private int radioSoundIndex = -1;
 
-        private List<string> radioSounds = new List<string> { "happy-mood-ukulele","GreasedLightning", "ShakeItOff" };
+        private List<string> radioSounds = new List<string> {"GreasedLightning", "ShakeItOff", "happy-mood-ukulele"};
         
         public void OnRadioClicked()
         {
